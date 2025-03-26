@@ -1,0 +1,8 @@
+<div class="flex justify-center items-center p-6 min-h-screen" cdkDropList [cdkDropListData]="droppedElements"
+     (cdkDropListDropped)="onDrop($event)">
+  <ng-container *ngFor="let element of droppedElements">
+    <div (click)="selectElement(element)" cdkDrag>
+      <ng-container *ngComponentOutlet="element.component"></ng-container>
+    </div>
+  </ng-container>
+</div>

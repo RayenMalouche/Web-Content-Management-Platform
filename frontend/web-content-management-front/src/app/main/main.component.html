@@ -1,0 +1,6 @@
+<div class="container">
+  <app-properties-sidebar [selectedElement]="selectedElement" (propertyChanged)="onPropertyChanged($event)"></app-properties-sidebar>
+  <app-content-area [droppedElements]="droppedElements" (elementSelected)="selectElement($event)"></app-content-area>
+
+  <app-element-sidebar (elementSelected)="addElement($event)"></app-element-sidebar>
+</div>
