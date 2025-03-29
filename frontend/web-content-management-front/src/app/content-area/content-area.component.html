@@ -1,7 +1,7 @@
-<div class="flex justify-center items-center p-6 min-h-screen" cdkDropList [cdkDropListData]="droppedElements"
+<div class="flex justify-center items-center p-6 min-h-screen relative" cdkDropList [cdkDropListData]="droppedElements"
      (cdkDropListDropped)="onDrop($event)">
   <ng-container *ngFor="let element of droppedElements">
-    <div (click)="selectElement(element)" cdkDrag>
+    <div (click)="selectElement(element)" cdkDrag [cdkDragData]="element" [ngStyle]="{'position': 'absolute', 'left.px': element.position?.x, 'top.px': element.position?.y}">
       <ng-container *ngComponentOutlet="element.component"></ng-container>
     </div>
   </ng-container>

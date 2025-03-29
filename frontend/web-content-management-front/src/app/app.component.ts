@@ -1,17 +1,21 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {HeaderComponent} from './header.component';
 
 @Component({
   selector: 'app-root',
-
-  templateUrl: './app.component.html',
-  standalone: true,
+  template: `
+    <app-header></app-header>
+    <router-outlet></router-outlet>
+  `,
+  styles: [''],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    RouterOutlet
+    RouterOutlet,
+    HeaderComponent
   ],
-  styleUrl: './app.component.scss'
+  standalone: true
 })
 export class AppComponent {
-  title = 'web-content-management-front';
+  title = 'website-builder';
 }
