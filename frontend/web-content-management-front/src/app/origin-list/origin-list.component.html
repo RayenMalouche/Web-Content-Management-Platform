@@ -1,5 +1,5 @@
 <h5 class="text-center">Elements</h5>
-<div class="d-flex flex-column gap-3 rounded-2 draggable">
+<div class="d-flex flex-column gap-3.5 rounded-2 draggable">
   <div *ngFor="let node of originList" class="card"
        [dndDraggable]="node"
        (dndCanceled)="onDragged($event, node, 'none')"
@@ -9,8 +9,9 @@
        (dndMoved)="onDragged($event, node, 'move')"
        (dndStart)="onDragStart($event)"
        dndEffectAllowed="move">
-    <div class="card-body">
-      <h6 class="card-title">{{ node.name }} <sup class="text-info">{{ node.type | firstChar }}</sup></h6>
+    <div class="card-body d-flex align-items-center">
+      <i [ngClass]="getIconClass(node.type)" class="me-2"></i>
+      <h6 class="card-title mb-0">{{ node.name }} <sup class="text-info"></sup></h6>
     </div>
   </div>
 </div>

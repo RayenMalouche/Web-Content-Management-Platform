@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Observable, Subject, takeUntil, tap } from "rxjs";
-import {ILayout} from '../models/ILayout';
-import {AsyncPipe, NgIf} from '@angular/common';
-
+import { ILayout } from '../models/ILayout';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-layout-details',
@@ -28,12 +27,15 @@ export class LayoutDetailsComponent implements OnInit, OnDestroy {
     code: new FormControl('', Validators.required),
     description: new FormControl(''),
     type: new FormControl('', Validators.required),
-    status: new FormControl('', Validators.required)
+    status: new FormControl('', Validators.required),
+    width: new FormControl(''),
+    height: new FormControl(''),
+    backgroundColor: new FormControl(''),
+    borderColor: new FormControl('')
   });
 
   ngOnInit(): void {
-    // @ts-ignore
-    this.layoutFinal$ = this.layout$.pipe(
+    this.layoutFinal$ = this.layout$?.pipe(
       takeUntil(this.destroy$),
       tap(layout => {
         if (layout) {
@@ -42,14 +44,20 @@ export class LayoutDetailsComponent implements OnInit, OnDestroy {
             code: layout.code,
             description: layout?.description,
             type: layout.type,
-            status: layout.status
+            status: layout.status,
+            width: layout?.width ?? '',
+            height: layout?.height ?? '',
+            backgroundColor: layout?.backgroundColor ?? '',
+            borderColor: layout?.borderColor ?? ''
           });
         }
       })
-    )
+    );
   }
 
-  onSave() { return {...this.form.value} as unknown as ILayout; }
+  onSave() {
+    this.save.emit({ ...this.form.value } as ILayout);
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

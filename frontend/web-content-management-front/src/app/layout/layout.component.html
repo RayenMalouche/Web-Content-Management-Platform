@@ -12,7 +12,11 @@
          (dndMoved)="onDragged($event, node, list, 'move')"
          (dndStart)="onDragStart($event)"
          (click)="onClickNode($event, node, false, list)"
-         dndEffectAllowed="move">
+         dndEffectAllowed="move"
+         [style.background-color]="node?.backgroundColor"
+         [style.border-color]="node?.borderColor"
+         [style.width]="node?.width + 'px'"
+         [style.height]="node?.height + 'px'">
       <div class="card-body">
         <div class="card-title d-flex flex-sm-wrap align-items-center justify-content-between">
           <h6>{{ node?.name }} <sup class="text-info">{{ node?.type | firstChar }}</sup></h6>
@@ -35,7 +39,11 @@
   </ng-template>
 
   <div dndDropzone class="d-flex flex-column gap-3 p-3 rounded-2 layout-root" [ngClass]="{'selected-node': root?.selected }"
-       (click)="onClickNode($event, root!, true)" (dndDrop)="onDrop($event, root?.children ?? [])">
+       (click)="onClickNode($event, root!, true)" (dndDrop)="onDrop($event, root?.children ?? [])"
+       [style.background-color]="root?.backgroundColor"
+       [style.border-color]="root?.borderColor"
+       [style.width]="root?.width + 'px'"
+       [style.height]="root?.height + 'px'">
     <ng-container *ngTemplateOutlet="recursiveList; context: { $implicit: root?.children ?? [] }"></ng-container>
   </div>
 </div>

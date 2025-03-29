@@ -5,6 +5,7 @@ import {BehaviorSubject} from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class LayoutService {
   private layoutSubject = new BehaviorSubject<ILayout>({
+    backgroundColor: '', borderColor: '', height: '', width: '',
     name: "home",
     code: "home",
     description: "",

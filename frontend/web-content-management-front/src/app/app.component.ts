@@ -1,13 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {HeaderComponent} from './header.component';
+import {HeaderComponent} from './shared/header/header.component';
+
 
 @Component({
   selector: 'app-root',
-  template: `
-    <app-header></app-header>
-    <router-outlet></router-outlet>
-  `,
+  templateUrl: './app.component.html',
   styles: [''],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [

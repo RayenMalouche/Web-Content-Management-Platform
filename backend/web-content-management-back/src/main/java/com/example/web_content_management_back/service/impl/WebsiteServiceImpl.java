@@ -28,7 +28,7 @@ public class WebsiteServiceImpl implements WebsiteService {
     @Override
     public WebsiteDTO createWebsite(WebsiteDTO websiteDTO) {
         Website website = convertToEntity(websiteDTO);
-        website.setId(UUID.randomUUID().toString()); // Generate and set the ID
+        website.setId(UUID.randomUUID().toString());
         Website savedWebsite = websiteRepository.save(website);
         return convertToDTO(savedWebsite);
     }

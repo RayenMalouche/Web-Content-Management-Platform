@@ -30,14 +30,7 @@ export class MainComponent implements OnDestroy {
     type: "row",
     selected: false,
     children: [
-      { name: "Header", type: "widget", selected: false, description: "first", widgetId: WIDGET_ID.header, children: [] },
-      {
-        name: "Column", type: "column", selected: false, children: [
-          { name: "Image Slider", type: "widget", selected: false, widgetId: WIDGET_ID.imageSlider, children: [] },
-          { name: "Description", type: "widget", selected: false, widgetId: WIDGET_ID.text, children: [] },
-        ]
-      },
-      { name: "Footer", type: "widget", selected: false, widgetId: WIDGET_ID.footer, children: [] }
+
     ]
   };
 
