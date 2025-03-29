@@ -16,4 +16,13 @@ public class NodeDTO {
     private String backgroundColor;
     private String borderColor;
     private List<NodeDTO> children;
+    private NodeDTO parent;
+
+    public NodeDTO getParent() {
+        return parent;
+    }
+
+    public void setParent(NodeDTO parent) {
+        this.parent = parent;
+    }
 }

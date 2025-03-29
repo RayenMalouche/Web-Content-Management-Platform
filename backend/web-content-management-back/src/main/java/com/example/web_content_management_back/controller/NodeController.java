@@ -20,7 +20,7 @@ public class NodeController {
     }
 
     @GetMapping("/{id}")
-    public NodeDTO getNodeById(@PathVariable Long id) {
+    public NodeDTO getNodeById(@PathVariable String id) {
         return nodeService.getNodeById(id);
     }
 
@@ -30,12 +30,12 @@ public class NodeController {
     }
 
     @PutMapping("/{id}")
-    public NodeDTO updateNode(@PathVariable Long id, @RequestBody NodeDTO nodeDTO) {
+    public NodeDTO updateNode(@PathVariable String id, @RequestBody NodeDTO nodeDTO) {
         return nodeService.updateNode(id, nodeDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteNode(@PathVariable Long id) {
+    public void deleteNode(@PathVariable String id) {
         nodeService.deleteNode(id);
     }
 }
