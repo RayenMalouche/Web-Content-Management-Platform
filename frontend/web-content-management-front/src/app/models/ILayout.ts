@@ -8,6 +8,4 @@ export interface ILayout {
   description: string;
   type: "SECTION" | "ROUTABLE";
   status: "ACTIVE" | "INACTIVE";
- 
-
 }

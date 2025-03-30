@@ -5,20 +5,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-import java.util.ArrayList;
-
-@Document(collection = "websites")
+@Document(collection = "pages")
 @Data
-public class Website {
+public class Page {
     @Id
     private String id;
     private String name;
-    private String domain;
-    private String type;
-    private String primaryColor;
-    private String description;
-
     @DBRef
-    private List<Page> pages=new ArrayList<>();;
+    private Layout layout;
 }

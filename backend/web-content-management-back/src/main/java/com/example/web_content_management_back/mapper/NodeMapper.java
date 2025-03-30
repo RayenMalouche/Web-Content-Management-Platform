@@ -17,8 +17,8 @@ public class NodeMapper {
         nodeDTO.setSelected(node.isSelected());
         nodeDTO.setDescription(node.getDescription());
         nodeDTO.setWidgetId(node.getWidgetId());
-        nodeDTO.setWidth(node.getWidth());
-        nodeDTO.setHeight(node.getHeight());
+        nodeDTO.setWidth(node.getWidth()); // No conversion needed
+        nodeDTO.setHeight(node.getHeight()); // No conversion needed
         nodeDTO.setBackgroundColor(node.getBackgroundColor());
         nodeDTO.setBorderColor(node.getBorderColor());
         nodeDTO.setChildren(node.getChildren().stream().map(this::toDTO).collect(Collectors.toList()));
@@ -34,8 +34,8 @@ public class NodeMapper {
         node.setSelected(nodeDTO.isSelected());
         node.setDescription(nodeDTO.getDescription());
         node.setWidgetId(nodeDTO.getWidgetId());
-        node.setWidth(nodeDTO.getWidth());
-        node.setHeight(nodeDTO.getHeight());
+        node.setWidth(nodeDTO.getWidth()); // No conversion needed
+        node.setHeight(nodeDTO.getHeight()); // No conversion needed
         node.setBackgroundColor(nodeDTO.getBackgroundColor());
         node.setBorderColor(nodeDTO.getBorderColor());
         node.setChildren(nodeDTO.getChildren().stream().map(this::toEntity).collect(Collectors.toList()));

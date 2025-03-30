@@ -7,24 +7,21 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.List;
 
-@Document(collection = "nodes")
+@Document(collection = "layouts")
 @Data
-public class Node {
+public class Layout {
     @Id
     private String id;
-    private String name;
-    private String type;
-    private boolean selected;
-    private String description;
-    private String widgetId;
-    private String width;
-    private String height;
-    private String backgroundColor;
     private String borderColor;
+    private String backgroundColor;
+    private String height;
+    private String width;
+    private String name;
+    private String code;
+    private String description;
+    private String type;
+    private String status;
 
     @DBRef
-    private List<Node> children;
-
-    @DBRef
-    private Node parent;
+    private List<Node> nodes;
 }
