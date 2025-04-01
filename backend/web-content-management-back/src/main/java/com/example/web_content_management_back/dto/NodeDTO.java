@@ -17,6 +17,7 @@ public class NodeDTO {
     private String borderColor;
     private List<NodeDTO> children;
     private NodeDTO parent;
+    private boolean template;
 
     public NodeDTO getParent() {
         return parent;

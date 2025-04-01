@@ -7,28 +7,22 @@ import { INode } from '../models/INode';
   providedIn: 'root'
 })
 export class NodeService {
+  private apiUrl = 'http://localhost:8081/api/nodes';
 
-  private baseUrl = 'http://localhost:8080/nodes';
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  getAllNodes(): Observable<INode[]> {
-    return this.http.get<INode[]>(this.baseUrl);
-  }
-
-  createNode(node: Node): Observable<INode> {
-    return this.http.post<INode>(this.baseUrl, node);
-  }
-
-  getNodeById(id: string): Observable<INode> {
-    return this.http.get<INode>(`${this.baseUrl}/${id}`);
+  createNode(node: INode): Observable<INode> {
+    return this.http.post<INode>(this.apiUrl, node);
   }
 
   updateNode(id: string, node: INode): Observable<INode> {
-    return this.http.put<INode>(`${this.baseUrl}/${id}`, node);
+    return this.http.put<INode>(`${this.apiUrl}/${id}`, node);
+  }
+  getTemplatesNode(): Observable<INode[]> {
+    return this.http.get<INode[]>(`${this.apiUrl}/templates`);
   }
 
-  deleteNode(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  deleteNode(id: string) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { INode } from '../models/INode';
 import { DndDraggableDirective, DropEffect } from 'ngx-drag-drop';
-import {NgClass, NgForOf} from '@angular/common';
-
+import { NgClass, NgForOf } from '@angular/common';
+import { NodeService } from '../services/node-service.service';
 
 @Component({
   selector: 'app-origin-list',
@@ -15,19 +15,21 @@ import {NgClass, NgForOf} from '@angular/common';
   standalone: true,
   styleUrls: ['./origin-list.component.scss']
 })
-export class OriginListComponent {
+export class OriginListComponent implements OnInit {
   @Output() dragStart = new EventEmitter<DragEvent>();
   @Output() dragMove = new EventEmitter<{ event: DragEvent, effect: DropEffect, node: INode, list?: INode[] }>();
   @Output() dragEnd = new EventEmitter<DragEvent>();
 
-  readonly originList: INode[] = [
-    { name: "Row", type: "row", selected: false, children: [] },
-    { name: "Column", type: "column", selected: false, children: [] },
-    { name: "Widget", type: "widget", selected: false, children: [] },
-    { name: "Button", type: "button", selected: false, children: [] },
-    { name: "Text", type: "text", selected: false, children: [] },
-    { name: "Image", type: "image", selected: false, children: [] }
-  ];
+  originList: INode[] = [];
+
+  constructor(private nodeService: NodeService) {}
+
+  ngOnInit(): void {
+    this.nodeService.getTemplatesNode().subscribe(nodes => {
+      this.originList = nodes;
+      //console.log('ceci est la liste des nodes', this.originList);
+    });
+  }
 
   onDragStart(event: DragEvent) { this.dragStart.emit(event); }
 

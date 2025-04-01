@@ -56,4 +56,13 @@ public class NodeServiceImpl implements NodeService {
     public void deleteNode(String id) {
         nodeRepository.deleteById(id);
     }
+
+
+    @Override
+    public List<NodeDTO> getTemplates() {
+        return nodeRepository.findAll().stream()
+                .filter(Node::isTemplate)
+                .map(nodeMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }

@@ -1,4 +1,5 @@
 export interface INode {
+  id: string;
   name: string;
   type: "row" | "column" | "widget" | "button" | "text" | "image";
   children: INode[];
@@ -9,4 +10,5 @@ export interface INode {
   height?: string;
   backgroundColor?: string;
   borderColor?: string;
+  template : boolean;
 }

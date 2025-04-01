@@ -10,4 +10,5 @@ public interface NodeService {
     NodeDTO getNodeById(String id);
     NodeDTO updateNode(String id, NodeDTO nodeDTO);
     void deleteNode(String id);
+    List<NodeDTO> getTemplates();
 }

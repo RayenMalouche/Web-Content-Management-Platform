@@ -3,6 +3,7 @@ package com.example.web_content_management_back.controller;
 import com.example.web_content_management_back.dto.LayoutDTO;
 import com.example.web_content_management_back.service.LayoutService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +31,13 @@ public class LayoutController {
     }
 
     @PutMapping("/{id}")
-    public LayoutDTO updateLayout(@PathVariable String id, @RequestBody LayoutDTO layoutDTO) {
-        return layoutService.updateLayout(id, layoutDTO);
+    public ResponseEntity<LayoutDTO> updateLayout(@PathVariable String id, @RequestBody LayoutDTO layoutDTO) {
+        LayoutDTO updatedLayout = layoutService.updateLayout(id, layoutDTO);
+        if (updatedLayout != null) {
+            return ResponseEntity.ok(updatedLayout);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")

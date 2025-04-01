@@ -38,4 +38,9 @@ public class NodeController {
     public void deleteNode(@PathVariable String id) {
         nodeService.deleteNode(id);
     }
+
+    @GetMapping("/templates")
+    public List<NodeDTO> getTemplates() {
+        return nodeService.getTemplates();
+    }
 }

@@ -1,6 +1,6 @@
 import {INode} from './INode';
 
-export interface ILayout {
+export interface Layout {
   id: string;
   borderColor: string;
   backgroundColor: string;
@@ -9,7 +9,7 @@ export interface ILayout {
   name: string;
   code: string;
   description: string;
-  type: "SECTION" | "ROUTABLE";
-  status: "ACTIVE" | "INACTIVE";
+  type: string;
+  status: string;
   nodes: INode[];
 }

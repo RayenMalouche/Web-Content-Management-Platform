@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { Observable, Subject, takeUntil, tap } from "rxjs";
+import { Observable, Subject } from "rxjs";
+import { takeUntil, tap, distinctUntilChanged, filter } from "rxjs/operators";
 import { ILayout } from '../models/ILayout';
 import { AsyncPipe, NgIf } from '@angular/common';
 
@@ -20,8 +21,8 @@ export class LayoutDetailsComponent implements OnInit, OnDestroy {
   @Input() layout$: Observable<ILayout> | undefined;
   @Output() save = new EventEmitter<ILayout>();
 
-  layoutFinal$: Observable<ILayout> | undefined;
   destroy$ = new Subject<void>();
+
   form = new FormGroup({
     name: new FormControl('', Validators.required),
     code: new FormControl('', Validators.required),
@@ -30,33 +31,44 @@ export class LayoutDetailsComponent implements OnInit, OnDestroy {
     status: new FormControl('', Validators.required),
     width: new FormControl(''),
     height: new FormControl(''),
-    backgroundColor: new FormControl(''),
-    borderColor: new FormControl('')
+    backgroundColor: new FormControl('#ffffff'),  // Valeur par défaut blanche
+    borderColor: new FormControl('#000000')  // Valeur par défaut noire
   });
 
   ngOnInit(): void {
-    this.layoutFinal$ = this.layout$?.pipe(
+    if (!this.layout$) {
+      console.warn('layout$ is undefined');
+      return;
+    }
+
+    this.layout$.pipe(
       takeUntil(this.destroy$),
+      filter(layout => !!layout),
+      distinctUntilChanged(),
       tap(layout => {
-        if (layout) {
-          this.form.patchValue({
-            name: layout.name,
-            code: layout.code,
-            description: layout?.description,
-            type: layout.type,
-            status: layout.status,
-            width: layout?.width ?? '',
-            height: layout?.height ?? '',
-            backgroundColor: layout?.backgroundColor ?? '',
-            borderColor: layout?.borderColor ?? ''
-          });
-        }
+        console.log('Détail du layout reçu :', layout);
+        this.form.patchValue({
+          name: layout.name,
+          code: layout.code,
+          description: layout.description ?? '',
+          type: layout.type,
+          status: layout.status,
+          width: layout.width ?? '',
+          height: layout.height ?? '',
+          backgroundColor: layout.backgroundColor ?? '#ffffff',
+          borderColor: layout.borderColor ?? '#000000'
+        });
       })
-    );
+    ).subscribe();
   }
 
+
   onSave() {
-    this.save.emit({ ...this.form.value } as ILayout);
+    if (this.form.valid) {
+      this.save.emit(this.form.value as ILayout);
+    } else {
+      console.warn('Le formulaire contient des erreurs.');
+    }
   }
 
   ngOnDestroy(): void {
