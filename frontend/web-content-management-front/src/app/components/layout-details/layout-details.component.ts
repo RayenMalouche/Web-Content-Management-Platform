@@ -2,8 +2,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnI
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Observable, Subject } from "rxjs";
 import { takeUntil, tap, distinctUntilChanged, filter } from "rxjs/operators";
-import { ILayout } from '../models/ILayout';
+
 import { AsyncPipe, NgIf } from '@angular/common';
+import {ILayout} from '../../models/ILayout';
 
 @Component({
   selector: 'app-layout-details',

@@ -7,9 +7,11 @@ import {
   DndPlaceholderRefDirective,
   DropEffect
 } from 'ngx-drag-drop';
-import {INode} from '../models/INode';
+
 import {NgClass, NgForOf, NgIf, NgTemplateOutlet} from '@angular/common';
-import {FirstCharPipe} from '../pipes/first-char.pipe';
+import {FirstCharPipe} from './first-char.pipe';
+import {INode} from '../../models/INode';
+
 
 @Component({
   selector: 'app-layout',

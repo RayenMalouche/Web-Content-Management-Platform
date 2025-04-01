@@ -4,9 +4,10 @@ import { AppComponent } from './app/app.component';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { provideRouter, Routes, withDebugTracing, withRouterConfig } from '@angular/router';
-import {WebsiteSetupComponentComponent} from './app/website-setup-component/website-setup-component.component';
-import {HomeComponent} from './app/home/home.component';
-import {MainComponent} from './app/main/main.component';
+import {WebsiteSetupComponentComponent} from './app/components/website-setup-component/website-setup-component.component';
+import {HomeComponent} from './app/components/home/home.component';
+import {MainComponent} from './app/components/main/main.component';
+
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },

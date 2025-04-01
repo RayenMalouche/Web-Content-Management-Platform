@@ -21,3 +21,6 @@ export class WebsiteService {
   }
 
 }
+
+export class WebsiteServiceService {
+}

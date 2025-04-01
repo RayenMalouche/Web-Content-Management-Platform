@@ -1,16 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { ILayout } from '../models/ILayout';
-import { INode } from '../models/INode';
+
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 import { DndDropEvent, DropEffect } from 'ngx-drag-drop';
 import { OriginListComponent } from '../origin-list/origin-list.component';
 import { LayoutComponent } from '../layout/layout.component';
 import { OptionsComponent } from '../options/options.component';
-import { LayoutService } from '../services/layout-service.service';
+
 import { HttpClientModule } from '@angular/common/http';
-import { NodeService } from '../services/node-service.service';
+import {INode} from '../../models/INode';
+import {ILayout} from '../../models/ILayout';
+import {LayoutService} from '../../services/layout-service.service';
+import {NodeService} from '../../services/node-service.service';
+
 
 @Component({
   selector: 'app-main',

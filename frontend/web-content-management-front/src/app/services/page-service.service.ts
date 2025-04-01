@@ -20,3 +20,6 @@ export class PageService {
   }
 
 }
+
+export class PageServiceService {
+}

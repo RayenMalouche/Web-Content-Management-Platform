@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
-import { INode } from '../models/INode';
+
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
-import { WIDGET_ID_LIST } from '../constants/WIDGET_ID_LIST';
+import { WIDGET_ID_LIST } from '../../constants/WIDGET_ID_LIST';
+import {INode} from '../../models/INode';
 
 @Component({
   selector: 'app-node-details',

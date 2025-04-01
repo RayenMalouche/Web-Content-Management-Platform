@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { INode } from '../models/INode';
-import { ILayout } from '../models/ILayout';
 import { Observable } from 'rxjs';
 import { JsonPipe } from '@angular/common';
 import { NodeDetailsComponent } from '../node-details/node-details.component';
 import { LayoutDetailsComponent } from '../layout-details/layout-details.component';
-import { NodeService } from '../services/node-service.service';
-import { LayoutService } from '../services/layout-service.service';
+import {INode} from '../../models/INode';
+import {ILayout} from '../../models/ILayout';
+import {NodeService} from '../../services/node-service.service';
+import {LayoutService} from '../../services/layout-service.service';
+
 
 @Component({
   selector: 'app-options',

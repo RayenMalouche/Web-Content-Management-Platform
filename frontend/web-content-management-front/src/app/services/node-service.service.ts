@@ -26,3 +26,6 @@ export class NodeService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }
+
+export class NodeServiceService {
+}

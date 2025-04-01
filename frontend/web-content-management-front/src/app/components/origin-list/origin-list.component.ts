@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
-import { INode } from '../models/INode';
+
 import { DndDraggableDirective, DropEffect } from 'ngx-drag-drop';
 import { NgClass, NgForOf } from '@angular/common';
-import { NodeService } from '../services/node-service.service';
+import {INode} from '../../models/INode';
+import {NodeService} from '../../services/node-service.service';
+
 
 @Component({
   selector: 'app-origin-list',
