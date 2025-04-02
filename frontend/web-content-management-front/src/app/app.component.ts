@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {RouterOutlet} from '@angular/router';
+import {HeaderComponent} from './shared/header/header.component';
 
 
 
@@ -10,6 +11,7 @@ import {RouterOutlet} from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterOutlet,
+    HeaderComponent,
   ],
   standalone: true
 })
