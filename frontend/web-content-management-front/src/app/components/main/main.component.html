@@ -1,11 +1,11 @@
 
 <div class="container-fluid d-flex flex-wrap">
   <div class="column">
-    <app-origin-list (dragStart)="onDragStart($event)" (dragMove)="onDragged($event)" (dragEnd)="onDragEnd($event)"></app-origin-list>
+    <app-origin-list (dragStart)="onDragStart()" (dragMove)="onDragged($event)" (dragEnd)="onDragEnd()"></app-origin-list>
   </div>
   <div class="column">
-    <app-layout [root]="root" (drop)="onDrop($event)" (dragStart)="onDragStart($event)"
-                (dragMove)="onDragged($event)" (dragEnd)="onDragEnd($event)"
+    <app-layout [root]="root" (drop)="onDrop($event)" (dragStart)="onDragStart()"
+                (dragMove)="onDragged($event)" (dragEnd)="onDragEnd()"
                 (remove)="onRemove($event)" (nodeSelected)="onNodeSelected($event)"></app-layout>
   </div>
   <div class="column">

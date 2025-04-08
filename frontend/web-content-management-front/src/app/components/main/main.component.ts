@@ -1,14 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import {Observable, Subject, BehaviorSubject, throwError, catchError, tap} from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 import { DndDropEvent, DropEffect } from 'ngx-drag-drop';
 import { OriginListComponent } from '../origin-list/origin-list.component';
 import { LayoutComponent } from '../layout/layout.component';
 import { OptionsComponent } from '../options/options.component';
 
-import { HttpClientModule } from '@angular/common/http';
 import {INode} from '../../models/INode';
 import {ILayout} from '../../models/ILayout';
 import {LayoutService} from '../../services/layout-service.service';
@@ -19,17 +18,17 @@ import {NodeService} from '../../services/node-service.service';
   selector: 'app-main',
   templateUrl: './main.component.html',
   standalone: true,
-  imports: [OriginListComponent, LayoutComponent, OptionsComponent, HttpClientModule, RouterModule],
+  imports: [OriginListComponent, LayoutComponent, OptionsComponent, RouterModule],
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit, OnDestroy {
-  private _selectedNode = new Subject<INode>();
-  private _layoutSubject = new BehaviorSubject<ILayout | null>(null);
+  private readonly _selectedNode = new Subject<INode>();
+  private readonly _layoutSubject = new BehaviorSubject<ILayout | null>(null);
   private selectedList: INode[] | undefined = undefined;
   private lastSelectedNode: INode | null = null;
 
   selectedNode$ = this._selectedNode.asObservable();
-  layout$ = this._layoutSubject.asObservable().pipe(filter(layout => layout !== null)) as Observable<ILayout>;
+  layout$ = this._layoutSubject.asObservable().pipe(filter(layout => layout !== null));
   isLastSelectedNodeRoot = false;
 
   root: INode = {
@@ -42,9 +41,9 @@ export class MainComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    private layoutService: LayoutService,
-    private route: ActivatedRoute,
-    private nodeService: NodeService,
+    private readonly layoutService: LayoutService,
+    private readonly route: ActivatedRoute,
+    private readonly nodeService: NodeService,
   ) {}
 
   ngOnInit(): void {
@@ -62,11 +61,16 @@ export class MainComponent implements OnInit, OnDestroy {
         switchMap(params => {
           const layoutId = params.get('id');
           return layoutId ? this.layoutService.getLayoutById(layoutId) : new Observable<ILayout>();
+        }),
+        tap(layout => {
+          this.root = layout?.nodes?.[0] || this.createDefaultLayout(id);
+          this._layoutSubject.next(layout);
+        }),
+        catchError(error => {
+          console.error('Erreur lors de la récupération du layout:', error);
+          return throwError(() => error);
         })
-      ).subscribe(layout => {
-        this.root = layout?.nodes?.[0] || this.createDefaultLayout(id);
-        this._layoutSubject.next(layout);
-      }, error => console.error('Erreur lors de la récupération du layout:', error));
+      ).subscribe();
     } else {
       console.error('ID de layout non trouvé dans l\'URL');
     }
@@ -83,7 +87,7 @@ export class MainComponent implements OnInit, OnDestroy {
     };
   }
 
-  onDragStart(event: DragEvent): void {}
+  onDragStart(): void {}
 
   onDragged(payload: { event: DragEvent, effect: DropEffect, node: INode, list?: INode[] }): void {
     if (payload.effect === 'move' && payload.list) {
@@ -92,7 +96,7 @@ export class MainComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDragEnd(event: DragEvent): void {}
+  onDragEnd(): void {}
 
   onDrop(payload: { event: DndDropEvent, list?: INode[] }): void {
     if (payload.list && (payload.event.dropEffect === 'copy' || payload.event.dropEffect === 'move')) {
@@ -114,10 +118,13 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   private updateNode(node: INode): void {
-    this.nodeService.updateNode(node.id, node).subscribe(
-      response => console.log('Nœud parent mis à jour avec succès', response),
-      error => console.error('Erreur lors de la mise à jour du nœud parent', error)
-    );
+    this.nodeService.updateNode(node.id, node).pipe(
+      tap(response => console.log('Nœud parent mis à jour avec succès', response)),
+      catchError(error => {
+        console.error('Erreur lors de la mise à jour du nœud parent', error);
+        return throwError(() => error);
+      })
+    ).subscribe();
   }
 
   private updateLayout(): void {
@@ -125,30 +132,43 @@ export class MainComponent implements OnInit, OnDestroy {
       id: this.root.id,
       name: this.root.name,
       type: "SECTION",
-      description: this.root.description || '',
+      description: this.root.description ?? '',
       nodes: this.root.children,
-      borderColor: this.root.borderColor || '',
-      backgroundColor: this.root.backgroundColor || '',
-      height: this.root.height || '',
-      width: this.root.width || '',
+      borderColor: this.root.borderColor ?? '',
+      backgroundColor: this.root.backgroundColor ?? '',
+      height: this.root.height ?? '',
+      width: this.root.width ?? '',
       code: 'someCode',
       status: 'ACTIVE'
     };
 
     this.updateNodes(updatedLayout.nodes);
-    this.layoutService.updateLayout(updatedLayout.id, updatedLayout).subscribe(
-      response => console.log('Layout mis à jour avec succès', response),
-      error => console.error('Erreur lors de la mise à jour du layout', error)
-    );
+    this.layoutService.updateLayout(updatedLayout.id, updatedLayout).pipe(
+      tap(response => console.log('Layout mis à jour avec succès', response)),
+      catchError(error => {
+        console.error('Erreur lors de la mise à jour du layout', error);
+        return throwError(() => error);
+      })
+    ).subscribe();
   }
 
   private updateNodes(nodes: INode[]): void {
     nodes.forEach(node => {
       if (!node.template) {
-        this.nodeService.updateNode(node.id, node).subscribe(
-          response => response ? console.log('Nœud mis à jour avec succès', response) : this.createNode(node),
-          error => console.error('Erreur lors de la mise à jour du nœud', error)
-        );
+        this.nodeService.updateNode(node.id, node).pipe(
+          tap(response => {
+            if (response) {
+              console.log('Nœud mis à jour avec succès', response);
+            } else {
+              this.createNode(node);
+            }
+          }),
+          catchError(error => {
+            console.error('Erreur lors de la mise à jour du nœud', error);
+            return throwError(() => error);
+          })
+        ).subscribe();
+
         if (node.children?.length) {
           this.updateNodes(node.children);
         }
@@ -157,24 +177,30 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   private createNode(node: INode): void {
-    this.nodeService.createNode(node).subscribe(
-      response => console.log('Nœud créé avec succès', response),
-      error => console.error('Erreur lors de la création du nœud', error)
-    );
+    this.nodeService.createNode(node).pipe(
+      tap(response => console.log('Nœud créé avec succès', response)),
+      catchError(error => {
+        console.error('Erreur lors de la création du nœud', error);
+        return throwError(() => error);
+      })
+    ).subscribe();
   }
 
   onRemove(payload: { node: INode, list: INode[] }): void {
     const index = this.findNodeIndexInList(payload.node, payload.list);
     if (index >= 0) {
-      this.nodeService.deleteNode(payload.node.id).subscribe(
-        () => {
+      this.nodeService.deleteNode(payload.node.id).pipe(
+        tap(() => {
           console.log('Nœud supprimé avec succès');
           payload.list.splice(index, 1);
           this.clearSelection();
           this.updateLayout();
-        },
-        error => console.error('Erreur lors de la suppression du nœud', error)
-      );
+        }),
+        catchError(error => {
+          console.error('Erreur lors de la suppression du nœud', error);
+          return throwError(() => error);
+        })
+      ).subscribe();
     }
   }
 
@@ -198,13 +224,16 @@ export class MainComponent implements OnInit, OnDestroy {
     }
     this.onNodeSelected({ node: payload.newNode, isRoot: payload.isRoot, list: this.selectedList });
 
-    this.nodeService.updateNode(payload.newNode.id, payload.newNode).subscribe(
-      response => {
+    this.nodeService.updateNode(payload.newNode.id, payload.newNode).pipe(
+      tap(response => {
         console.log('Nœud mis à jour avec succès', response);
         this.updateLayout();
-      },
-      error => console.error('Erreur lors de la mise à jour du nœud', error)
-    );
+      }),
+      catchError(error => {
+        console.error('Erreur lors de la mise à jour du nœud', error);
+        return throwError(() => error);
+      })
+    ).subscribe();
   }
   private findNodeIndexInList(node: INode, list: INode[] | undefined): number {
     return list ? list.indexOf(node) : -1;
@@ -227,6 +256,6 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   private generateUniqueId(): string {
-    return Math.random().toString(36).substr(2, 9);
+    return Math.random().toString(36).substring(2, 11);
   }
 }
