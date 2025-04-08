@@ -67,12 +67,12 @@ export class MainComponent implements OnInit, OnDestroy {
           this._layoutSubject.next(layout);
         }),
         catchError(error => {
-          console.error('Erreur lors de la récupération du layout:', error);
+          console.error(error);
           return throwError(() => error);
         })
       ).subscribe();
     } else {
-      console.error('ID de layout non trouvé dans l\'URL');
+      console.error();
     }
   }
 
@@ -121,7 +121,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.nodeService.updateNode(node.id, node).pipe(
       tap(response => console.log('Nœud parent mis à jour avec succès', response)),
       catchError(error => {
-        console.error('Erreur lors de la mise à jour du nœud parent', error);
+        console.error(error);
         return throwError(() => error);
       })
     ).subscribe();
@@ -146,7 +146,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.layoutService.updateLayout(updatedLayout.id, updatedLayout).pipe(
       tap(response => console.log('Layout mis à jour avec succès', response)),
       catchError(error => {
-        console.error('Erreur lors de la mise à jour du layout', error);
+        console.error(error);
         return throwError(() => error);
       })
     ).subscribe();
@@ -164,7 +164,7 @@ export class MainComponent implements OnInit, OnDestroy {
             }
           }),
           catchError(error => {
-            console.error('Erreur lors de la mise à jour du nœud', error);
+            console.error(error);
             return throwError(() => error);
           })
         ).subscribe();
@@ -180,7 +180,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.nodeService.createNode(node).pipe(
       tap(response => console.log('Nœud créé avec succès', response)),
       catchError(error => {
-        console.error('Erreur lors de la création du nœud', error);
+        console.error(error);
         return throwError(() => error);
       })
     ).subscribe();
@@ -197,7 +197,7 @@ export class MainComponent implements OnInit, OnDestroy {
           this.updateLayout();
         }),
         catchError(error => {
-          console.error('Erreur lors de la suppression du nœud', error);
+          console.error(error);
           return throwError(() => error);
         })
       ).subscribe();
@@ -230,7 +230,7 @@ export class MainComponent implements OnInit, OnDestroy {
         this.updateLayout();
       }),
       catchError(error => {
-        console.error('Erreur lors de la mise à jour du nœud', error);
+        console.error(error);
         return throwError(() => error);
       })
     ).subscribe();

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.example.web_content_management_back.dto.NodeDTO;
 import com.example.web_content_management_back.model.Node;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -42,10 +43,10 @@ public class WebsiteServiceImpl implements WebsiteService {
     public WebsiteDTO createWebsite(WebsiteDTO websiteDTO) {
         Website website = convertToEntity(websiteDTO);
         website.setId(UUID.randomUUID().toString());
-        List<Page> pages = websiteDTO.getPages().stream()
+        List<Page> pages = websiteDTO.getPages() != null ? websiteDTO.getPages().stream()
                 .map(pageDTO -> pageRepository.findById(pageDTO.getId())
                         .orElseThrow(() -> new RuntimeException("Page not found")))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()) : Collections.emptyList();
         website.setPages(pages);
 
         Website savedWebsite = websiteRepository.save(website);
@@ -62,10 +63,10 @@ public class WebsiteServiceImpl implements WebsiteService {
     public WebsiteDTO updateWebsite(String id, WebsiteDTO websiteDTO) {
         Website website = convertToEntity(websiteDTO);
         website.setId(id);
-        List<Page> pages = websiteDTO.getPages().stream()
+        List<Page> pages = websiteDTO.getPages() != null ? websiteDTO.getPages().stream()
                 .map(pageDTO -> pageRepository.findById(pageDTO.getId())
                         .orElseThrow(() -> new RuntimeException("Page not found")))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()) : Collections.emptyList();
         website.setPages(pages);
 
         Website updatedWebsite = websiteRepository.save(website);
@@ -85,7 +86,7 @@ public class WebsiteServiceImpl implements WebsiteService {
         websiteDTO.setType(website.getType());
         websiteDTO.setPrimaryColor(website.getPrimaryColor());
         websiteDTO.setDescription(website.getDescription());
-        websiteDTO.setPages(website.getPages().stream()
+        websiteDTO.setPages(website.getPages() != null ? website.getPages().stream()
                 .map(page -> {
                     PageDTO pageDTO = new PageDTO();
                     pageDTO.setId(page.getId());
@@ -93,7 +94,7 @@ public class WebsiteServiceImpl implements WebsiteService {
                     pageDTO.setLayout(convertToLayoutDTO(page.getLayout()));
                     return pageDTO;
                 })
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()) : Collections.emptyList());
         return websiteDTO;
     }
 
@@ -105,7 +106,7 @@ public class WebsiteServiceImpl implements WebsiteService {
         website.setType(websiteDTO.getType());
         website.setPrimaryColor(websiteDTO.getPrimaryColor());
         website.setDescription(websiteDTO.getDescription());
-        website.setPages(websiteDTO.getPages().stream()
+        website.setPages(websiteDTO.getPages() != null ? websiteDTO.getPages().stream()
                 .map(pageDTO -> {
                     Page page = new Page();
                     page.setId(pageDTO.getId());
@@ -113,7 +114,7 @@ public class WebsiteServiceImpl implements WebsiteService {
                     page.setLayout(convertToLayout(pageDTO.getLayout()));
                     return page;
                 })
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()) : Collections.emptyList());
         return website;
     }
 
@@ -132,14 +133,13 @@ public class WebsiteServiceImpl implements WebsiteService {
         layoutDTO.setDescription(layout.getDescription());
         layoutDTO.setType(layout.getType());
         layoutDTO.setStatus(layout.getStatus());
-        layoutDTO.setNodes(layout.getNodes().stream()
+        layoutDTO.setNodes(layout.getNodes() != null ? layout.getNodes().stream()
                 .map(node -> {
                     NodeDTO nodeDTO = new NodeDTO();
                     nodeDTO.setId(node.getId());
-                    // Set other fields of nodeDTO as needed
                     return nodeDTO;
                 })
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()) : Collections.emptyList());
         return layoutDTO;
     }
 
@@ -158,13 +158,13 @@ public class WebsiteServiceImpl implements WebsiteService {
         layout.setDescription(layoutDTO.getDescription());
         layout.setType(layoutDTO.getType());
         layout.setStatus(layoutDTO.getStatus());
-        layout.setNodes(layoutDTO.getNodes().stream()
+        layout.setNodes(layoutDTO.getNodes() != null ? layoutDTO.getNodes().stream()
                 .map(nodeDTO -> {
                     Node node = new Node();
                     node.setId(nodeDTO.getId());
                     return node;
                 })
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()) : Collections.emptyList());
         return layout;
     }
 }
