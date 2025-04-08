@@ -24,4 +24,4 @@ bootstrapApplication(AppComponent, {
     provideRouter(appRoutes, withDebugTracing(), withRouterConfig({ paramsInheritanceStrategy: 'always' }))
   ]
 })
-  .catch((err) => console.error(err));
+  .catch((err) => console.error());

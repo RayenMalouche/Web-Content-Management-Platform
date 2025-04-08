@@ -8,7 +8,7 @@ import {Website} from '../models/Website.interface';
   providedIn: 'root'
 })
 export class WebsiteService {
-  private apiUrl = 'http://localhost:8080/api/websites';
+  private apiUrl = 'http://localhost:8081/websites';
 
   constructor(private http: HttpClient) {}
 
