@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {catchError, Observable, tap, throwError} from 'rxjs';
 import {Website} from '../models/Website.interface';
 
 
@@ -8,28 +8,31 @@ import {Website} from '../models/Website.interface';
   providedIn: 'root'
 })
 export class WebsiteService {
-  private readonly apiUrl = 'http://localhost:8081/websites';
+  private readonly apiUrl = 'http://localhost:8081/api/websites';
 
   constructor(private readonly http: HttpClient) {}
 
-  getAllWebsites(): Observable<Website[]> {
-    return this.http.get<Website[]>(this.apiUrl);
-  }
 
   createWebsite(website: Website): Observable<Website> {
     return this.http.post<Website>(this.apiUrl, website);
   }
 
   getPagesByWebsiteId(websiteId: string) {
-    return this.http.get<any[]>(`/api/websites/${websiteId}/pages`);
+    const url = `http://localhost:8081/api/websites/${websiteId}/pages`;
+    return this.http.get<any[]>(url).pipe(
+      tap((pages) => console.log('Received pages:', pages)),
+      catchError((error: HttpErrorResponse) => {
+        if (error.error instanceof SyntaxError) {
+          console.error('Invalid JSON response:', error.error);
+        } else {
+          console.error('Error fetching pages:', error);
+        }
+        return throwError(() => new Error('Erreur lors de la récupération des pages.'));
+      })
+    );
   }
-
   addPageToWebsite(websiteId: string, page: any) {
     return this.http.post<any>(`/api/websites/${websiteId}/pages`, page);
-  }
-
-  updatePageOrder(websiteId: string, pageOrder: { id: string; order: number }[]) {
-    return this.http.put(`/api/websites/${websiteId}/pages/order`, pageOrder);
   }
 
   deletePageFromWebsite(websiteId: string, id: string) {
@@ -37,5 +40,4 @@ export class WebsiteService {
   }
 }
 
-export class WebsiteServiceService {
-}
+

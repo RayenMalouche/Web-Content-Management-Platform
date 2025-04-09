@@ -8,11 +8,12 @@ import com.example.web_content_management_back.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpHeaders;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/websites")
+@RequestMapping("/api/websites")
 public class WebsiteController {
 
     @Autowired
@@ -59,9 +60,17 @@ public class WebsiteController {
     }
 
     @GetMapping("/{id}/pages")
-       public ResponseEntity<List<PageDTO>> getPages(@PathVariable String id) {
-           List<PageDTO> pages = websiteService.getPagesByWebsiteId(id);
-           return ResponseEntity.ok(pages);
-       }
+    public ResponseEntity<List<PageDTO>> getPages(@PathVariable String id) {
+        List<PageDTO> pages = websiteService.getPagesByWebsiteId(id);
+        return ResponseEntity.ok()
+                             .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                             .body(pages);
+    }
+
+   @DeleteMapping("/{websiteId}/pages/{pageId}")
+   public ResponseEntity<String> deletePageFromWebsite(@PathVariable String websiteId, @PathVariable String pageId) {
+       String result = websiteService.deletePageFromWebsite(websiteId, pageId);
+       return ResponseEntity.ok(result);
+   }
 
 }

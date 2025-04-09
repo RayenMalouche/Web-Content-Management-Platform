@@ -13,4 +13,5 @@ public interface WebsiteService {
     void deleteWebsite(String id);
     List<PageDTO> getPagesByWebsiteId(String websiteId);
     PageDTO addPageToWebsite(String websiteId, PageDTO pageDTO);
+    String deletePageFromWebsite(String websiteId, String pageId);
 }

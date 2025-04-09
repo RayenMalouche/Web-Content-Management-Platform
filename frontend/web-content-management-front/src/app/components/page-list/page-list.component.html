@@ -1,13 +1,14 @@
-<div class="container mx-auto mt-10">
-  <h2 class="text-xl font-bold mb-4">Pages du site</h2>
-  <div cdkDropList [cdkDropListData]="pages" (cdkDropListDropped)="drop($event)" class="bg-gray-100 p-4 rounded-md shadow-md">
-    <div *ngFor="let page of pages" cdkDrag class="bg-white p-3 mb-2 rounded-md shadow-sm flex justify-between items-center">
-      <span>{{ page.name }}</span>
+<div class="container mt-4">
+  <h2 class="h5 mb-3">Pages du site</h2>
+  <div class="p-3 border rounded">
+    <div *ngFor="let page of pages" >
+      <span *ngIf="page.name">{{ page.name }}</span>
+
       <div>
-        <button (click)="editPage(page)" class="text-blue-500 hover:underline mr-2">Modifier</button>
-        <button (click)="deletePage(page)" class="text-red-500 hover:underline">Supprimer</button>
+        <button class="btn btn-link text-primary p-0 me-2">Modifier</button>
+        <button (click)="deletePage(page)" class="btn btn-link text-danger p-0">Supprimer</button>
       </div>
     </div>
   </div>
-  <button (click)="addPage()" class="mt-4 bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700">Ajouter une page</button>
+  <button (click)="addPage()" class="btn btn-primary mt-3">Ajouter une page</button>
 </div>

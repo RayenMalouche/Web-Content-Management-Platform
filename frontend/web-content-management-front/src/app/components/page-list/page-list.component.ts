@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import { CdkDrag, CdkDropList, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { NgForOf } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { NgForOf, NgIf } from '@angular/common';
 import { WebsiteService } from '../../services/website-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { Page } from '../../models/Page.interface';
@@ -8,9 +7,8 @@ import { Page } from '../../models/Page.interface';
 @Component({
   selector: 'app-page-list',
   imports: [
-    CdkDropList,
     NgForOf,
-    CdkDrag
+    NgIf
   ],
   templateUrl: './page-list.component.html',
   standalone: true,
@@ -26,9 +24,15 @@ export class PagesListComponent implements OnInit {
   ngOnInit() {
     const websiteId = this.route.snapshot.paramMap.get('id');
     if (websiteId) {
-      this.websiteService.getPagesByWebsiteId(websiteId).subscribe((pages) => {
-        this.pages = pages;
-      });
+      const savedPages = localStorage.getItem(`pages_${websiteId}`);
+      if (savedPages) {
+        this.pages = JSON.parse(savedPages);
+      } else {
+        this.websiteService.getPagesByWebsiteId(websiteId).subscribe((pages) => {
+          this.pages = pages;
+          localStorage.setItem(`pages_${websiteId}`, JSON.stringify(this.pages));
+        });
+      }
     }
   }
 
@@ -38,27 +42,9 @@ export class PagesListComponent implements OnInit {
       const newPage = { name: `Page ${this.pages.length + 1}` };
       this.websiteService.addPageToWebsite(websiteId, newPage).subscribe((page) => {
         this.pages.push(page);
+        localStorage.setItem(`pages_${websiteId}`, JSON.stringify(this.pages));
       });
     }
-
-  }
-
-  drop(event: CdkDragDrop<Page[]>) {
-    moveItemInArray(this.pages, event.previousIndex, event.currentIndex);
-    this.savePageOrder();
-  }
-
-  savePageOrder() {
-    const websiteId = this.route.snapshot.paramMap.get('id');
-    if (websiteId) {
-      const updatedOrder = this.pages.map((page, index) => ({ id: page.id, order: index }));
-      this.websiteService.updatePageOrder(websiteId, updatedOrder).subscribe(() => {
-        console.log('Ordre des pages mis à jour');
-      });
-    }
-  }
-  editPage(page: Page) {
-    console.log('Modifier la page :', page);
   }
 
   deletePage(page: Page) {
@@ -66,12 +52,8 @@ export class PagesListComponent implements OnInit {
     if (websiteId) {
       this.websiteService.deletePageFromWebsite(websiteId, page.id).subscribe(() => {
         this.pages = this.pages.filter(p => p.id !== page.id);
-        console.log('Page supprimée :', page);
+        localStorage.setItem(`pages_${websiteId}`, JSON.stringify(this.pages));
       });
     }
   }
-
-}
-
-export class PageListComponent {
 }
