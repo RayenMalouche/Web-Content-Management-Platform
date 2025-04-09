@@ -4,17 +4,20 @@ import { AppComponent } from './app/app.component';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { provideRouter, Routes, withDebugTracing, withRouterConfig } from '@angular/router';
-import {WebsiteSetupComponentComponent} from './app/components/website-setup-component/website-setup-component.component';
+
 import {HomeComponent} from './app/components/home/home.component';
 import {MainComponent} from './app/components/main/main.component';
+import {WebsiteSetupComponent} from './app/components/website-setup/website-setup.component';
+import {PagesListComponent} from './app/components/page-list/page-list.component';
 
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  {path:'website-setup', component: WebsiteSetupComponentComponent},
+  {path:'website-setup', component: WebsiteSetupComponent},
   {path:'home',component:HomeComponent},
   {path:'main',component:MainComponent},
-  { path: 'main/:id', component: MainComponent }
+  { path: 'main/:id', component: MainComponent },
+  { path: 'pages-list/:id', component:PagesListComponent }
 ];
 
 bootstrapApplication(AppComponent, {
