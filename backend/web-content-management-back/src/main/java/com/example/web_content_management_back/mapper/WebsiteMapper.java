@@ -3,6 +3,9 @@ package com.example.web_content_management_back.mapper;
 import com.example.web_content_management_back.dto.WebsiteDTO;
 import com.example.web_content_management_back.model.Website;
 import org.springframework.stereotype.Component;
+import com.example.web_content_management_back.dto.PageDTO;
+import com.example.web_content_management_back.model.Page;
+import com.example.web_content_management_back.dto.LayoutDTO;
 
 import java.util.stream.Collectors;
 
@@ -32,4 +35,19 @@ public class WebsiteMapper {
         website.setPages(websiteDTO.getPages().stream().map(new PageMapper()::toEntity).collect(Collectors.toList()));
         return website;
     }
+    public PageDTO toPageDTO(Page page) {
+            if (page == null) {
+                return null;
+            }
+            PageDTO pageDTO = new PageDTO();
+            pageDTO.setId(page.getId());
+            pageDTO.setName(page.getName());
+            if (page.getLayout() != null) {
+                LayoutDTO layoutDTO = new LayoutDTO();
+                layoutDTO.setId(page.getLayout().getId());
+                layoutDTO.setName(page.getLayout().getName());
+                pageDTO.setLayout(layoutDTO);
+            }
+            return pageDTO;
+        }
 }
