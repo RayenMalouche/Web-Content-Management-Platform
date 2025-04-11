@@ -1,4 +1,3 @@
-// src/app/dashboard/dashboard.component.ts
 import { Component, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -16,7 +15,8 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 import { DashboardService } from '../../services/dashboard-service.service';
 import { WebsiteService } from '../../services/website-service.service';
 import { Website } from '../../models/Website.interface';
-import {CreateDatabaseModalComponent} from '../modals/create-database-modal/create-database-modal.component';
+import { CreateDatabaseModalComponent } from '../modals/create-database-modal/create-database-modal.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard',
@@ -31,7 +31,8 @@ import {CreateDatabaseModalComponent} from '../modals/create-database-modal/crea
     AddNewCardComponent,
     CreateWebsiteModalComponent,
     EditProfileModalComponent,
-    CreateDatabaseModalComponent
+    CreateDatabaseModalComponent,
+    MatSnackBarModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -40,19 +41,16 @@ export class DashboardComponent {
 
   private readonly dashboardService = inject(DashboardService);
   private readonly websiteService = inject(WebsiteService);
-
+  private readonly snackBar = inject(MatSnackBar);
 
   faPlus = faPlus;
 
-
   @ViewChild('createWebsiteModal') createWebsiteModal!: CreateWebsiteModalComponent;
   @ViewChild('editProfileModal') editProfileModal!: EditProfileModalComponent;
-  @ViewChild('createDatabaseModal') createDatabaseModal!: CreateWebsiteModalComponent;
-
+  @ViewChild('createDatabaseModal') createDatabaseModal!: CreateDatabaseModalComponent;
 
   websites$: Observable<Website[]> = this.websiteService.getWebsites();
   databases$: Observable<any[]> = this.dashboardService.databases$;
-
 
   openCreateWebsiteModal() {
     this.createWebsiteModal.show();
@@ -65,16 +63,21 @@ export class DashboardComponent {
   onWebsiteCreate(websiteData: Website) {
     this.websiteService.createWebsite(websiteData).subscribe({
       next: () => {
-        alert('Website created successfully!');
-        this.websites$ = this.websiteService.getWebsites(); // Refresh the list
+        this.snackBar.open('Website créé avec succès !', 'Fermer', {
+          duration: 3000,
+          panelClass: ['success-snackbar']
+        });
+        this.websites$ = this.websiteService.getWebsites(); // Rafraîchir la liste
       },
       error: (err) => {
-        console.error('Error creating website:', err);
-        alert('Failed to create website.');
+        console.error('Erreur lors de la création du site web :', err);
+        this.snackBar.open('Échec de la création du site web.', 'Fermer', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
       }
     });
   }
-
 
   openEditProfileModal() {
     this.editProfileModal.show();
@@ -91,11 +94,6 @@ export class DashboardComponent {
     }
   }
 
-
-  addNewDatabase() {
-    alert('Database creation form will open here');
-  }
-
   openCreateDatabaseModal() {
     console.log('Opening Create Database Modal');
     this.createDatabaseModal.show();
@@ -105,7 +103,7 @@ export class DashboardComponent {
     console.log('Create database modal closed');
   }
 
-  onDatabaseCreate(databaseData: any) {
+  onDatabaseCreate() {
     alert('Database created successfully!');
   }
 }
