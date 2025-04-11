@@ -1,17 +1,21 @@
+// src/app/dashboard/dashboard.component.ts
+import { Component, ViewChild, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
+import { ProfileSectionComponent } from '../profile-section/profile-section.component';
+import { WebsiteCardComponent } from '../cards/website-card/website-card.component';
+import { DatabaseCardComponent } from '../cards/database-card/database-card.component';
+import { AddNewCardComponent } from '../cards/add-new-card/add-new-card.component';
+import { CreateWebsiteModalComponent } from '../modals/create-website-modal/create-website-modal.component';
+import { EditProfileModalComponent } from '../modals/edit-profile-modal/edit-profile-modal.component';
 
 import { Observable } from 'rxjs';
-import {Component, inject, ViewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {WebsiteCardComponent} from '../cards/website-card/website-card.component';
-import {DatabaseCardComponent} from '../cards/database-card/database-card.component';
-import {AddNewCardComponent} from '../cards/add-new-card/add-new-card.component';
-import {ProfileSectionComponent} from '../profile-section/profile-section.component';
-import {SidebarComponent} from '../sidebar/sidebar.component';
-import {CreateWebsiteModalComponent} from '../modals/create-website-modal/create-website-modal.component';
-import {EditProfileModalComponent} from '../modals/edit-profile-modal/edit-profile-modal.component';
-import {DashboardService} from '../../services/dashboard-service.service';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { SidebarComponent } from '../sidebar/sidebar.component';
+import { DashboardService } from '../../services/dashboard-service.service';
+import { WebsiteService } from '../../services/website-service.service';
+import { Website } from '../../models/Website.interface';
 import {CreateDatabaseModalComponent} from '../modals/create-database-modal/create-database-modal.component';
 
 @Component({
@@ -33,18 +37,24 @@ import {CreateDatabaseModalComponent} from '../modals/create-database-modal/crea
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
+
   private readonly dashboardService = inject(DashboardService);
+  private readonly websiteService = inject(WebsiteService);
+
+
   faPlus = faPlus;
+
 
   @ViewChild('createWebsiteModal') createWebsiteModal!: CreateWebsiteModalComponent;
   @ViewChild('editProfileModal') editProfileModal!: EditProfileModalComponent;
-  @ViewChild('createDatabaseModal') createDatabaseModal!: CreateDatabaseModalComponent;
+  @ViewChild('createDatabaseModal') createDatabaseModal!: CreateWebsiteModalComponent;
 
-  websites$: Observable<any[]> = this.dashboardService.websites$;
+
+  websites$: Observable<Website[]> = this.websiteService.getWebsites();
   databases$: Observable<any[]> = this.dashboardService.databases$;
 
+
   openCreateWebsiteModal() {
-    console.log('Opening Create Website Modal');
     this.createWebsiteModal.show();
   }
 
@@ -52,10 +62,19 @@ export class DashboardComponent {
     console.log('Create website modal closed');
   }
 
-  onWebsiteCreate(websiteData: any) {
-    const newWebsite = this.dashboardService.addWebsite(websiteData);
-    alert('Website created successfully!');
+  onWebsiteCreate(websiteData: Website) {
+    this.websiteService.createWebsite(websiteData).subscribe({
+      next: () => {
+        alert('Website created successfully!');
+        this.websites$ = this.websiteService.getWebsites(); // Refresh the list
+      },
+      error: (err) => {
+        console.error('Error creating website:', err);
+        alert('Failed to create website.');
+      }
+    });
   }
+
 
   openEditProfileModal() {
     this.editProfileModal.show();
@@ -72,6 +91,7 @@ export class DashboardComponent {
     }
   }
 
+
   addNewDatabase() {
     alert('Database creation form will open here');
   }
@@ -86,7 +106,6 @@ export class DashboardComponent {
   }
 
   onDatabaseCreate(databaseData: any) {
-
     alert('Database created successfully!');
   }
 }

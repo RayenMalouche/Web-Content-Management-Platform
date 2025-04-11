@@ -56,25 +56,21 @@ export class CreateWebsiteModalComponent {
 
   onSubmit() {
     if (this.websiteForm.valid) {
-      this.websiteService.createWebsite(this.websiteForm.value).subscribe({
-        next: (response) => {
-          this.snackBar.open('Website created successfully!', 'Close', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          });
-          this.create.emit(response);
-          this.websiteForm.reset({
-            type: 'blank',
-            primaryColor: '#000000'
-          });
-          this.hide();
-        },
-        error: () => {
-          this.snackBar.open('Error creating website', 'Close', {
-            duration: 3000,
-            panelClass: ['error-snackbar']
-          });
-        }
+      const websiteData = {
+        ...this.websiteForm.value,
+        pages: []
+      };
+
+      this.create.emit(websiteData);
+      this.websiteForm.reset({
+        type: 'blank',
+        primaryColor: '#000000'
+      });
+      this.hide();
+    } else {
+      this.snackBar.open('Veuillez remplir tous les champs requis.', 'Fermer', {
+        duration: 3000,
+        panelClass: ['error-snackbar']
       });
     }
   }

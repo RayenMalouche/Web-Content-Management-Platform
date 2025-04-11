@@ -39,7 +39,12 @@ export class DashboardService {
       type: 'laptop'
     };
 
-    this.websitesSubject.next([...currentWebsites, newWebsite]);
+    // Ajoutez le nouveau site Web à la liste existante
+    const updatedWebsites = [...currentWebsites, newWebsite];
+
+    // Mettez à jour le BehaviorSubject avec la nouvelle liste
+    this.websitesSubject.next(updatedWebsites);
+
     return newWebsite;
   }
 

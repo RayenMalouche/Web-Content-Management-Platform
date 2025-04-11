@@ -17,7 +17,7 @@
 
     <h2 class="section-title">My Websites</h2>
     <div class="card-container">
-      <app-website-card *ngFor="let website of websites$ | async" [website]="website"></app-website-card>
+      <app-website-card *ngFor="let website of (websites$ | async)?.slice(0, 2)" [website]="website"></app-website-card>
       <app-add-new-card text="Add New Website" (add)="openCreateWebsiteModal()"></app-add-new-card>
     </div>
 

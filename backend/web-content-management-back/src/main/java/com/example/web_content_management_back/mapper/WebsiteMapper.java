@@ -9,6 +9,7 @@ import com.example.web_content_management_back.model.Page;
 import com.example.web_content_management_back.dto.LayoutDTO;
 
 import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 @Component
 public class WebsiteMapper {
@@ -23,7 +24,11 @@ public class WebsiteMapper {
         websiteDTO.setType(website.getType());
         websiteDTO.setPrimaryColor(website.getPrimaryColor());
         websiteDTO.setDescription(website.getDescription());
-        websiteDTO.setPages(website.getPages().stream().map(new PageMapper()::toDTO).collect(Collectors.toList()));
+         website.setPages(
+                websiteDTO.getPages() != null
+                    ? websiteDTO.getPages().stream().map(new PageMapper()::toEntity).collect(Collectors.toList())
+                    : new ArrayList<>()
+            );
         websiteDTO.setDatabase(website.getDatabase() != null ? databaseMapper.toDTO(website.getDatabase()) : null);
         return websiteDTO;
     }

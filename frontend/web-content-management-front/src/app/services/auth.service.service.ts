@@ -20,13 +20,13 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
+  private readonly isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   // Replace with your actual API URL
-  private apiUrl = 'https://your-backend-api.com/auth';
+  private readonly apiUrl = 'https://your-backend-api.com/auth';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   login(credentials: LoginCredentials): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials)
@@ -34,7 +34,7 @@ export class AuthService {
         tap(response => {
           localStorage.setItem('token', response.accessToken);
           localStorage.setItem('user', JSON.stringify(response.user));
-          this.isAuthenticatedSubject.next(true);
+          this.isAuthenticatedSubject.next(true); // Pass true to indicate authentication
         })
       );
   }
@@ -47,7 +47,7 @@ export class AuthService {
         tap(response => {
           localStorage.setItem('token', response.accessToken);
           localStorage.setItem('user', JSON.stringify(response.user));
-          this.isAuthenticatedSubject.next(true);
+          this.isAuthenticatedSubject.next(true); // Pass true to indicate authentication
         })
       );
   }
@@ -55,7 +55,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    this.isAuthenticatedSubject.next(false);
+    this.isAuthenticatedSubject.next(false); // Pass false to indicate logout
   }
 
   getToken(): string | null {

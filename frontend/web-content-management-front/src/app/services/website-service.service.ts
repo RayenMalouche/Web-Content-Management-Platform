@@ -13,6 +13,7 @@ export class WebsiteService {
   constructor(private readonly http: HttpClient) {}
 
 
+
   createWebsite(website: Website): Observable<Website> {
     return this.http.post<Website>(this.apiUrl, website);
   }
@@ -37,6 +38,15 @@ export class WebsiteService {
 
   deletePageFromWebsite(websiteId: string, id: string) {
     return this.http.delete(`/api/websites/${websiteId}/pages/${id}`);
+  }
+
+  getWebsites(): Observable<Website[]> {
+    return this.http.get<Website[]>(this.apiUrl).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error fetching websites:', error);
+        return throwError(() => new Error('Erreur lors de la récupération des sites web.'));
+      })
+    );
   }
 }
 
