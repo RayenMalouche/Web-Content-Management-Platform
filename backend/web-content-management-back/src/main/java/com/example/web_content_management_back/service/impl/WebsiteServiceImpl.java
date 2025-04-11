@@ -17,6 +17,8 @@ import com.example.web_content_management_back.model.Node;
 import com.example.web_content_management_back.mapper.LayoutMapper;
 import com.example.web_content_management_back.repository.LayoutRepository;
 import com.example.web_content_management_back.repository.NodeRepository;
+import com.example.web_content_management_back.repository.DatabaseRepository;
+import com.example.web_content_management_back.mapper.DatabaseMapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,10 +42,16 @@ public class WebsiteServiceImpl implements WebsiteService {
     private LayoutMapper layoutMapper;
 
     @Autowired
+    private DatabaseMapper databaseMapper;
+
+    @Autowired
     private LayoutRepository layoutRepository;
 
     @Autowired
     private NodeRepository nodeRepository;
+
+    @Autowired
+    private DatabaseRepository databaseRepository;
 
     @Override
     public List<WebsiteDTO> getAllWebsites() {
@@ -77,6 +85,10 @@ public class WebsiteServiceImpl implements WebsiteService {
                .collect(Collectors.toList()) : Collections.emptyList();
        website.setPages(pages);
 
+       if (websiteDTO.getDatabase() != null) {
+                   website.setDatabase(databaseMapper.toEntity(websiteDTO.getDatabase()));
+               }
+
        Website savedWebsite = websiteRepository.save(website);
        return websiteMapper.toDTO(savedWebsite);
    }
@@ -107,6 +119,10 @@ public class WebsiteServiceImpl implements WebsiteService {
                 .collect(Collectors.toList()) : Collections.emptyList();
         website.setPages(pages);
 
+       if (websiteDTO.getDatabase() != null) {
+                   website.setDatabase(databaseMapper.toEntity(websiteDTO.getDatabase()));
+               }
+
         Website updatedWebsite = websiteRepository.save(website);
         return websiteMapper.toDTO(updatedWebsite);
     }
@@ -136,6 +152,9 @@ public class WebsiteServiceImpl implements WebsiteService {
                 }
             }
         }
+        if (website.getDatabase() != null) {
+                databaseRepository.deleteById(website.getDatabase().getId());
+            }
 
         websiteRepository.deleteById(id);
     }

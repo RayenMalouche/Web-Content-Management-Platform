@@ -24,7 +24,7 @@
     <h2 class="section-title">My Databases</h2>
     <div class="card-container">
       <app-database-card *ngFor="let database of databases$ | async" [database]="database"></app-database-card>
-      <app-add-new-card text="Add New Database" (add)="addNewDatabase()"></app-add-new-card>
+      <app-add-new-card text="Add New Database" (add)="openCreateDatabaseModal()"></app-add-new-card>
     </div>
   </div>
 </div>
@@ -38,3 +38,8 @@
                         (close)="onEditProfileModalClose()"
                         (save)="onProfileSave($event)">
 </app-edit-profile-modal>
+
+<app-create-database-modal #createDatabaseModal
+                           (close)="onCreateDatabaseModalClose()"
+                           (create)="onDatabaseCreate($event)">
+</app-create-database-modal>

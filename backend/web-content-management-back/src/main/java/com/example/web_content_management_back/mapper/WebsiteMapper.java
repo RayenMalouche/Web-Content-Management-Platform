@@ -2,6 +2,7 @@ package com.example.web_content_management_back.mapper;
 
 import com.example.web_content_management_back.dto.WebsiteDTO;
 import com.example.web_content_management_back.model.Website;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.example.web_content_management_back.dto.PageDTO;
 import com.example.web_content_management_back.model.Page;
@@ -11,6 +12,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class WebsiteMapper {
+    @Autowired
+    private DatabaseMapper databaseMapper;
 
     public WebsiteDTO toDTO(Website website) {
         WebsiteDTO websiteDTO = new WebsiteDTO();
@@ -21,6 +24,7 @@ public class WebsiteMapper {
         websiteDTO.setPrimaryColor(website.getPrimaryColor());
         websiteDTO.setDescription(website.getDescription());
         websiteDTO.setPages(website.getPages().stream().map(new PageMapper()::toDTO).collect(Collectors.toList()));
+        websiteDTO.setDatabase(website.getDatabase() != null ? databaseMapper.toDTO(website.getDatabase()) : null);
         return websiteDTO;
     }
 
@@ -33,21 +37,23 @@ public class WebsiteMapper {
         website.setPrimaryColor(websiteDTO.getPrimaryColor());
         website.setDescription(websiteDTO.getDescription());
         website.setPages(websiteDTO.getPages().stream().map(new PageMapper()::toEntity).collect(Collectors.toList()));
+        website.setDatabase(websiteDTO.getDatabase() != null ? databaseMapper.toEntity(websiteDTO.getDatabase()) : null);
         return website;
     }
+
     public PageDTO toPageDTO(Page page) {
-            if (page == null) {
-                return null;
-            }
-            PageDTO pageDTO = new PageDTO();
-            pageDTO.setId(page.getId());
-            pageDTO.setName(page.getName());
-            if (page.getLayout() != null) {
-                LayoutDTO layoutDTO = new LayoutDTO();
-                layoutDTO.setId(page.getLayout().getId());
-                layoutDTO.setName(page.getLayout().getName());
-                pageDTO.setLayout(layoutDTO);
-            }
-            return pageDTO;
+        if (page == null) {
+            return null;
         }
+        PageDTO pageDTO = new PageDTO();
+        pageDTO.setId(page.getId());
+        pageDTO.setName(page.getName());
+        if (page.getLayout() != null) {
+            LayoutDTO layoutDTO = new LayoutDTO();
+            layoutDTO.setId(page.getLayout().getId());
+            layoutDTO.setName(page.getLayout().getName());
+            pageDTO.setLayout(layoutDTO);
+        }
+        return pageDTO;
+    }
 }

@@ -19,7 +19,8 @@ const appRoutes: Routes = [
   {path:'main',component:MainComponent},
   { path: 'main/:id', component: MainComponent },
   { path: 'pages-list/:id', component:PagesListComponent },
-  { path: 'dashboard', component: DashboardComponent }
+  { path: 'dashboard', component: DashboardComponent },
+  {path:'login', loadComponent: () => import('./app/components/login/login.component').then(m => m.LoginComponent)},
 ];
 
 bootstrapApplication(AppComponent, {

@@ -12,6 +12,7 @@ import {CreateWebsiteModalComponent} from '../modals/create-website-modal/create
 import {EditProfileModalComponent} from '../modals/edit-profile-modal/edit-profile-modal.component';
 import {DashboardService} from '../../services/dashboard-service.service';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import {CreateDatabaseModalComponent} from '../modals/create-database-modal/create-database-modal.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,7 +26,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
     DatabaseCardComponent,
     AddNewCardComponent,
     CreateWebsiteModalComponent,
-    EditProfileModalComponent
+    EditProfileModalComponent,
+    CreateDatabaseModalComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -36,6 +38,7 @@ export class DashboardComponent {
 
   @ViewChild('createWebsiteModal') createWebsiteModal!: CreateWebsiteModalComponent;
   @ViewChild('editProfileModal') editProfileModal!: EditProfileModalComponent;
+  @ViewChild('createDatabaseModal') createDatabaseModal!: CreateDatabaseModalComponent;
 
   websites$: Observable<any[]> = this.dashboardService.websites$;
   databases$: Observable<any[]> = this.dashboardService.databases$;
@@ -71,5 +74,19 @@ export class DashboardComponent {
 
   addNewDatabase() {
     alert('Database creation form will open here');
+  }
+
+  openCreateDatabaseModal() {
+    console.log('Opening Create Database Modal');
+    this.createDatabaseModal.show();
+  }
+
+  onCreateDatabaseModalClose() {
+    console.log('Create database modal closed');
+  }
+
+  onDatabaseCreate(databaseData: any) {
+
+    alert('Database created successfully!');
   }
 }
