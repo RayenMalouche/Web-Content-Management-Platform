@@ -9,6 +9,7 @@ import {HomeComponent} from './app/components/home/home.component';
 import {MainComponent} from './app/components/main/main.component';
 import {WebsiteSetupComponent} from './app/components/website-setup/website-setup.component';
 import {PagesListComponent} from './app/components/page-list/page-list.component';
+import {DashboardComponent} from './app/components/dashboard/dashboard.component';
 
 
 const appRoutes: Routes = [
@@ -17,7 +18,8 @@ const appRoutes: Routes = [
   {path:'home',component:HomeComponent},
   {path:'main',component:MainComponent},
   { path: 'main/:id', component: MainComponent },
-  { path: 'pages-list/:id', component:PagesListComponent }
+  { path: 'pages-list/:id', component:PagesListComponent },
+  { path: 'dashboard', component: DashboardComponent }
 ];
 
 bootstrapApplication(AppComponent, {

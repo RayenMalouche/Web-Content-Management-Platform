@@ -57,3 +57,6 @@ export class PagesListComponent implements OnInit {
     }
   }
 }
+
+export class PageListComponent {
+}
