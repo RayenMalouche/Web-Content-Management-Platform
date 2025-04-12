@@ -10,4 +10,6 @@ public interface DatabaseService {
     DatabaseDTO createDatabase(DatabaseDTO dto);
     DatabaseDTO updateDatabase(String id, DatabaseDTO dto);
     void deleteDatabase(String id);
+    public void addTableToDatabase(String databaseId, String tableName);
+    public void addColumnToTable(String databaseId, String tableName, String columnName, String columnType);
 }

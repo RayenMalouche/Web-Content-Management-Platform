@@ -110,4 +110,32 @@ public class DatabaseServiceImpl implements DatabaseService {
             }
         }
     }
+    @Override
+    public void addTableToDatabase(String databaseId, String tableName) {
+        Database database = repository.findById(databaseId)
+                .orElseThrow(() -> new RuntimeException("Database not found"));
+
+        try (Connection connection = DriverManager.getConnection(database.getConnectionString(), database.getUsername(), database.getPassword())) {
+            String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (id INT PRIMARY KEY)";
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate(sql);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de l'ajout de la table : " + e.getMessage(), e);
+        }
+    }
+    @Override
+    public void addColumnToTable(String databaseId, String tableName, String columnName, String columnType) {
+        Database database = repository.findById(databaseId)
+                .orElseThrow(() -> new RuntimeException("Database not found"));
+
+        try (Connection connection = DriverManager.getConnection(database.getConnectionString(), database.getUsername(), database.getPassword())) {
+            String sql = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + columnType;
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate(sql);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de l'ajout de la colonne : " + e.getMessage(), e);
+        }
+    }
     }

@@ -1,0 +1,30 @@
+<div>
+  <h2>Éditeur de base de données</h2>
+
+  <form (ngSubmit)="addTable()">
+    <label for="tableName">Nom de la table :</label>
+    <input id="tableName" [(ngModel)]="newTable.name" name="tableName" required>
+    <button type="submit">Ajouter une table</button>
+  </form>
+
+  <div *ngFor="let table of tables">
+    <h3>{{ table.name }}</h3>
+    <form (ngSubmit)="addColumn(table.id)">
+      <label for="columnName">Nom de la colonne :</label>
+      <input id="columnName" [(ngModel)]="newColumn.name" name="columnName" required>
+      <label for="columnType">Type :</label>
+      <select id="columnType" [(ngModel)]="newColumn.type" name="columnType">
+        <option value="string">String</option>
+        <option value="number">Number</option>
+        <option value="boolean">Boolean</option>
+      </select>
+      <button type="submit">Ajouter une colonne</button>
+    </form>
+
+    <ul>
+      <li *ngFor="let column of table.columns">
+        {{ column.name }} ({{ column.type }})
+      </li>
+    </ul>
+  </div>
+</div>

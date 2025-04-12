@@ -41,4 +41,20 @@ public class DatabaseController {
         service.deleteDatabase(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{id}/tables")
+    public ResponseEntity<Void> addTableToDatabase(@PathVariable String id, @RequestParam String tableName) {
+        service.addTableToDatabase(id, tableName);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/tables/{tableName}/columns")
+    public ResponseEntity<Void> addColumnToTable(
+            @PathVariable String id,
+            @PathVariable String tableName,
+            @RequestParam String columnName,
+            @RequestParam String columnType) {
+        service.addColumnToTable(id, tableName, columnName, columnType);
+        return ResponseEntity.ok().build();
+    }
 }
