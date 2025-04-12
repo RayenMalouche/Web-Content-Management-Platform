@@ -12,14 +12,14 @@
 
 .custom-modal {
   background: white;
-  border-radius: 10px;
-  width: 500px;
+  border-radius: 8px;
+  width: 400px;
   max-width: 90%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .custom-modal-header {
-  padding: 15px 20px;
+  padding: 10px 15px;
   border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
@@ -27,44 +27,45 @@
 }
 
 .custom-modal-title {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 500;
 }
 
 .custom-close-modal {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   cursor: pointer;
   color: #777;
 }
 
 .custom-modal-body {
-  padding: 20px;
+  padding: 15px; /* Réduction du padding */
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Réduction de l'espacement */
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 5px; /* Réduction de l'espacement */
+  font-size: 0.9rem; /* Réduction de la taille de la police */
   font-weight: 500;
 }
 
 .form-group input, .form-group select {
   width: 100%;
-  padding: 10px;
+  padding: 8px; /* Réduction du padding */
   border: 1px solid var(--border-color);
-  border-radius: 5px;
-  font-size: 1rem;
+  border-radius: 4px; /* Réduction du rayon */
+  font-size: 0.9rem; /* Réduction de la taille de la police */
 }
 
 .custom-modal-footer {
-  padding: 15px 20px;
+  padding: 10px 15px; /* Réduction du padding */
   border-top: 1px solid var(--border-color);
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 8px; /* Réduction de l'espacement entre les boutons */
 }

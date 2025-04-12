@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/databases")
+@RequestMapping("databases")
 public class DatabaseController {
     private final DatabaseService service;
 

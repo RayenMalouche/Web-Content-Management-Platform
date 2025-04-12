@@ -14,9 +14,12 @@ import { Observable } from 'rxjs';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { DashboardService } from '../../services/dashboard-service.service';
 import { WebsiteService } from '../../services/website-service.service';
+
 import { Website } from '../../models/Website.interface';
+import { Database } from '../../models/database.interface';
 import { CreateDatabaseModalComponent } from '../modals/create-database-modal/create-database-modal.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import {DatabaseService} from '../../services/database-service.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,6 +44,7 @@ export class DashboardComponent {
 
   private readonly dashboardService = inject(DashboardService);
   private readonly websiteService = inject(WebsiteService);
+  private readonly databaseService = inject(DatabaseService);
   private readonly snackBar = inject(MatSnackBar);
 
   faPlus = faPlus;
@@ -50,7 +54,7 @@ export class DashboardComponent {
   @ViewChild('createDatabaseModal') createDatabaseModal!: CreateDatabaseModalComponent;
 
   websites$: Observable<Website[]> = this.websiteService.getWebsites();
-  databases$: Observable<any[]> = this.dashboardService.databases$;
+  databases$: Observable<Database[]> = this.databaseService.getAllDatabases();
 
   openCreateWebsiteModal() {
     this.createWebsiteModal.show();

@@ -1,11 +1,11 @@
 <div class="card db-card">
   <div class="card-header">
-    <div class="card-title">{{ database.title }}</div>
+    <div class="card-title">{{ database.name }}</div>
   </div>
   <div class="db-info">
     <div class="db-status">
-      <fa-icon [icon]="faCircle" [ngStyle]="{'color': database.connected ? 'green' : 'red'}"></fa-icon>
-      {{ database.connected ? 'Connected' : 'Disconnected' }}
+      <fa-icon [icon]="faDatabase"></fa-icon>
+      <span class="status-text">Connected</span>
     </div>
     <div class="db-actions">
       <button class="btn btn-outline">

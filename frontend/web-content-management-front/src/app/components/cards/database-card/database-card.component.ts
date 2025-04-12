@@ -1,13 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCircle, faTable, faEdit } from '@fortawesome/free-solid-svg-icons';
+import {faCircle, faTable, faEdit, faDatabase} from '@fortawesome/free-solid-svg-icons';
+import {Database} from '../../../models/database.interface';
 
-interface Database {
-  id: number;
-  title: string;
-  connected: boolean;
-}
+
 
 @Component({
   selector: 'app-database-card',
@@ -22,4 +19,5 @@ export class DatabaseCardComponent {
   faCircle = faCircle;
   faTable = faTable;
   faEdit = faEdit;
+  protected readonly faDatabase = faDatabase;
 }
