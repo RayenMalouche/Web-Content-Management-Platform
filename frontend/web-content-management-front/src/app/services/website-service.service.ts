@@ -10,8 +10,8 @@ import {Website} from '../models/Website.interface';
 export class WebsiteService {
   private readonly apiUrl = 'http://localhost:8081/api/websites';
 
-  constructor(private readonly http: HttpClient) {}
-
+  constructor(private readonly http: HttpClient) {
+  }
 
 
   createWebsite(website: Website): Observable<Website> {
@@ -32,6 +32,7 @@ export class WebsiteService {
       })
     );
   }
+
   addPageToWebsite(websiteId: string, page: any) {
     return this.http.post<any>(`/api/websites/${websiteId}/pages`, page);
   }
@@ -59,21 +60,15 @@ export class WebsiteService {
 
   }
 
-
-
   updateWebsite(updatedWebsite: Website) {
     const url = `${this.apiUrl}/${updatedWebsite.id}`;
     return this.http.put<Website>(url, updatedWebsite).pipe(
-      tap(() => console.log('Website updated:', updatedWebsite)),
+      tap((response) => console.log('Website updated:', response)),
       catchError((error: HttpErrorResponse) => {
         console.error('Error updating website:', error);
         return throwError(() => new Error('Erreur lors de la mise à jour du site web.'));
       })
     );
-
   }
 }
 
-
-export class WebsiteServiceService {
-}
