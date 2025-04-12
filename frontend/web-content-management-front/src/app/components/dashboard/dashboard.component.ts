@@ -19,7 +19,9 @@ import { Website } from '../../models/Website.interface';
 import { Database } from '../../models/database.interface';
 import { CreateDatabaseModalComponent } from '../modals/create-database-modal/create-database-modal.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import {DatabaseService} from '../../services/database-service.service';
+import { DatabaseService } from '../../services/database-service.service';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,7 +37,8 @@ import {DatabaseService} from '../../services/database-service.service';
     CreateWebsiteModalComponent,
     EditProfileModalComponent,
     CreateDatabaseModalComponent,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -55,6 +58,8 @@ export class DashboardComponent {
 
   websites$: Observable<Website[]> = this.websiteService.getWebsites();
   databases$: Observable<Database[]> = this.databaseService.getAllDatabases();
+
+  constructor(private readonly dialog: MatDialog) {} // Injectez MatDialog ici
 
   openCreateWebsiteModal() {
     this.createWebsiteModal.show();
@@ -109,5 +114,33 @@ export class DashboardComponent {
 
   onDatabaseCreate() {
     alert('Database created successfully!');
+  }
+
+  onWebsiteDelete(websiteId: string) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: { message: 'Êtes-vous sûr de vouloir supprimer ce site web ?' }
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.websiteService.deleteWebsite(websiteId).subscribe({
+          next: () => {
+            this.snackBar.open('Website supprimé avec succès !', 'Fermer', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+            this.websites$ = this.websiteService.getWebsites(); // Rafraîchir la liste
+          },
+          error: (err) => {
+            console.error('Erreur lors de la suppression du site web :', err);
+            this.snackBar.open('Échec de la suppression du site web.', 'Fermer', {
+              duration: 3000,
+              panelClass: ['error-snackbar']
+            });
+          }
+        });
+      }
+    });
   }
 }

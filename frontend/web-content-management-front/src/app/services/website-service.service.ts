@@ -48,6 +48,16 @@ export class WebsiteService {
       })
     );
   }
+
+  deleteWebsite(websiteId: string) {
+    return this.http.delete(`${this.apiUrl}/${websiteId}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error deleting website:', error);
+        return throwError(() => new Error('Erreur lors de la suppression du site web.'));
+      })
+    );
+
+  }
 }
 
 

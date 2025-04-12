@@ -24,11 +24,9 @@ public class WebsiteMapper {
         websiteDTO.setType(website.getType());
         websiteDTO.setPrimaryColor(website.getPrimaryColor());
         websiteDTO.setDescription(website.getDescription());
-         website.setPages(
-                websiteDTO.getPages() != null
-                    ? websiteDTO.getPages().stream().map(new PageMapper()::toEntity).collect(Collectors.toList())
-                    : new ArrayList<>()
-            );
+        websiteDTO.setPages(website.getPages() != null
+            ? website.getPages().stream().map(this::toPageDTO).collect(Collectors.toList())
+            : new ArrayList<>());
         websiteDTO.setDatabase(website.getDatabase() != null ? databaseMapper.toDTO(website.getDatabase()) : null);
         return websiteDTO;
     }
@@ -41,7 +39,9 @@ public class WebsiteMapper {
         website.setType(websiteDTO.getType());
         website.setPrimaryColor(websiteDTO.getPrimaryColor());
         website.setDescription(websiteDTO.getDescription());
-        website.setPages(websiteDTO.getPages().stream().map(new PageMapper()::toEntity).collect(Collectors.toList()));
+        website.setPages(websiteDTO.getPages() != null
+            ? websiteDTO.getPages().stream().map(new PageMapper()::toEntity).collect(Collectors.toList())
+            : new ArrayList<>());
         website.setDatabase(websiteDTO.getDatabase() != null ? databaseMapper.toEntity(websiteDTO.getDatabase()) : null);
         return website;
     }

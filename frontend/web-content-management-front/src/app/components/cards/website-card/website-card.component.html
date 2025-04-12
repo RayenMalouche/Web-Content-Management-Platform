@@ -9,9 +9,14 @@
       <button class="btn btn-outline">
         <fa-icon [icon]="faEye"></fa-icon> View
       </button>
-      <button class="btn btn-primary">
-        <fa-icon [icon]="faEdit"></fa-icon> Edit
-      </button>
+      <div class="site-actions d-flex">
+        <button class="btn btn-danger" (click)="onDelete()">
+          <fa-icon [icon]="faTrash"></fa-icon> Delete
+        </button>
+        <button class="btn btn-primary me-2">
+          <fa-icon [icon]="faEdit"></fa-icon> Edit
+        </button>
+      </div>
     </div>
   </div>
 </div>

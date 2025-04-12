@@ -1,11 +1,8 @@
-// src/app/cards/website-card/website-card.component.ts
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faLaptop, faStore, faEye, faEdit } from '@fortawesome/free-solid-svg-icons';
-import {Website} from '../../../models/Website.interface';
-
-
+import { faLaptop, faStore, faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Website } from '../../../models/Website.interface';
 
 @Component({
   selector: 'app-website-card',
@@ -16,9 +13,16 @@ import {Website} from '../../../models/Website.interface';
 })
 export class WebsiteCardComponent {
   @Input() website!: Website;
+  @Output() delete = new EventEmitter<string>();
 
   faLaptop = faLaptop;
   faStore = faStore;
   faEye = faEye;
   faEdit = faEdit;
+  protected readonly faTrash = faTrash;
+
+
+  onDelete() {
+    this.delete.emit(this.website.id);
+  }
 }

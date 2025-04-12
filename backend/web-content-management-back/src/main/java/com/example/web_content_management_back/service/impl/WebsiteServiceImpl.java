@@ -60,38 +60,41 @@ public class WebsiteServiceImpl implements WebsiteService {
                 .collect(Collectors.toList());
     }
 
-   @Override
-   public WebsiteDTO createWebsite(WebsiteDTO websiteDTO) {
-       if (websiteDTO == null) {
-           throw new IllegalArgumentException("WebsiteDTO cannot be null");
-       }
+  @Override
+  public WebsiteDTO createWebsite(WebsiteDTO websiteDTO) {
+      if (websiteDTO == null) {
+          throw new IllegalArgumentException("WebsiteDTO cannot be null");
+      }
 
-       Website website = websiteMapper.toEntity(websiteDTO);
-       website.setId(UUID.randomUUID().toString());
+      if (websiteDTO.getPages() == null) {
+          websiteDTO.setPages(Collections.emptyList());
+      }
 
-       List<Page> pages = websiteDTO.getPages() != null ? websiteDTO.getPages().stream()
-               .map(pageDTO -> {
-                   if (pageDTO.getId() == null) {
-                       Page newPage = new Page();
-                       newPage.setId(UUID.randomUUID().toString());
-                       newPage.setName(pageDTO.getName());
-                       return pageRepository.save(newPage);
-                   } else {
+      Website website = websiteMapper.toEntity(websiteDTO);
+      website.setId(UUID.randomUUID().toString());
 
-                       return pageRepository.findById(pageDTO.getId())
-                               .orElseThrow(() -> new IllegalArgumentException("Page not found with ID: " + pageDTO.getId()));
-                   }
-               })
-               .collect(Collectors.toList()) : Collections.emptyList();
-       website.setPages(pages);
+      List<Page> pages = websiteDTO.getPages().stream()
+              .map(pageDTO -> {
+                  if (pageDTO.getId() == null) {
+                      Page newPage = new Page();
+                      newPage.setId(UUID.randomUUID().toString());
+                      newPage.setName(pageDTO.getName());
+                      return pageRepository.save(newPage);
+                  } else {
+                      return pageRepository.findById(pageDTO.getId())
+                              .orElseThrow(() -> new IllegalArgumentException("Page not found with ID: " + pageDTO.getId()));
+                  }
+              })
+              .collect(Collectors.toList());
+      website.setPages(pages);
 
-       if (websiteDTO.getDatabase() != null) {
-                   website.setDatabase(databaseMapper.toEntity(websiteDTO.getDatabase()));
-               }
+      if (websiteDTO.getDatabase() != null) {
+          website.setDatabase(databaseMapper.toEntity(websiteDTO.getDatabase()));
+      }
 
-       Website savedWebsite = websiteRepository.save(website);
-       return websiteMapper.toDTO(savedWebsite);
-   }
+      Website savedWebsite = websiteRepository.save(website);
+      return websiteMapper.toDTO(savedWebsite);
+  }
 
     @Override
     public WebsiteDTO getWebsiteById(String id) {
