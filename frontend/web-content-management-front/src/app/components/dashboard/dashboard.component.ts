@@ -22,6 +22,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { DatabaseService } from '../../services/database-service.service';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import {EditWebsiteModalComponent} from '../modals/edit-website-modal/edit-website-modal.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -55,11 +56,12 @@ export class DashboardComponent {
   @ViewChild('createWebsiteModal') createWebsiteModal!: CreateWebsiteModalComponent;
   @ViewChild('editProfileModal') editProfileModal!: EditProfileModalComponent;
   @ViewChild('createDatabaseModal') createDatabaseModal!: CreateDatabaseModalComponent;
+  @ViewChild('editWebsiteModal') editWebsiteModal!: EditWebsiteModalComponent;
 
   websites$: Observable<Website[]> = this.websiteService.getWebsites();
   databases$: Observable<Database[]> = this.databaseService.getAllDatabases();
 
-  constructor(private readonly dialog: MatDialog) {} // Injectez MatDialog ici
+  constructor(private readonly dialog: MatDialog) {}
 
   openCreateWebsiteModal() {
     this.createWebsiteModal.show();
@@ -76,7 +78,7 @@ export class DashboardComponent {
           duration: 3000,
           panelClass: ['success-snackbar']
         });
-        this.websites$ = this.websiteService.getWebsites(); // Rafraîchir la liste
+        this.websites$ = this.websiteService.getWebsites();
       },
       error: (err) => {
         console.error('Erreur lors de la création du site web :', err);
@@ -143,4 +145,36 @@ export class DashboardComponent {
       }
     });
   }
+  openEditWebsiteModal(website: Website): void {
+    const dialogRef = this.dialog.open(EditWebsiteModalComponent, {
+      width: '500px',
+      data: website,
+    });
+
+    dialogRef.afterClosed().subscribe((updatedWebsite: Website | undefined) => {
+      if (updatedWebsite) {
+        this.onWebsiteUpdate(updatedWebsite);
+      }
+    });
+  }
+  onWebsiteUpdate(updatedWebsite: Website): void {
+    this.websiteService.updateWebsite(updatedWebsite).subscribe({
+      next: (response) => {
+        this.snackBar.open('Site web mis à jour avec succès !', 'Fermer', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        });
+        this.websites$ = this.websiteService.getWebsites();
+      },
+      error: (err) => {
+        console.error('Erreur lors de la mise à jour du site web :', err);
+        this.snackBar.open('Échec de la mise à jour du site web.', 'Fermer', {
+          duration: 3000,
+          panelClass: ['error-snackbar'],
+        });
+      },
+    });
+  }
+
+
 }

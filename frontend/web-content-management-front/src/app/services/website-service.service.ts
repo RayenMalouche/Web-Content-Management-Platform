@@ -58,6 +58,20 @@ export class WebsiteService {
     );
 
   }
+
+
+
+  updateWebsite(updatedWebsite: Website) {
+    const url = `${this.apiUrl}/${updatedWebsite.id}`;
+    return this.http.put<Website>(url, updatedWebsite).pipe(
+      tap(() => console.log('Website updated:', updatedWebsite)),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error updating website:', error);
+        return throwError(() => new Error('Erreur lors de la mise à jour du site web.'));
+      })
+    );
+
+  }
 }
 
 
