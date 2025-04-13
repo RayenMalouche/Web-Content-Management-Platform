@@ -12,6 +12,7 @@ import java.sql.Statement;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 @Service
 public class DatabaseServiceImpl implements DatabaseService {
@@ -115,7 +116,8 @@ public class DatabaseServiceImpl implements DatabaseService {
         Database database = repository.findById(databaseId)
                 .orElseThrow(() -> new RuntimeException("Database not found"));
 
-        try (Connection connection = DriverManager.getConnection(database.getConnectionString(), database.getUsername(), database.getPassword())) {
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:h2:file:./data/" + database.getName(), "sa", "")) {
             String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (id INT PRIMARY KEY)";
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate(sql);
@@ -136,6 +138,47 @@ public class DatabaseServiceImpl implements DatabaseService {
             }
         } catch (Exception e) {
             throw new RuntimeException("Erreur lors de l'ajout de la colonne : " + e.getMessage(), e);
+        }
+    }
+    @Override
+    public List<String> getTables(String databaseId) {
+        Database database = repository.findById(databaseId)
+                .orElseThrow(() -> new RuntimeException("Database not found"));
+
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:h2:file:./data/" + database.getName(), "sa", "")) {
+            String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'PUBLIC'";
+            try (Statement statement = connection.createStatement();
+                 var resultSet = statement.executeQuery(sql)) {
+                List<String> tables = new ArrayList<>();
+                while (resultSet.next()) {
+                    tables.add(resultSet.getString("TABLE_NAME"));
+                }
+                return tables;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de la récupération des tables : " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<String> getColumns(String databaseId, String tableName) {
+        Database database = repository.findById(databaseId)
+                .orElseThrow(() -> new RuntimeException("Database not found"));
+
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:h2:file:./data/" + database.getName(), "sa", "")) {
+            String sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '" + tableName.toUpperCase() + "'";
+            try (Statement statement = connection.createStatement();
+                 var resultSet = statement.executeQuery(sql)) {
+                List<String> columns = new ArrayList<>();
+                while (resultSet.next()) {
+                    columns.add(resultSet.getString("COLUMN_NAME"));
+                }
+                return columns;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de la récupération des colonnes : " + e.getMessage(), e);
         }
     }
     }

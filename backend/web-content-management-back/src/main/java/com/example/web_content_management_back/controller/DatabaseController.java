@@ -57,4 +57,18 @@ public class DatabaseController {
         service.addColumnToTable(id, tableName, columnName, columnType);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/{id}/tables")
+    public ResponseEntity<List<String>> getTables(@PathVariable String id) {
+        List<String> tables = service.getTables(id);
+        return ResponseEntity.ok(tables);
+    }
+
+    @GetMapping("/{id}/tables/{tableName}/columns")
+    public ResponseEntity<List<String>> getColumns(
+            @PathVariable String id,
+            @PathVariable String tableName) {
+        List<String> columns = service.getColumns(id, tableName);
+        return ResponseEntity.ok(columns);
+    }
 }
