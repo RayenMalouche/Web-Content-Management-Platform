@@ -1,30 +1,9 @@
 <div>
   <h2>Éditeur de base de données</h2>
 
-  <form (ngSubmit)="addTable()">
-    <label for="tableName">Nom de la table :</label>
-    <input id="tableName" [(ngModel)]="newTable.name" name="tableName" required>
-    <button type="submit">Ajouter une table</button>
-  </form>
+  <!-- Composant pour ajouter une table -->
+  <app-add-table (onAdd)="addTable($event)"></app-add-table>
 
-  <div *ngFor="let table of tables">
-    <h3>{{ table.name }}</h3>
-    <form (ngSubmit)="addColumn(table.id)">
-      <label for="columnName">Nom de la colonne :</label>
-      <input id="columnName" [(ngModel)]="newColumn.name" name="columnName" required>
-      <label for="columnType">Type :</label>
-      <select id="columnType" [(ngModel)]="newColumn.type" name="columnType">
-        <option value="string">String</option>
-        <option value="number">Number</option>
-        <option value="boolean">Boolean</option>
-      </select>
-      <button type="submit">Ajouter une colonne</button>
-    </form>
-
-    <ul>
-      <li *ngFor="let column of table.columns">
-        {{ column.name }} ({{ column.type }})
-      </li>
-    </ul>
-  </div>
+  <!-- Composant pour afficher la liste des tables -->
+  <app-table-list *ngIf="tables && tables.length > 0" [tables]="tables" (onEdit)="editTable($event)" (onDelete)="deleteTable($event)"></app-table-list>
 </div>

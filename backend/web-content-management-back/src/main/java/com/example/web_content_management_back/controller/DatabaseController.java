@@ -6,6 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+import com.example.web_content_management_back.dto.TableDTO;
+import com.example.web_content_management_back.dto.ColumnDTO;
 
 @RestController
 @RequestMapping("databases")
@@ -42,11 +47,15 @@ public class DatabaseController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{id}/tables")
-    public ResponseEntity<Void> addTableToDatabase(@PathVariable String id, @RequestParam String tableName) {
-        service.addTableToDatabase(id, tableName);
-        return ResponseEntity.ok().build();
-    }
+   @PostMapping("/{id}/tables")
+   public ResponseEntity<Void> addTableToDatabase(@PathVariable String id, @RequestBody Map<String, String> request) {
+       String tableName = request.get("tableName");
+       if (tableName == null || tableName.isEmpty()) {
+           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Le paramètre 'tableName' est requis.");
+       }
+       service.addTableToDatabase(id, tableName);
+       return ResponseEntity.ok().build();
+   }
 
     @PostMapping("/{id}/tables/{tableName}/columns")
     public ResponseEntity<Void> addColumnToTable(
@@ -58,17 +67,17 @@ public class DatabaseController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}/tables")
-    public ResponseEntity<List<String>> getTables(@PathVariable String id) {
-        List<String> tables = service.getTables(id);
-        return ResponseEntity.ok(tables);
-    }
+   @GetMapping("/{id}/tables")
+   public ResponseEntity<List<TableDTO>> getTables(@PathVariable String id) {
+       List<TableDTO> tables = service.getTables(id);
+       return ResponseEntity.ok(tables);
+   }
 
-    @GetMapping("/{id}/tables/{tableName}/columns")
-    public ResponseEntity<List<String>> getColumns(
-            @PathVariable String id,
-            @PathVariable String tableName) {
-        List<String> columns = service.getColumns(id, tableName);
-        return ResponseEntity.ok(columns);
-    }
+   @GetMapping("/{id}/tables/{tableName}/columns")
+   public ResponseEntity<List<ColumnDTO>> getColumns(
+           @PathVariable String id,
+           @PathVariable String tableName) {
+       List<ColumnDTO> columns = service.getColumns(id, tableName);
+       return ResponseEntity.ok(columns);
+   }
 }

@@ -1,6 +1,8 @@
 package com.example.web_content_management_back.service.impl;
 
 import com.example.web_content_management_back.dto.DatabaseDTO;
+import com.example.web_content_management_back.dto.TableDTO;
+import com.example.web_content_management_back.dto.ColumnDTO;
 import com.example.web_content_management_back.mapper.DatabaseMapper;
 import com.example.web_content_management_back.model.Database;
 import com.example.web_content_management_back.repository.DatabaseRepository;
@@ -13,6 +15,7 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
+import java.util.UUID;
 
 @Service
 public class DatabaseServiceImpl implements DatabaseService {
@@ -111,37 +114,47 @@ public class DatabaseServiceImpl implements DatabaseService {
             }
         }
     }
-    @Override
-    public void addTableToDatabase(String databaseId, String tableName) {
-        Database database = repository.findById(databaseId)
-                .orElseThrow(() -> new RuntimeException("Database not found"));
+   @Override
+   public void addTableToDatabase(String databaseId, String tableName) {
+       Database database = repository.findById(databaseId)
+               .orElseThrow(() -> new RuntimeException("Database not found"));
 
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:h2:file:./data/" + database.getName(), "sa", "")) {
-            String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (id INT PRIMARY KEY)";
-            try (Statement statement = connection.createStatement()) {
-                statement.executeUpdate(sql);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Erreur lors de l'ajout de la table : " + e.getMessage(), e);
-        }
-    }
-    @Override
-    public void addColumnToTable(String databaseId, String tableName, String columnName, String columnType) {
-        Database database = repository.findById(databaseId)
-                .orElseThrow(() -> new RuntimeException("Database not found"));
+       String tableId = java.util.UUID.randomUUID().toString();
 
-        try (Connection connection = DriverManager.getConnection(database.getConnectionString(), database.getUsername(), database.getPassword())) {
-            String sql = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + columnType;
-            try (Statement statement = connection.createStatement()) {
-                statement.executeUpdate(sql);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Erreur lors de l'ajout de la colonne : " + e.getMessage(), e);
-        }
-    }
+       try (Connection connection = DriverManager.getConnection(
+               "jdbc:h2:file:./data/" + database.getName(), "sa", "")) {
+           String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (id INT PRIMARY KEY)";
+           try (Statement statement = connection.createStatement()) {
+               statement.executeUpdate(sql);
+           }
+       } catch (Exception e) {
+           throw new RuntimeException("Erreur lors de l'ajout de la table : " + e.getMessage(), e);
+       }
+
+
+       System.out.println("Table ajoutée avec ID : " + tableId);
+   }
+   @Override
+   public void addColumnToTable(String databaseId, String tableName, String columnName, String columnType) {
+       Database database = repository.findById(databaseId)
+               .orElseThrow(() -> new RuntimeException("Database not found"));
+
+       String columnId = java.util.UUID.randomUUID().toString();
+
+       try (Connection connection = DriverManager.getConnection(database.getConnectionString(), database.getUsername(), database.getPassword())) {
+           String sql = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + columnType;
+           try (Statement statement = connection.createStatement()) {
+               statement.executeUpdate(sql);
+           }
+       } catch (Exception e) {
+           throw new RuntimeException("Erreur lors de l'ajout de la colonne : " + e.getMessage(), e);
+       }
+
+
+       System.out.println("Colonne ajoutée avec ID : " + columnId);
+   }
     @Override
-    public List<String> getTables(String databaseId) {
+    public List<TableDTO> getTables(String databaseId) {
         Database database = repository.findById(databaseId)
                 .orElseThrow(() -> new RuntimeException("Database not found"));
 
@@ -150,9 +163,11 @@ public class DatabaseServiceImpl implements DatabaseService {
             String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'PUBLIC'";
             try (Statement statement = connection.createStatement();
                  var resultSet = statement.executeQuery(sql)) {
-                List<String> tables = new ArrayList<>();
+                List<TableDTO> tables = new ArrayList<>();
                 while (resultSet.next()) {
-                    tables.add(resultSet.getString("TABLE_NAME"));
+                    String tableName = resultSet.getString("TABLE_NAME");
+                    List<ColumnDTO> columns = getColumns(databaseId, tableName);
+                    tables.add(new TableDTO(UUID.randomUUID().toString(), tableName, columns)); // Génère un ID unique
                 }
                 return tables;
             }
@@ -160,25 +175,26 @@ public class DatabaseServiceImpl implements DatabaseService {
             throw new RuntimeException("Erreur lors de la récupération des tables : " + e.getMessage(), e);
         }
     }
+  @Override
+  public List<ColumnDTO> getColumns(String databaseId, String tableName) {
+      Database database = repository.findById(databaseId)
+              .orElseThrow(() -> new RuntimeException("Database not found"));
 
-    @Override
-    public List<String> getColumns(String databaseId, String tableName) {
-        Database database = repository.findById(databaseId)
-                .orElseThrow(() -> new RuntimeException("Database not found"));
-
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:h2:file:./data/" + database.getName(), "sa", "")) {
-            String sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '" + tableName.toUpperCase() + "'";
-            try (Statement statement = connection.createStatement();
-                 var resultSet = statement.executeQuery(sql)) {
-                List<String> columns = new ArrayList<>();
-                while (resultSet.next()) {
-                    columns.add(resultSet.getString("COLUMN_NAME"));
-                }
-                return columns;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Erreur lors de la récupération des colonnes : " + e.getMessage(), e);
-        }
-    }
+      try (Connection connection = DriverManager.getConnection(
+              "jdbc:h2:file:./data/" + database.getName(), "sa", "")) {
+          String sql = "SELECT COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '" + tableName.toUpperCase() + "'";
+          try (Statement statement = connection.createStatement();
+               var resultSet = statement.executeQuery(sql)) {
+              List<ColumnDTO> columns = new ArrayList<>();
+              while (resultSet.next()) {
+                  String columnName = resultSet.getString("COLUMN_NAME");
+                  String columnType = resultSet.getString("DATA_TYPE");
+                  columns.add(new ColumnDTO(UUID.randomUUID().toString(), columnName, columnType)); // Génère un ID unique
+              }
+              return columns;
+          }
+      } catch (Exception e) {
+          throw new RuntimeException("Erreur lors de la récupération des colonnes : " + e.getMessage(), e);
+      }
+  }
     }

@@ -1,0 +1,5 @@
+<form (ngSubmit)="addTable()">
+  <label for="tableName">Nom de la table :</label>
+  <input id="tableName" [(ngModel)]="newTable.name" name="tableName" required>
+  <button type="submit">Ajouter une table</button>
+</form>

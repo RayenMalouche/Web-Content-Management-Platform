@@ -1,54 +1,77 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DatabaseService } from '../../services/database-service.service';
 import { Table } from '../../models/Table.interface';
-import { Column } from '../../models/Column.interface';
-import {FormsModule} from '@angular/forms';
-import {NgForOf} from '@angular/common';
+import { AddTableComponent } from './add-table/add-table.component';
+import { TableListComponent } from './table-list/table-list.component';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-database-editor',
   templateUrl: './database-editor.component.html',
   standalone: true,
   imports: [
-    FormsModule,
-    NgForOf
+    AddTableComponent,
+    TableListComponent,
+    NgIf
   ],
   styleUrls: ['./database-editor.component.scss']
 })
 export class DatabaseEditorComponent implements OnInit {
   databaseId!: string;
   tables: Table[] = [];
-  newTable: Partial<Table> = { name: '' };
-  newColumn: Partial<Column> = { name: '', type: 'string' };
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly databaseService: DatabaseService
+    private readonly databaseService: DatabaseService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.databaseId = this.route.snapshot.paramMap.get('id')!;
-    this.loadTables();
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.databaseId = id;
+      this.loadTables();
+    } else {
+      console.error("L'ID de la base de données est manquant.");
+    }
   }
 
   loadTables(): void {
-    this.databaseService.getTables(this.databaseId).subscribe((tables) => {
-      this.tables = tables;
+    this.databaseService.getTables(this.databaseId).subscribe({
+      next: (tableNames: string[]) => {
+        this.tables = tableNames.map((name, index) => ({
+          id: index.toString(),
+          name: name,
+          columns: []
+        }));
+        console.log("Tables chargées :", this.tables);
+      },
+      error: (err) => {
+        console.error("Erreur lors du chargement des tables :", err);
+      }
     });
   }
 
-  addTable(): void {
-    this.databaseService.addTable(this.databaseId, this.newTable).subscribe(() => {
-      this.loadTables();
-      this.newTable.name = '';
-    });
+  addTable(newTable: Partial<Table>): void {
+    if (newTable.name) {
+      this.databaseService.addTable(this.databaseId, newTable).subscribe({
+        next: () => this.loadTables(),
+        error: (err) => console.error("Erreur lors de l'ajout de la table :", err)
+      });
+    } else {
+      console.error("Le nom de la table est requis.");
+    }
   }
 
-  addColumn(tableId: string): void {
-    this.databaseService.addColumn(this.databaseId, tableId, this.newColumn).subscribe(() => {
-      this.loadTables();
-      this.newColumn = { name: '', type: 'string' };
+  editTable(table: Table): void {
+    console.log("Modifier la table :", table);
+  }
+
+  deleteTable(tableId: string): void {
+    this.databaseService.deleteTable(this.databaseId, tableId).subscribe({
+      next: () => this.loadTables(),
+      error: (err) => console.error("Erreur lors de la suppression de la table :", err)
     });
   }
 }
