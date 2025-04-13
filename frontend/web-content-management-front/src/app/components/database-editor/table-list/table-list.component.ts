@@ -19,7 +19,6 @@ export class TableListComponent implements OnChanges {
 
   ngOnChanges(): void {
     if (this.tables && this.tables.length > 0) {
-      console.log("Tables reçues dans TableListComponent :", this.tables);
       this.tables.forEach(table => console.log("Nom de la table :", table.name));
     } else {
       console.log("Aucune table reçue ou données incomplètes.");
@@ -30,7 +29,7 @@ export class TableListComponent implements OnChanges {
     this.onEdit.emit(table);
   }
 
-  deleteTable(tableId: string): void {
-    this.onDelete.emit(tableId);
+  deleteTable(tableName: string): void {
+    this.onDelete.emit(tableName);
   }
 }

@@ -4,7 +4,10 @@ import { DatabaseService } from '../../services/database-service.service';
 import { Table } from '../../models/Table.interface';
 import { AddTableComponent } from './add-table/add-table.component';
 import { TableListComponent } from './table-list/table-list.component';
-import {NgIf} from '@angular/common';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogComponent} from '../../shared/confirm-dialog/confirm-dialog.component';
+
 
 @Component({
   selector: 'app-database-editor',
@@ -13,7 +16,7 @@ import {NgIf} from '@angular/common';
   imports: [
     AddTableComponent,
     TableListComponent,
-    NgIf
+
   ],
   styleUrls: ['./database-editor.component.scss']
 })
@@ -24,8 +27,11 @@ export class DatabaseEditorComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly databaseService: DatabaseService,
-    private readonly cdr: ChangeDetectorRef
-  ) {}
+    private readonly cdr: ChangeDetectorRef,
+    private readonly dialog: MatDialog,
+    private readonly snackBar: MatSnackBar
+  ) {
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -40,8 +46,8 @@ export class DatabaseEditorComponent implements OnInit {
   loadTables(): void {
     this.databaseService.getTables(this.databaseId).subscribe({
       next: (tables: Table[]) => {
-        this.tables = tables; // Assignez directement les tables retournées
-        console.log("Tables chargées :", this.tables);
+        this.tables = tables;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("Erreur lors du chargement des tables :", err);
@@ -64,10 +70,21 @@ export class DatabaseEditorComponent implements OnInit {
     console.log("Modifier la table :", table);
   }
 
-  deleteTable(tableId: string): void {
-    this.databaseService.deleteTable(this.databaseId, tableId).subscribe({
-      next: () => this.loadTables(),
-      error: (err) => console.error("Erreur lors de la suppression de la table :", err)
+  deleteTable(tableName: string): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {message: `Êtes-vous sûr de vouloir supprimer la table "${tableName}" ?`}
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.databaseService.deleteTable(this.databaseId, tableName).subscribe({
+          next: () => {
+            this.loadTables();
+            this.snackBar.open('Table supprimée avec succès.', 'Fermer', {duration: 3000});
+          },
+          error: (err) => console.error("Erreur lors de la suppression de la table :", err)
+        });
+      }
     });
   }
 }

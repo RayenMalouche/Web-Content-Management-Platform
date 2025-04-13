@@ -80,4 +80,11 @@ public class DatabaseController {
        List<ColumnDTO> columns = service.getColumns(id, tableName);
        return ResponseEntity.ok(columns);
    }
+    @DeleteMapping("/{id}/tables/{tableName}")
+    public ResponseEntity<Void> deleteTable(
+            @PathVariable String id,
+            @PathVariable String tableName) {
+        service.deleteTable(id, tableName);
+        return ResponseEntity.noContent().build();
+    }
 }

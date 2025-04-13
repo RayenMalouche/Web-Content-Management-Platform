@@ -17,4 +17,5 @@ public interface DatabaseService {
     public void addColumnToTable(String databaseId, String tableName, String columnName, String columnType);
     List<TableDTO> getTables(String databaseId);
     List<ColumnDTO> getColumns(String databaseId, String tableName);
+    void deleteTable(String databaseId, String tableName);
 }

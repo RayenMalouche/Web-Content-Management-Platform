@@ -44,7 +44,7 @@ export class DatabaseService {
   addColumn(databaseId: string, tableId: string, newColumn: Partial<Column>): Observable<Column> {
     return this.http.post<Column>(`${this.apiUrl}/${databaseId}/tables/${tableId}/columns`, newColumn);
   }
-  deleteTable(databaseId: string, tableId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${databaseId}/tables/${tableId}`);
+  deleteTable(databaseId: string, tableName: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${databaseId}/tables/${tableName}`);
   }
 }

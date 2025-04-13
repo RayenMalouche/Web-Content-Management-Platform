@@ -197,4 +197,21 @@ public class DatabaseServiceImpl implements DatabaseService {
           throw new RuntimeException("Erreur lors de la récupération des colonnes : " + e.getMessage(), e);
       }
   }
+ @Override
+ public void deleteTable(String databaseId, String tableName) {
+     Database database = repository.findById(databaseId)
+             .orElseThrow(() -> new RuntimeException("Database not found"));
+
+     try (Connection connection = DriverManager.getConnection(
+             "jdbc:h2:file:./data/" + database.getName(), "sa", "")) {
+         String sql = "DROP TABLE IF EXISTS " + tableName;
+         try (Statement statement = connection.createStatement()) {
+             statement.executeUpdate(sql);
+         }
+     } catch (Exception e) {
+         throw new RuntimeException("Erreur lors de la suppression de la table : " + e.getMessage(), e);
+     }
+
+     System.out.println("Table supprimée : " + tableName);
+ }
     }

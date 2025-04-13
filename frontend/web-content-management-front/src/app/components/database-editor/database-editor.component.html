@@ -1,9 +1,7 @@
 <div>
   <h2>Éditeur de base de données</h2>
 
-  <!-- Composant pour ajouter une table -->
   <app-add-table (onAdd)="addTable($event)"></app-add-table>
 
-  <!-- Composant pour afficher la liste des tables -->
   <app-table-list  [tables]="tables" (onEdit)="editTable($event)" (onDelete)="deleteTable($event)"></app-table-list>
 </div>
