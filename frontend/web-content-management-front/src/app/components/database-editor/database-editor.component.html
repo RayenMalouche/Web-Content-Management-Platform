@@ -5,5 +5,5 @@
   <app-add-table (onAdd)="addTable($event)"></app-add-table>
 
   <!-- Composant pour afficher la liste des tables -->
-  <app-table-list *ngIf="tables && tables.length > 0" [tables]="tables" (onEdit)="editTable($event)" (onDelete)="deleteTable($event)"></app-table-list>
+  <app-table-list  [tables]="tables" (onEdit)="editTable($event)" (onDelete)="deleteTable($event)"></app-table-list>
 </div>

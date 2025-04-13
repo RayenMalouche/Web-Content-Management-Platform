@@ -33,8 +33,8 @@ export class DatabaseService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  getTables(databaseId: string): Observable<string[]> {
-    return this.http.get<string[]>(`/api/databases/${databaseId}/tables`);
+  getTables(databaseId: string): Observable<Table[]> {
+    return this.http.get<Table[]>(`${this.apiUrl}/${databaseId}/tables`);
   }
 
   addTable(databaseId: string, table: Partial<Table>): Observable<void> {

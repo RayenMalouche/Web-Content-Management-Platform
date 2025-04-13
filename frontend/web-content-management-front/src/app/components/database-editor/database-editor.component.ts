@@ -39,12 +39,8 @@ export class DatabaseEditorComponent implements OnInit {
 
   loadTables(): void {
     this.databaseService.getTables(this.databaseId).subscribe({
-      next: (tableNames: string[]) => {
-        this.tables = tableNames.map((name, index) => ({
-          id: index.toString(),
-          name: name,
-          columns: []
-        }));
+      next: (tables: Table[]) => {
+        this.tables = tables; // Assignez directement les tables retournées
         console.log("Tables chargées :", this.tables);
       },
       error: (err) => {
