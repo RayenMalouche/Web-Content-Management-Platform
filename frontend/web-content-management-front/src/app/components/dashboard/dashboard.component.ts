@@ -23,6 +23,9 @@ import { DatabaseService } from '../../services/database-service.service';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import {EditWebsiteModalComponent} from '../modals/edit-website-modal/edit-website-modal.component';
+import {ProjectCardComponent} from '../cards/project-card/project-card.component';
+import {ProjectService} from '../../services/project-service.service';
+import {CreateProjectModalComponent} from '../modals/create-project-modal/create-project-modal.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -40,6 +43,8 @@ import {EditWebsiteModalComponent} from '../modals/edit-website-modal/edit-websi
     CreateDatabaseModalComponent,
     MatSnackBarModule,
     MatDialogModule,
+    ProjectCardComponent,
+    CreateProjectModalComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -50,6 +55,7 @@ export class DashboardComponent {
   private readonly websiteService = inject(WebsiteService);
   private readonly databaseService = inject(DatabaseService);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly projectService=inject(ProjectService)
 
   faPlus = faPlus;
 
@@ -57,9 +63,13 @@ export class DashboardComponent {
   @ViewChild('editProfileModal') editProfileModal!: EditProfileModalComponent;
   @ViewChild('createDatabaseModal') createDatabaseModal!: CreateDatabaseModalComponent;
   @ViewChild('editWebsiteModal') editWebsiteModal!: EditWebsiteModalComponent;
+  @ViewChild('createProjectModal') createProjectModal!: CreateProjectModalComponent;
+
 
   websites$: Observable<Website[]> = this.websiteService.getWebsites();
   databases$: Observable<Database[]> = this.databaseService.getAllDatabases();
+  projects$: Observable<any[]> = this.projectService.getProjects()
+
 
   constructor(private readonly dialog: MatDialog) {}
 
@@ -174,6 +184,95 @@ export class DashboardComponent {
         });
       },
     });
+  }
+
+
+
+  onCreateProjectModalClose() {
+    console.log('Create project modal closed');
+  }
+
+  onProjectCreate(projectData: any) {
+    this.projectService.createProject(projectData).subscribe({
+      next: () => {
+        this.snackBar.open('Projet créé avec succès !', 'Fermer', {
+          duration: 3000,
+          panelClass: ['success-snackbar']
+        });
+        this.projects$ = this.projectService.getProjects();
+      },
+      error: (err) => {
+        console.error('Erreur lors de la création du projet :', err);
+        this.snackBar.open('Échec de la création du projet.', 'Fermer', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
+  }
+
+  onProjectDelete(projectId: string) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: { message: 'Êtes-vous sûr de vouloir supprimer ce projet ?' }
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.projectService.deleteProject(projectId).subscribe({
+          next: () => {
+            this.snackBar.open('Projet supprimé avec succès !', 'Fermer', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+            this.projects$ = this.projectService.getProjects();
+          },
+          error: (err) => {
+            console.error('Erreur lors de la suppression du projet :', err);
+            this.snackBar.open('Échec de la suppression du projet.', 'Fermer', {
+              duration: 3000,
+              panelClass: ['error-snackbar']
+            });
+          }
+        });
+      }
+    });
+  }
+
+  openEditProjectModal(project: any): void {
+    const dialogRef = this.dialog.open(EditWebsiteModalComponent, {
+      width: '500px',
+      data: project,
+    });
+
+    dialogRef.afterClosed().subscribe((updatedProject: any | undefined) => {
+      if (updatedProject) {
+        this.onProjectUpdate(updatedProject);
+      }
+    });
+  }
+
+  onProjectUpdate(updatedProject: any): void {
+    this.projectService.updateProject(updatedProject).subscribe({
+      next: () => {
+        this.snackBar.open('Projet mis à jour avec succès !', 'Fermer', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        });
+        this.projects$ = this.projectService.getProjects();
+      },
+      error: (err) => {
+        console.error('Erreur lors de la mise à jour du projet :', err);
+        this.snackBar.open('Échec de la mise à jour du projet.', 'Fermer', {
+          duration: 3000,
+          panelClass: ['error-snackbar'],
+        });
+      },
+    });
+  }
+
+  openCreateProjectModal() {
+    this.createProjectModal.show();
   }
 
 
