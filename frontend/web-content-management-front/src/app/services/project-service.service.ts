@@ -29,4 +29,12 @@ export class ProjectService {
   updateProject(project: Project): Observable<Project> {
     return this.http.put<Project>(`${this.baseUrl}/${project.id}`, project);
   }
+
+  removeWebsiteFromProject(projectId: string, websiteId: string): Observable<void> {
+    return this.http.patch<void>(`${this.baseUrl}/${projectId}/remove-website/${websiteId}`, {});
+  }
+
+  addWebsiteToProject(projectId: string, websiteId: string) {
+    return this.http.patch<void>(`${this.baseUrl}/${projectId}/add-website/${websiteId}`, {});
+  }
 }

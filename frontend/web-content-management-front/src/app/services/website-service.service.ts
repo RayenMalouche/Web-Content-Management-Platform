@@ -70,6 +70,16 @@ export class WebsiteService {
       })
     );
   }
+  getWebsiteById(websiteId: string): Observable<Website> {
+    const url = `${this.apiUrl}/${websiteId}`;
+    return this.http.get<Website>(url).pipe(
+      tap((response) => console.log('Website fetched:', response)),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error fetching website:', error);
+        return throwError(() => new Error('Erreur lors de la récupération du site web.'));
+      })
+    );
+  }
 }
 
 export class WebsiteServiceService {

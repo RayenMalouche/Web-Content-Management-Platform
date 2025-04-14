@@ -10,6 +10,7 @@ import {MainComponent} from './app/components/main/main.component';
 import {WebsiteSetupComponent} from './app/components/website-setup/website-setup.component';
 import {PagesListComponent} from './app/components/page-list/page-list.component';
 import {DashboardComponent} from './app/components/dashboard/dashboard.component';
+import {ProjectDetailsComponent} from './app/components/project-details/project-details.component';
 
 
 const appRoutes: Routes = [
@@ -22,6 +23,7 @@ const appRoutes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   {path:'login', loadComponent: () => import('./app/components/login/login.component').then(m => m.LoginComponent)},
   {path: 'database-editor/:id', loadComponent: () => import('./app/components/database-editor/database-editor.component').then(m => m.DatabaseEditorComponent)},
+  { path: 'project/:id', component: ProjectDetailsComponent },
 ];
 
 bootstrapApplication(AppComponent, {
