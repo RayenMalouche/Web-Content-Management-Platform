@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject } from '@angular/core';
+import {Component, ViewChild, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -27,6 +27,10 @@ import {ProjectCardComponent} from '../cards/project-card/project-card.component
 import {ProjectService} from '../../services/project-service.service';
 import {CreateProjectModalComponent} from '../modals/create-project-modal/create-project-modal.component';
 
+import {ActivatedRoute} from '@angular/router';
+import {UserService} from '../../services/user.service';
+import {UserCardComponent} from '../cards/user-card/user-card.component';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -45,17 +49,21 @@ import {CreateProjectModalComponent} from '../modals/create-project-modal/create
     MatDialogModule,
     ProjectCardComponent,
     CreateProjectModalComponent,
+    UserCardComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit{
+  isResponsable: boolean = false;
 
   private readonly dashboardService = inject(DashboardService);
   private readonly websiteService = inject(WebsiteService);
   private readonly databaseService = inject(DatabaseService);
   private readonly snackBar = inject(MatSnackBar);
-  private readonly projectService=inject(ProjectService)
+  private readonly projectService=inject(ProjectService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly userService = inject(UserService);
 
   faPlus = faPlus;
 
@@ -68,7 +76,8 @@ export class DashboardComponent {
 
   websites$: Observable<Website[]> = this.websiteService.getWebsites();
   databases$: Observable<Database[]> = this.databaseService.getAllDatabases();
-  projects$: Observable<any[]> = this.projectService.getProjects()
+  projects$: Observable<any[]> = this.projectService.getProjects();
+  users$: Observable<any[]> = this.userService.getAllUsers();
 
 
   constructor(private readonly dialog: MatDialog) {}
@@ -275,5 +284,23 @@ export class DashboardComponent {
     this.createProjectModal.show();
   }
 
+  ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      const userId = params.get('id');
+      if (userId) {
+        this.checkIfResponsable(userId);
+      }
+    });
+  }
 
+  checkIfResponsable(userId: string): void {
+    this.userService.isResponsable(userId).subscribe((isResponsable) => {
+      this.isResponsable = isResponsable;
+    });
+  }
+
+
+  openCreateUserModal() {
+
+  }
 }

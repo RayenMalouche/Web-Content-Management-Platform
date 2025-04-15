@@ -15,6 +15,13 @@
 
     <app-profile-section class="app-profile-container" (editProfile)="openEditProfileModal()"></app-profile-section>
 
+    <div *ngIf="isResponsable">
+      <h2 class="section-title">Gestion des utilisateurs</h2>
+      <div class="card-container">
+        <app-user-card *ngFor="let user of (users$ | async)" [user]="user"></app-user-card>
+        <app-add-new-card text="Ajouter un utilisateur" (add)="openCreateUserModal()"></app-add-new-card>
+      </div>
+    </div>
     <h2 class="section-title">My Websites</h2>
     <div class="card-container">
       <app-website-card *ngFor="let website of (websites$ | async)?.slice(0, 2)" [website]="website" (delete)="onWebsiteDelete($event)" (edit)="openEditWebsiteModal($event)"></app-website-card>
