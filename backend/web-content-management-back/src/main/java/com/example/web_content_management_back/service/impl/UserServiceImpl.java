@@ -69,4 +69,17 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(String id) {
         userRepository.deleteById(id);
     }
+   @Override
+   public boolean isResponsible(String userId) {
+       return userRepository.findAll().stream()
+               .anyMatch(user -> user.getResponsibleUser() != null && user.getResponsibleUser().getId().equals(userId));
+   }
+
+   @Override
+   public List<UserDTO> getUsersByResponsibleId(String responsibleId) {
+       return userRepository.findAll().stream()
+               .filter(user -> user.getResponsibleUser() != null && user.getResponsibleUser().getId().equals(responsibleId))
+               .map(userMapper::toDTO)
+               .collect(Collectors.toList());
+   }
 }

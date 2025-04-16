@@ -39,4 +39,14 @@ public class UserController {
     public void deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
     }
+    @GetMapping("/{id}/is-responsible")
+    public boolean isResponsible(@PathVariable String id) {
+        return userService.isResponsible(id);
+    }
+
+    @GetMapping("/responsible/{responsibleId}")
+    public List<UserDTO> getUsersByResponsibleId(@PathVariable String responsibleId) {
+        return userService.getUsersByResponsibleId(responsibleId);
+    }
+
 }

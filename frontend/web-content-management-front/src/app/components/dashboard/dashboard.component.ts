@@ -30,6 +30,8 @@ import {CreateProjectModalComponent} from '../modals/create-project-modal/create
 import {ActivatedRoute} from '@angular/router';
 import {UserService} from '../../services/user.service';
 import {UserCardComponent} from '../cards/user-card/user-card.component';
+import {User} from '../../models/User.interface';
+import {CreateUserModalComponent} from '../modals/create-user-modal/create-user-modal.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -50,6 +52,7 @@ import {UserCardComponent} from '../cards/user-card/user-card.component';
     ProjectCardComponent,
     CreateProjectModalComponent,
     UserCardComponent,
+    CreateUserModalComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -72,15 +75,27 @@ export class DashboardComponent implements OnInit{
   @ViewChild('createDatabaseModal') createDatabaseModal!: CreateDatabaseModalComponent;
   @ViewChild('editWebsiteModal') editWebsiteModal!: EditWebsiteModalComponent;
   @ViewChild('createProjectModal') createProjectModal!: CreateProjectModalComponent;
+  @ViewChild('createUserModal') createUserModal!: CreateUserModalComponent;
 
 
   websites$: Observable<Website[]> = this.websiteService.getWebsites();
   databases$: Observable<Database[]> = this.databaseService.getAllDatabases();
   projects$: Observable<any[]> = this.projectService.getProjects();
-  users$: Observable<any[]> = this.userService.getAllUsers();
+  users$: Observable<User[]> | undefined;
 
 
-  constructor(private readonly dialog: MatDialog) {}
+  constructor(private readonly dialog: MatDialog) {
+    this.users$ = new Observable<User[]>();
+  }
+  ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      const userId = params.get('id');
+      if (userId) {
+        this.checkIfResponsible(userId);
+        this.users$ = this.userService.getUsersByResponsibleId(userId);
+      }
+    });
+  }
 
   openCreateWebsiteModal() {
     this.createWebsiteModal.show();
@@ -178,7 +193,7 @@ export class DashboardComponent implements OnInit{
   }
   onWebsiteUpdate(updatedWebsite: Website): void {
     this.websiteService.updateWebsite(updatedWebsite).subscribe({
-      next: (response) => {
+      next: () => {
         this.snackBar.open('Site web mis à jour avec succès !', 'Fermer', {
           duration: 3000,
           panelClass: ['success-snackbar'],
@@ -284,23 +299,51 @@ export class DashboardComponent implements OnInit{
     this.createProjectModal.show();
   }
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      const userId = params.get('id');
-      if (userId) {
-        this.checkIfResponsable(userId);
-      }
-    });
-  }
 
-  checkIfResponsable(userId: string): void {
-    this.userService.isResponsable(userId).subscribe((isResponsable) => {
-      this.isResponsable = isResponsable;
+
+  checkIfResponsible(userId: string): void {
+    this.userService.isResponsible(userId).subscribe((isResponsible) => {
+      this.isResponsable = isResponsible;
     });
   }
 
 
   openCreateUserModal() {
+    this.createUserModal.show();
+  }
+  onCreateUserModalClose() {
+    console.log('Create user modal closed');
+  }
 
+
+  onUserCreate($event: User) {
+    const responsibleId = this.route.snapshot.paramMap.get('id'); // Récupère l'ID du responsable depuis la route
+    if (!responsibleId) {
+      console.error('ID du responsable introuvable');
+      this.snackBar.open('Impossible de créer l\'utilisateur : ID du responsable manquant.', 'Fermer', {
+        duration: 3000,
+        panelClass: ['error-snackbar']
+      });
+      return;
+    }
+
+    const userToCreate = { ...$event, responsibleUserId: responsibleId }; // Ajoute le responsibleId
+
+    this.userService.createUser(userToCreate).subscribe({
+      next: () => {
+        this.snackBar.open('Utilisateur créé avec succès !', 'Fermer', {
+          duration: 3000,
+          panelClass: ['success-snackbar']
+        });
+        this.users$ = this.userService.getUsersByResponsibleId(responsibleId); // Rafraîchit la liste des utilisateurs
+      },
+      error: (err) => {
+        console.error('Erreur lors de la création de l\'utilisateur :', err);
+        this.snackBar.open('Échec de la création de l\'utilisateur.', 'Fermer', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
   }
 }

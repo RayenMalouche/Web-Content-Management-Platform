@@ -20,7 +20,7 @@ const appRoutes: Routes = [
   {path:'main',component:MainComponent},
   { path: 'main/:id', component: MainComponent },
   { path: 'pages-list/:id', component:PagesListComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard/:id', component: DashboardComponent },
   {path:'login', loadComponent: () => import('./app/components/login/login.component').then(m => m.LoginComponent)},
   {path: 'database-editor/:id', loadComponent: () => import('./app/components/database-editor/database-editor.component').then(m => m.DatabaseEditorComponent)},
   { path: 'project/:id', component: ProjectDetailsComponent },

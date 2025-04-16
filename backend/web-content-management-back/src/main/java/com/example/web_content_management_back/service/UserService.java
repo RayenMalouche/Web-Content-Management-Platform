@@ -10,4 +10,6 @@ public interface UserService {
     UserDTO createUser(UserDTO userDTO);
     UserDTO updateUser(String id, UserDTO userDTO);
     void deleteUser(String id);
+    boolean isResponsible(String userId);
+    List<UserDTO> getUsersByResponsibleId(String responsibleId);
 }

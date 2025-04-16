@@ -1,42 +1,41 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {User} from '../models/User.interface';
 
-export interface UserDTO {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private readonly baseUrl = 'http://localhost:8081/users'; // Remplacez par l'URL de votre backend
+  private readonly baseUrl = 'http://localhost:8081/users';
 
   constructor(private readonly http: HttpClient) {}
 
-  getAllUsers(): Observable<UserDTO[]> {
-    return this.http.get<UserDTO[]>(this.baseUrl);
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.baseUrl);
   }
 
-  getUserById(id: string): Observable<UserDTO> {
-    return this.http.get<UserDTO>(`${this.baseUrl}/${id}`);
+  getUserById(id: string): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/${id}`);
   }
 
-  createUser(user: UserDTO): Observable<UserDTO> {
-    return this.http.post<UserDTO>(this.baseUrl, user);
+  createUser(user: Partial<User>): Observable<User> {
+    return this.http.post<User>(this.baseUrl, user);
   }
 
-  updateUser(id: string, user: UserDTO): Observable<UserDTO> {
-    return this.http.put<UserDTO>(`${this.baseUrl}/${id}`, user);
+  updateUser(id: string, user: User): Observable<User> {
+    return this.http.put<User>(`${this.baseUrl}/${id}`, user);
   }
 
   deleteUser(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
-  isResponsable(userId: string): Observable<boolean> {
-    return this.http.get<boolean>(`${this.baseUrl}/${userId}/is-responsable`);
+  isResponsible(userId: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.baseUrl}/${userId}/is-responsible`);
+  }
+  getUsersByResponsibleId(responsibleId: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.baseUrl}/responsible/${responsibleId}`);
   }
 }
