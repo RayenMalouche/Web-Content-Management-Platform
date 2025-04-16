@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {catchError, Observable, tap, throwError} from 'rxjs';
+import {catchError, Observable, Subject, tap, throwError} from 'rxjs';
 import {Website} from '../models/Website.interface';
 
 
@@ -9,6 +9,7 @@ import {Website} from '../models/Website.interface';
 })
 export class WebsiteService {
   private readonly apiUrl = 'http://localhost:8081/api/websites';
+  private readonly pagesUpdated = new Subject<void>();
 
   constructor(private readonly http: HttpClient) {
   }
@@ -18,29 +19,33 @@ export class WebsiteService {
     return this.http.post<Website>(this.apiUrl, website);
   }
 
-  getPagesByWebsiteId(websiteId: string | null) {
-    const url = `http://localhost:8081/api/websites/${websiteId}/pages`;
+  getPagesByWebsiteId(websiteId: string | null): Observable<any[]> {
+    const url = `${this.apiUrl}/${websiteId}/pages`;
     return this.http.get<any[]>(url).pipe(
       tap((pages) => console.log('Received pages:', pages)),
       catchError((error: HttpErrorResponse) => {
-        if (error.error instanceof SyntaxError) {
-          console.error('Invalid JSON response:', error.error);
-        } else {
-          console.error('Error fetching pages:', error);
-        }
+        console.error('Error fetching pages:', error);
         return throwError(() => new Error('Erreur lors de la récupération des pages.'));
       })
     );
   }
 
-  addPageToWebsite(websiteId: string, page: any) {
+  addPageToWebsite(websiteId: string, page: any): Observable<any> {
     const url = `${this.apiUrl}/${websiteId}/pages`;
-    return this.http.post<any>(url, page);
+    return this.http.post<any>(url, page).pipe(
+      tap(() => this.pagesUpdated.next()) // Notifie les abonnés
+    );
   }
 
-  deletePageFromWebsite(websiteId: string, id: string) {
+  deletePageFromWebsite(websiteId: string, id: string): Observable<string> {
     const url = `${this.apiUrl}/${websiteId}/pages/${id}`;
-    return this.http.delete(url, { responseType: 'text' });
+    return this.http.delete(url, { responseType: 'text' }).pipe(
+      tap(() => this.pagesUpdated.next()) // Notifie les abonnés
+    );
+  }
+
+  getPagesUpdateListener(): Observable<void> {
+    return this.pagesUpdated.asObservable(); // Expose le Subject comme Observable
   }
 
   getWebsites(): Observable<Website[]> {

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CommonModule, NgForOf, NgIf} from '@angular/common';
 import { WebsiteService } from '../../services/website-service.service';
 import { ActivatedRoute } from '@angular/router';
@@ -9,6 +9,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 import { PageCardComponent } from '../cards/page-card/page-card.component';
 import { CreatePageModalComponent } from '../modals/create-page-modal/create-page-modal.component';
 import {PageService} from '../../services/page-service.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-page-list',
@@ -25,10 +26,11 @@ import {PageService} from '../../services/page-service.service';
   templateUrl: './page-list.component.html',
   styleUrls: ['./page-list.component.scss']
 })
-export class PageListComponent implements OnInit {
+export class PageListComponent implements OnInit, OnDestroy {
   @ViewChild('createPageModal') createPageModal!: CreatePageModalComponent;
   pages: Page[] = [];
   protected readonly faPlus = faPlus;
+  private subscriptions: Subscription = new Subscription();
 
 
   constructor(
@@ -39,18 +41,29 @@ export class PageListComponent implements OnInit {
   ) {}
 
   // Dans page-list.component.ts, modifiez la méthode ngOnInit:
+
   ngOnInit() {
     const websiteId = this.route.snapshot.paramMap.get('id');
     if (websiteId) {
-      this.websiteService.getPagesByWebsiteId(websiteId).subscribe({
-        next: (pages) => {
-          this.pages = pages;
-          console.log('Pages loaded in parent:', this.pages);
-          this.cdr.detectChanges(); // Forcer la détection des changements
-        },
-        error: (err) => console.error('Error fetching pages:', err)
+      this.loadPages(websiteId);
+
+      // S'abonner aux notifications de mise à jour
+      const pagesUpdateSub = this.websiteService.getPagesUpdateListener().subscribe(() => {
+        this.loadPages(websiteId); // Recharge les pages automatiquement
       });
+      this.subscriptions.add(pagesUpdateSub);
     }
+  }
+
+  private loadPages(websiteId: string) {
+    this.websiteService.getPagesByWebsiteId(websiteId).subscribe({
+      next: (pages) => {
+        this.pages = pages;
+        console.log('Pages loaded in parent:', this.pages);
+        this.cdr.detectChanges(); // Forcer la détection des changements
+      },
+      error: (err) => console.error('Error fetching pages:', err)
+    });
   }
 
 
@@ -93,5 +106,8 @@ export class PageListComponent implements OnInit {
   editPage(page: Page) {
     console.log('Editing page:', page);
 
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe(); // Nettoyer les abonnements
   }
 }
