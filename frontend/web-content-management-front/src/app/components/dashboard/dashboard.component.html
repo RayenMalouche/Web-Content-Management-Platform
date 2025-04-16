@@ -18,12 +18,11 @@
     <div *ngIf="isResponsable">
       <h2 class="section-title">Users Management</h2>
       <div class="card-container">
-        <app-user-card *ngFor="let user of (users$ | async)" [user]="user"></app-user-card>
+        <app-user-card *ngFor="let user of (users$ | async)" [user]="user" (delete)="onUserDelete($event)" ></app-user-card>
         <app-add-new-card text="Ajouter un utilisateur" (add)="openCreateUserModal()"></app-add-new-card>
       </div>
     </div>
 
-    <!-- Website, Projects, and Database sections - Only visible if NOT responsible -->
     <div *ngIf="!isResponsable">
       <h2 class="section-title">My Websites</h2>
       <div class="card-container">

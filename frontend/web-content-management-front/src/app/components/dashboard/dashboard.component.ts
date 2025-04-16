@@ -346,4 +346,33 @@ export class DashboardComponent implements OnInit{
       }
     });
   }
+  onUserDelete(userId: string) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: { message: 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?' }
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.userService.deleteUser(userId).subscribe({
+          next: () => {
+            this.snackBar.open('Utilisateur supprimé avec succès !', 'Fermer', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+            this.users$ = this.userService.getUsersByResponsibleId(this.route.snapshot.paramMap.get('id')!); // Rafraîchir la liste
+          },
+          error: (err) => {
+            console.error('Erreur lors de la suppression de l\'utilisateur :', err);
+            this.snackBar.open('Échec de la suppression de l\'utilisateur.', 'Fermer', {
+              duration: 3000,
+              panelClass: ['error-snackbar']
+            });
+          }
+        });
+      }
+    });
+  }
+
+
 }
