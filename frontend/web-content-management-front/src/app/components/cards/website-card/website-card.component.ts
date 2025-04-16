@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faLaptop, faStore, faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Website } from '../../../models/Website.interface';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-website-card',
@@ -16,6 +17,7 @@ export class WebsiteCardComponent {
   @Output() delete = new EventEmitter<string>();
   @Output() edit = new EventEmitter<Website>();
 
+  constructor(private readonly router: Router) {}
 
 
   faLaptop = faLaptop;
@@ -30,5 +32,8 @@ export class WebsiteCardComponent {
   }
   onEdit() {
     this.edit.emit(this.website);
+  }
+  onView() {
+    this.router.navigate(['/pages-list', this.website.id]);
   }
 }

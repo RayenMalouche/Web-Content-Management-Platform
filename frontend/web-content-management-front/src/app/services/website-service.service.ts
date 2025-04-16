@@ -18,7 +18,7 @@ export class WebsiteService {
     return this.http.post<Website>(this.apiUrl, website);
   }
 
-  getPagesByWebsiteId(websiteId: string) {
+  getPagesByWebsiteId(websiteId: string | null) {
     const url = `http://localhost:8081/api/websites/${websiteId}/pages`;
     return this.http.get<any[]>(url).pipe(
       tap((pages) => console.log('Received pages:', pages)),
@@ -34,11 +34,13 @@ export class WebsiteService {
   }
 
   addPageToWebsite(websiteId: string, page: any) {
-    return this.http.post<any>(`/api/websites/${websiteId}/pages`, page);
+    const url = `${this.apiUrl}/${websiteId}/pages`;
+    return this.http.post<any>(url, page);
   }
 
   deletePageFromWebsite(websiteId: string, id: string) {
-    return this.http.delete(`/api/websites/${websiteId}/pages/${id}`);
+    const url = `${this.apiUrl}/${websiteId}/pages/${id}`;
+    return this.http.delete(url, { responseType: 'text' });
   }
 
   getWebsites(): Observable<Website[]> {
