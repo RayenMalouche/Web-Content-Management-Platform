@@ -33,19 +33,19 @@ export class WebsiteService {
   addPageToWebsite(websiteId: string, page: any): Observable<any> {
     const url = `${this.apiUrl}/${websiteId}/pages`;
     return this.http.post<any>(url, page).pipe(
-      tap(() => this.pagesUpdated.next()) // Notifie les abonnés
+      tap(() => this.pagesUpdated.next())
     );
   }
 
   deletePageFromWebsite(websiteId: string, id: string): Observable<string> {
     const url = `${this.apiUrl}/${websiteId}/pages/${id}`;
     return this.http.delete(url, { responseType: 'text' }).pipe(
-      tap(() => this.pagesUpdated.next()) // Notifie les abonnés
+      tap(() => this.pagesUpdated.next())
     );
   }
 
   getPagesUpdateListener(): Observable<void> {
-    return this.pagesUpdated.asObservable(); // Expose le Subject comme Observable
+    return this.pagesUpdated.asObservable();
   }
 
   getWebsites(): Observable<Website[]> {
