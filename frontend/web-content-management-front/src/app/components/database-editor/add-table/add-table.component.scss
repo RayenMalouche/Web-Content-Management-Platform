@@ -1,52 +1,54 @@
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1.5rem;
-  background-color: #f9f9f9;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  margin: 0 auto;
+/* Add Table Form */
+form.p-4.bg-light.rounded.shadow-sm {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
 }
 
-label {
-  font-size: 1rem;
-  color: #333333;
-  font-weight: bold;
+.form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2c3e50;
+  margin-bottom: 8px;
 }
 
-input {
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dfe6e9;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
 }
 
-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+.form-control:focus {
   outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
-button {
-  padding: 0.6rem 1rem;
-  font-size: 1rem;
-  color: #ffffff;
-  background-color: #007bff;
+.btn-primary {
+  background: #3498db;
+  color: #fff;
   border: none;
-  border-radius: 4px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
-button:hover {
-  background-color: #0056b3;
+.btn-primary:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
 }
 
-button:focus {
-  outline: 2px solid #0056b3;
-  outline-offset: 2px;
+/* Responsive Design for add-table */
+@media (max-width: 480px) {
+  form.p-4.bg-light.rounded.shadow-sm {
+    padding: 15px;
+  }
 }

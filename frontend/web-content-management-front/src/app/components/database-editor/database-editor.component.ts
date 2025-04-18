@@ -7,6 +7,9 @@ import { TableListComponent } from './table-list/table-list.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../../shared/confirm-dialog/confirm-dialog.component';
+import {faHome, faPlus} from '@fortawesome/free-solid-svg-icons';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {SidebarComponent} from '../sidebar/sidebar.component';
 
 
 @Component({
@@ -16,6 +19,8 @@ import {ConfirmDialogComponent} from '../../shared/confirm-dialog/confirm-dialog
   imports: [
     AddTableComponent,
     TableListComponent,
+    FaIconComponent,
+    SidebarComponent,
 
   ],
   styleUrls: ['./database-editor.component.scss']
@@ -87,4 +92,8 @@ export class DatabaseEditorComponent implements OnInit {
       }
     });
   }
+
+  protected readonly faHome = faHome;
+  protected readonly faPlus = faPlus;
+
 }
