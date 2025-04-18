@@ -16,6 +16,8 @@ public class User {
     private String username;
     private String password;
 
-    @DBRef
-    private User responsibleUser;
+     @DBRef
+     private User responsibleUser;// ID du responsable
+
+
 }
