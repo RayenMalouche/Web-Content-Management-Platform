@@ -24,4 +24,6 @@ public class User {
 
     @DBRef
     private List<Project> projects = new ArrayList<>();
+    @DBRef
+    private List<Database> databases = new ArrayList<>();
 }

@@ -8,6 +8,9 @@ import com.example.web_content_management_back.service.UserService;
 import org.springframework.stereotype.Service;
 import com.example.web_content_management_back.model.Project;
 import com.example.web_content_management_back.repository.ProjectRepository;
+import com.example.web_content_management_back.model.Database;
+import com.example.web_content_management_back.repository.DatabaseRepository;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,12 +21,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final ProjectRepository projectRepository;
+    private final DatabaseRepository databaseRepository;
 
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper,
-                           ProjectRepository projectRepository) {
+                           ProjectRepository projectRepository,DatabaseRepository databaseRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.projectRepository = projectRepository;
+        this.databaseRepository = databaseRepository;
     }
 
 
@@ -115,6 +120,35 @@ public class UserServiceImpl implements UserService {
                .orElseThrow(() -> new RuntimeException("Project not found"));
 
        user.getProjects().add(project);
+       userRepository.save(user);
+   }
+  @Override
+  public List<String> getUserDatabases(String userId) {
+      User user = userRepository.findById(userId)
+              .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+
+      if (user.getDatabases() == null) {
+          return new ArrayList<>();
+      }
+
+      return user.getDatabases().stream()
+              .map(Database::getId)
+              .collect(Collectors.toList());
+  }
+
+   @Override
+   public void addDatabaseToUser(String userId, String databaseId) {
+       User user = userRepository.findById(userId)
+               .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+
+       if (user.getDatabases() == null) {
+           user.setDatabases(new ArrayList<>());
+       }
+
+       Database database = databaseRepository.findById(databaseId)
+               .orElseThrow(() -> new RuntimeException("Base de données introuvable"));
+
+       user.getDatabases().add(database);
        userRepository.save(user);
    }
 }

@@ -13,5 +13,5 @@ public class UserDTO {
     private String password;
     private String responsibleUserId;
     private List<String> projectIds;
-
+    private List<String> databaseIds;
 }

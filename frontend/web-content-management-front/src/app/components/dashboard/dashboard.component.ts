@@ -81,7 +81,7 @@ export class DashboardComponent implements OnInit{
 
 
   websites$: Observable<Website[]> = this.websiteService.getWebsites();
-  databases$: Observable<Database[]> = this.databaseService.getAllDatabases();
+
 
   users$: Observable<User[]> | undefined;
 
@@ -92,7 +92,8 @@ export class DashboardComponent implements OnInit{
   }
 
 
-projects$: Observable<Project[]> = new BehaviorSubject<Project[]>([]);
+  projects$: Observable<Project[]> = new BehaviorSubject<Project[]>([]);
+  databases$: Observable<Database[]> = new BehaviorSubject<Database[]>([]);
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -100,6 +101,8 @@ projects$: Observable<Project[]> = new BehaviorSubject<Project[]>([]);
       if (userId) {
         this.checkIfResponsible(userId);
         this.users$ = this.userService.getUsersByResponsibleId(userId);
+
+        // Récupération des projets
         this.userService.getProjectsByUser(userId).subscribe((projectIds: string[]) => {
           if (projectIds.length > 0) {
             const projectRequests = projectIds.map((id) => this.projectService.getProjectById(id));
@@ -111,6 +114,22 @@ projects$: Observable<Project[]> = new BehaviorSubject<Project[]>([]);
           } else {
             console.log('Aucun projet trouvé pour cet utilisateur.');
             (this.projects$ as BehaviorSubject<Project[]>).next([]);
+            this.cdr.detectChanges(); // Forcer la détection des changements
+          }
+        });
+
+        // Récupération des bases de données
+        this.userService.getDatabasesByUser(userId).subscribe((databaseIds: string[]) => {
+          if (databaseIds.length > 0) {
+            const databaseRequests = databaseIds.map((id) => this.databaseService.getDatabaseById(id));
+            forkJoin(databaseRequests).subscribe((databases) => {
+              (this.databases$ as BehaviorSubject<Database[]>).next(databases); // Mise à jour des bases de données
+              this.cdr.detectChanges(); // Forcer la détection des changements
+              console.log('Databases:', databases);
+            });
+          } else {
+            console.log('Aucune base de données trouvée pour cet utilisateur.');
+            (this.databases$ as BehaviorSubject<Database[]>).next([]);
             this.cdr.detectChanges(); // Forcer la détection des changements
           }
         });

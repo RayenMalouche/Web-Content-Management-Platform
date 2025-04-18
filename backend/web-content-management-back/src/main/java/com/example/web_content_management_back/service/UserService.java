@@ -14,4 +14,6 @@ public interface UserService {
     List<UserDTO> getUsersByResponsibleId(String responsibleId);
     List<String> getUserProjects(String userId);
     void addProjectToUser(String userId, String projectId);
+    List<String> getUserDatabases(String userId);;
+    void addDatabaseToUser(String userId, String databaseId);
 }
