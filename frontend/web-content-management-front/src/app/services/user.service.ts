@@ -38,4 +38,12 @@ export class UserService {
   getUsersByResponsibleId(responsibleId: string): Observable<User[]> {
     return this.http.get<User[]>(`${this.baseUrl}/responsible/${responsibleId}`);
   }
+  getProjectsByUser(userId: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.baseUrl}/${userId}/projects`, {
+      headers: { 'Accept': 'application/json' },
+    });
+  }
+  addProjectToUser(userId: string, projectId: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${userId}/projects/${projectId}`, {});
+  }
 }
