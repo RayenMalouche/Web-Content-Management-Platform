@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CommonModule, NgForOf} from '@angular/common';
 import { WebsiteService } from '../../services/website-service.service';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Page } from '../../models/Page.interface';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -13,6 +13,8 @@ import {Subscription} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../../shared/confirm-dialog/confirm-dialog.component';
+import {ILayout} from '../../models/ILayout';
+import {LayoutService} from '../../services/layout-service.service';
 
 @Component({
   selector: 'app-page-list',
@@ -38,10 +40,12 @@ export class PageListComponent implements OnInit, OnDestroy {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly websiteService: WebsiteService,
+    private readonly layoutService: LayoutService,
     private readonly pageService: PageService,
     private readonly cdr: ChangeDetectorRef,
     private readonly dialog: MatDialog,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
+    private readonly router: Router
   ) {}
 
 
@@ -125,9 +129,36 @@ export class PageListComponent implements OnInit, OnDestroy {
       }
     });
   }
-  editPage(page: Page) {
-    console.log('Editing page:', page);
 
+
+  editPage(page: Page): void {
+
+    const newLayout: ILayout = {
+
+      borderColor: '#000000',
+      backgroundColor: '#FFFFFF',
+      height: '100%',
+      width: '100%',
+      name: 'New Layout',
+      code: 'new-layout-code',
+      description: 'Description tres test',
+      type: 'SECTION',
+      status: 'ACTIVE',
+      nodes: []
+    };
+
+    this.layoutService.createLayout(newLayout).subscribe({
+     next: (createdLayout) => {
+     this.pageService.assignLayoutToPage(page.id, createdLayout.id).subscribe({
+         next: (updatedPage) => {
+           console.log('Page mise à jour avec le layout :', updatedPage);
+            this.router.navigate(['/main', createdLayout.id]);
+          },
+          error: (err) => console.error('Erreur lors de l\'assignation du layout à la page :', err)
+       });
+      },
+     error: (err) => console.error('Erreur lors de la création du layout :', err)
+    });
   }
   ngOnDestroy() {
     this.subscriptions.unsubscribe();

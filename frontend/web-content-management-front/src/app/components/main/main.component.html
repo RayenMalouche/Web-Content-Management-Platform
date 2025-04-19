@@ -5,8 +5,9 @@
       <span>WebBuilder</span>
     </div>
     <div class="topbar-actions">
-      <button class="btn btn-outline-light me-2" id="preview-btn">
-        <i class="fas fa-eye me-1"></i> Preview
+      <button class="btn btn-outline-light me-2" id="preview-btn" (click)="togglePreview()">
+      <i class="fas" [ngClass]="isPreviewMode ? 'fa-edit' : 'fa-eye'"></i>
+      {{ isPreviewMode ? 'Edit' : 'Preview' }}
       </button>
       <button class="btn btn-outline-light me-2" id="undo-btn">
         <i class="fas fa-undo"></i>
@@ -14,7 +15,7 @@
       <button class="btn btn-outline-light me-2" id="redo-btn">
         <i class="fas fa-redo"></i>
       </button>
-      <button class="btn btn-outline-danger me-2" id="clear-btn">
+      <button class="btn btn-outline-danger me-2" id="clear-btn" (click)="clearAll()">
         <i class="fas fa-trash-alt me-1"></i> Clear
       </button>
       <button class="btn btn-success" id="save-btn">

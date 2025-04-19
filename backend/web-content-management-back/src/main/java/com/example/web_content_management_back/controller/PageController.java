@@ -38,4 +38,9 @@ public class PageController {
     public void deletePage(@PathVariable String id) {
         pageService.deletePage(id);
     }
+
+    @PutMapping("/{pageId}/assign-layout/{layoutId}")
+    public PageDTO assignLayoutToPage(@PathVariable String pageId, @PathVariable String layoutId) {
+        return pageService.assignLayoutToPage(pageId, layoutId);
+    }
 }

@@ -19,6 +19,9 @@ export class PageService {
     return this.http.post<Page>(this.apiUrl, page);
   }
 
+  assignLayoutToPage(pageId: string, layoutId: string | undefined): Observable<Page> {
+    return this.http.put<Page>(`${this.apiUrl}/${pageId}/assign-layout/${layoutId}`, {});
+  }
 }
 
 export class PageServiceService {

@@ -12,13 +12,14 @@ import {INode} from '../../models/INode';
 import {ILayout} from '../../models/ILayout';
 import {LayoutService} from '../../services/layout-service.service';
 import {NodeService} from '../../services/node-service.service';
+import {NgClass} from '@angular/common';
 
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   standalone: true,
-  imports: [OriginListComponent, LayoutComponent, OptionsComponent, RouterModule],
+  imports: [OriginListComponent, LayoutComponent, OptionsComponent, RouterModule, NgClass],
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit, OnDestroy {
@@ -49,6 +50,7 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initializeLayout();
   }
+  isPreviewMode = false;
 
   ngOnDestroy(): void {
     this._selectedNode.complete();
@@ -87,9 +89,10 @@ export class MainComponent implements OnInit, OnDestroy {
     };
   }
 
-  onDragStart(): void {}
+  onDragStart(): void {if (this.isPreviewMode) return;}
 
   onDragged(payload: { event: DragEvent, effect: DropEffect, node: INode, list?: INode[] }): void {
+    if (this.isPreviewMode) return;
     if (payload.effect === 'move' && payload.list) {
       const index = this.findNodeIndexInList(payload.node, payload.list);
       if (index >= 0) payload.list.splice(index, 1);
@@ -99,6 +102,7 @@ export class MainComponent implements OnInit, OnDestroy {
   onDragEnd(): void {}
 
   onDrop(payload: { event: DndDropEvent, list?: INode[] }): void {
+    if (this.isPreviewMode) return;
     if (payload.list && (payload.event.dropEffect === 'copy' || payload.event.dropEffect === 'move')) {
       const index = payload.event.index ?? payload.list.length;
       const newNode = { ...payload.event.data, id: this.generateUniqueId(), template: false };
@@ -143,15 +147,16 @@ export class MainComponent implements OnInit, OnDestroy {
     };
 
     this.updateNodes(updatedLayout.nodes);
-    this.layoutService.updateLayout(updatedLayout.id, updatedLayout).pipe(
-      tap(response => console.log('Layout mis à jour avec succès', response)),
-      catchError(error => {
-        console.error(error);
-        return throwError(() => error);
-      })
-    ).subscribe();
-  }
+    if (updatedLayout.id) {
+      this.layoutService.updateLayout(updatedLayout.id, updatedLayout).pipe(
+        tap(response => console.log('Layout mis à jour avec succès', response)),
+        catchError(error => {
+          console.error(error);
+          return throwError(() => error);
+        })
+      ).subscribe();
 
+    }}
   private updateNodes(nodes: INode[]): void {
     nodes.forEach(node => {
       if (!node.template) {
@@ -252,10 +257,31 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   onSaveLayout(newLayout: ILayout): void {
+    if (newLayout.id) {
+
+
     this.layoutService.updateLayout(newLayout.id, newLayout).subscribe();
-  }
+  }}
 
   private generateUniqueId(): string {
     return Math.random().toString(36).substring(2, 11);
+  }
+
+  togglePreview() {
+    this.isPreviewMode = !this.isPreviewMode;
+  }
+  clearAll(): void {
+    if (this.root.id) {
+      this.layoutService.clearLayoutNodes(this.root.id).subscribe({
+        next: () => {
+          this.root.children = [];
+          this.clearSelection();
+          console.log('Tous les nœuds ont été supprimés avec succès.');
+        },
+        error: (err) => {
+          console.error('Erreur lors de la suppression des nœuds :', err);
+        }
+      });
+    }
   }
 }

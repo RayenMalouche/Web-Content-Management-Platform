@@ -20,6 +20,10 @@ export class LayoutService {
   updateLayout(id: string, layout: ILayout): Observable<ILayout> {
     return this.http.put<ILayout>(`${this.apiUrl}/${id}`, layout);
   }
+
+  clearLayoutNodes(layoutId: string): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${layoutId}/clear`, {});
+  }
 }
 
 export class LayoutServiceService {
