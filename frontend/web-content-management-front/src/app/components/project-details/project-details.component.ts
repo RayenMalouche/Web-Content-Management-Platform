@@ -13,19 +13,20 @@ import {CreateWebsiteModalComponent} from '../modals/create-website-modal/create
 
 
 import {WebsiteCardComponent} from '../cards/website-card/website-card.component';
+import {SidebarComponent} from '../sidebar/sidebar.component';
 
 
 @Component({
   selector: 'app-project-details',
   templateUrl: './project-details.component.html',
   standalone: true,
-  styleUrls: ['./project-details.component.css'],
+  styleUrls: ['./project-details.component.scss'],
   imports: [
     NgForOf,
     AddNewCardComponent,
     CreateWebsiteModalComponent,
     WebsiteCardComponent,
-
+    SidebarComponent,
 
 
   ]
