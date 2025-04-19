@@ -82,6 +82,7 @@ export class MainComponent implements OnInit, OnDestroy {
     return {
       id,
       name: "Default Layout",
+      height:"650px",
       type: "row",
       selected: false,
       children: [],
