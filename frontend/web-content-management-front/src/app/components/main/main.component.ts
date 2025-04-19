@@ -284,4 +284,55 @@ export class MainComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+  save() {
+    const generatedHTML = `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Layout</title>
+    <style>
+      .row { display: flex; flex-direction: column; } /* Les éléments seront empilés verticalement */
+      .column { flex: 1; padding: 10px; }
+    </style>
+  </head>
+  <body>
+    ${this.generateHTMLFromJSON(this.root)}
+  </body>
+  </html>
+`;
+
+    const blob = new Blob([generatedHTML], { type: 'text/html' });
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'layout.html';
+    link.click();
+
+    URL.revokeObjectURL(link.href);
+  }
+  generateHTMLFromJSON(node: INode): string {
+    const styles = `
+    width: ${node.width ?? 'auto'};
+    height: ${node.height ?? 'auto'};
+    background-color: ${node.backgroundColor ?? 'transparent'};
+    border: 1px solid ${node.borderColor ?? 'transparent'};
+    padding: 10px;
+    margin: 5px;
+  `;
+
+    let html = `<div class="${node.type}" id="${node.id}" style="${styles}">`;
+    html += `<h3>${node.name}</h3>`;
+
+    if (node.children) {
+      node.children.forEach(child => {
+        html += this.generateHTMLFromJSON(child);
+      });
+    }
+    html += `</div>`;
+    return html;
+  }
+
 }
