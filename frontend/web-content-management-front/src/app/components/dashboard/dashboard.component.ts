@@ -122,19 +122,19 @@ export class DashboardComponent implements OnInit{
           }
         });
 
-        // Récupération des bases de données
+
         this.userService.getDatabasesByUser(userId).subscribe((databaseIds: string[]) => {
           if (databaseIds.length > 0) {
             const databaseRequests = databaseIds.map((id) => this.databaseService.getDatabaseById(id));
             forkJoin(databaseRequests).subscribe((databases) => {
               (this.databases$ as BehaviorSubject<Database[]>).next(databases); // Mise à jour des bases de données
-              this.cdr.detectChanges(); // Forcer la détection des changements
+              this.cdr.detectChanges();
               console.log('Databases:', databases);
             });
           } else {
             console.log('Aucune base de données trouvée pour cet utilisateur.');
             (this.databases$ as BehaviorSubject<Database[]>).next([]);
-            this.cdr.detectChanges(); // Forcer la détection des changements
+            this.cdr.detectChanges();
           }
         });
       }
