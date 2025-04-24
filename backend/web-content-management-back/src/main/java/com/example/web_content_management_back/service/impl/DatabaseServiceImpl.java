@@ -75,6 +75,7 @@ public class DatabaseServiceImpl implements DatabaseService {
         try {
             switch (type.toLowerCase()) {
                 case "mysql":
+                case "sql":
                 case "postgresql":
                     createInMemoryDatabase(dbName);
                     break;

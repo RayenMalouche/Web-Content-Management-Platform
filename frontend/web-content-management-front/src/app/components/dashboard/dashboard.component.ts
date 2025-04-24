@@ -188,9 +188,7 @@ export class DashboardComponent implements OnInit{
     console.log('Create database modal closed');
   }
 
-  onDatabaseCreate() {
-    alert('Database created successfully!');
-  }
+
 
   onWebsiteDelete(websiteId: string) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -443,6 +441,57 @@ export class DashboardComponent implements OnInit{
           }
         });
       }
+    });
+  }
+
+  onDatabaseCreate(databaseData: any) {
+    this.route.paramMap.subscribe((params) => {
+      const userId = params.get('id');
+      if (!userId) {
+        console.error('ID utilisateur introuvable.');
+        this.snackBar.open('Impossible de créer la base de données : ID utilisateur manquant.', 'Fermer', {
+          duration: 3000,
+          panelClass: ['error-snackbar'],
+        });
+        return;
+      }
+
+      this.databaseService.createDatabase(databaseData).subscribe({
+        next: (createdDatabase) => {
+          console.log('Base de données créée :', createdDatabase);
+          this.userService.addDatabaseToUser(userId, createdDatabase.id).subscribe({
+            next: () => {
+              console.log('Base de données assignée à l\'utilisateur avec succès.');
+              this.snackBar.open('Base de données créée et assignée avec succès !', 'Fermer', {
+                duration: 3000,
+                panelClass: ['success-snackbar'],
+              });
+
+              this.userService.getDatabasesByUser(userId).subscribe((databaseIds) => {
+                const databaseRequests = databaseIds.map((id) => this.databaseService.getDatabaseById(id));
+                forkJoin(databaseRequests).subscribe((databases) => {
+                  (this.databases$ as BehaviorSubject<Database[]>).next(databases);
+                  this.cdr.detectChanges();
+                });
+              });
+            },
+            error: (err) => {
+              console.error('Erreur lors de l\'assignation de la base de données à l\'utilisateur :', err);
+              this.snackBar.open('Base créée, mais échec de l\'assignation.', 'Fermer', {
+                duration: 3000,
+                panelClass: ['error-snackbar'],
+              });
+            },
+          });
+        },
+        error: (err) => {
+          console.error('Erreur lors de la création de la base de données :', err);
+          this.snackBar.open('Échec de la création de la base de données.', 'Fermer', {
+            duration: 3000,
+            panelClass: ['error-snackbar'],
+          });
+        },
+      });
     });
   }
 

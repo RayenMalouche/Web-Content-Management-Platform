@@ -57,7 +57,7 @@
 
 <app-create-database-modal #createDatabaseModal
                            (close)="onCreateDatabaseModalClose()"
-                           (create)="onDatabaseCreate()">
+                           (create)="onDatabaseCreate($event)">
 </app-create-database-modal>
 
 <app-create-project-modal #createProjectModal

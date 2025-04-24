@@ -15,13 +15,14 @@
         <div class="form-group">
           <label for="database-type">Type</label>
           <select id="database-type" [(ngModel)]="database.type" name="type">
-            <option value="SQL">SQL</option>
+            <option value="SQL">mysql</option>
             <option value="NoSQL">NoSQL</option>
+            <option value="H2">h2</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="connection-string">Connection String</label>
-          <input type="text" id="connection-string" [(ngModel)]="database.connectionString" name="connectionString" placeholder="Enter connection string" required>
+          <label for="port">Port</label>
+          <input type="number" id="port" [(ngModel)]="database.port" name="port" placeholder="Enter port number">
         </div>
         <div class="form-group">
           <label for="description">Description</label>

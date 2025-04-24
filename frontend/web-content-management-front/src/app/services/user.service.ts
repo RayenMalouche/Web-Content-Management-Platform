@@ -18,17 +18,12 @@ export class UserService {
     return this.http.get<User[]>(this.baseUrl);
   }
 
-  getUserById(id: string): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/${id}`);
-  }
+
 
   createUser(user: Partial<User>): Observable<User> {
     return this.http.post<User>(this.baseUrl, user);
   }
 
-  updateUser(id: string, user: User): Observable<User> {
-    return this.http.put<User>(`${this.baseUrl}/${id}`, user);
-  }
 
   deleteUser(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
@@ -50,6 +45,9 @@ export class UserService {
 
   addProjectToUser(userId: string, projectId: string): Observable<void> {
     return this.http.post<void>(`${this.baseUrl}/${userId}/projects/${projectId}`, {});
+  }
+  addDatabaseToUser(userId: string, databaseId: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${userId}/databases/${databaseId}`, {});
   }
 
   getDatabasesByUser(userId: string): Observable<string[]> {
