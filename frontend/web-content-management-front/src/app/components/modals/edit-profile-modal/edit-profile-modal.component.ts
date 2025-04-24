@@ -1,5 +1,5 @@
 // src/app/modals/edit-profile-modal/edit-profile-modal.component.ts
-import { Component, EventEmitter, Output } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -13,6 +13,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./edit-profile-modal.component.scss']
 })
 export class EditProfileModalComponent {
+  @Input() user: any;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<any>();
 
@@ -20,11 +21,14 @@ export class EditProfileModalComponent {
   faTimes = faTimes;
 
   profile = {
-    name: 'Amine Rachdi',
-    email: 'aminerachdi@gmail.com'
+    name: '',
+    email: ''
   };
 
   show() {
+    if (this.user) {
+      this.profile = { ...this.user };
+    }
     this.isVisible = true;
   }
 

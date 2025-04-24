@@ -18,8 +18,6 @@ export class UserService {
     return this.http.get<User[]>(this.baseUrl);
   }
 
-
-
   createUser(user: Partial<User>): Observable<User> {
     return this.http.post<User>(this.baseUrl, user);
   }
@@ -54,5 +52,9 @@ export class UserService {
     return this.http.get<string[]>(`${this.baseUrl}/${userId}/databases`, {
       headers: {'Accept': 'application/json'},
     });
+  }
+
+  getUserById(userId: string): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/${userId}`);
   }
 }

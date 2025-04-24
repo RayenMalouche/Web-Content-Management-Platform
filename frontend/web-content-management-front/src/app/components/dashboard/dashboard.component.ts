@@ -60,6 +60,7 @@ import {Project} from '../../models/Project.interface';
 })
 export class DashboardComponent implements OnInit{
   isResponsable: boolean = false;
+  currentUser: User | undefined;
 
   private readonly dashboardService = inject(DashboardService);
   private readonly websiteService = inject(WebsiteService);
@@ -100,9 +101,12 @@ export class DashboardComponent implements OnInit{
       const userId = params.get('id');
       if (userId) {
         this.checkIfResponsible(userId);
+        this.userService.getUserById(userId).subscribe((user) => {
+          this.currentUser = user;
+        });
+
         this.users$ = this.userService.getUsersByResponsibleId(userId);
 
-        // Récupération des projets
         this.userService.getProjectsByUser(userId).subscribe((projectIds: string[]) => {
           if (projectIds.length > 0) {
             const projectRequests = projectIds.map((id) => this.projectService.getProjectById(id));
@@ -165,7 +169,16 @@ export class DashboardComponent implements OnInit{
   }
 
   openEditProfileModal() {
-    this.editProfileModal.show();
+    if (this.currentUser) {
+      this.editProfileModal.user = this.currentUser;
+      this.editProfileModal.show();
+    } else {
+      console.error('Utilisateur actuel introuvable.');
+      this.snackBar.open('Impossible d\'ouvrir le modal : utilisateur introuvable.', 'Fermer', {
+        duration: 3000,
+        panelClass: ['error-snackbar'],
+      });
+    }
   }
 
   onEditProfileModalClose() {
@@ -247,9 +260,6 @@ export class DashboardComponent implements OnInit{
       },
     });
   }
-
-
-
   onCreateProjectModalClose() {
     console.log('Create project modal closed');
   }
@@ -281,9 +291,9 @@ export class DashboardComponent implements OnInit{
               this.userService.getProjectsByUser(userId).subscribe((projectIds) => {
                 console.log('Liste mise à jour des projets de l\'utilisateur :', projectIds);
                 (this.projects$ as BehaviorSubject<Project[]>).next(
-                  projectIds.map((id) => ({ id } as Project)) // Exemple de conversion si nécessaire
+                  projectIds.map((id) => ({ id } as Project))
                 );
-                this.cdr.detectChanges(); // Forcer la détection des changements
+                this.cdr.detectChanges();
               });
             },
             error: (err) => {
