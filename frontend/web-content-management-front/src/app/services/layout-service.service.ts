@@ -7,9 +7,9 @@ import { ILayout } from '../models/ILayout';
   providedIn: 'root'
 })
 export class LayoutService {
-  private apiUrl = 'http://localhost:8081/layouts';
+  private readonly apiUrl = 'http://localhost:8081/layouts';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   createLayout(layout: ILayout): Observable<ILayout> {
     return this.http.post<ILayout>(this.apiUrl, layout);
@@ -19,6 +19,10 @@ export class LayoutService {
   }
   updateLayout(id: string, layout: ILayout): Observable<ILayout> {
     return this.http.put<ILayout>(`${this.apiUrl}/${id}`, layout);
+  }
+
+  clearLayoutNodes(layoutId: string): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${layoutId}/clear`, {});
   }
 }
 

@@ -1,0 +1,53 @@
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <div class="dashboard-header">
+      <div class="dashboard-title">
+        <h1>Dashboard</h1>
+      </div>
+      <div class="dashboard-actions">
+        <button (click)="openCreateWebsiteModal()" class="action-button">
+          <fa-icon [icon]="faPlus"></fa-icon> Create New Website
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="section-title">My Websites</h2>
+      <div class="search-container">
+        <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+        <input
+          type="text"
+          class="search-bar"
+          placeholder="Search websites..."
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="filterWebsites()"
+        />
+      </div>
+      <div class="card-container">
+        <app-generic-list
+          title="All Websites"
+          [items]="filteredWebsites"
+          [cardTemplate]="websiteCardTemplate"
+          addNewText="Add New Website"
+          (add)="openCreateWebsiteModal()">
+        </app-generic-list>
+
+        <ng-template #websiteCardTemplate let-website>
+          <app-website-card
+            [website]="website"
+            (delete)="onWebsiteDelete($event)"
+            (edit)="openEditWebsiteModal($event)">
+          </app-website-card>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-create-website-modal
+  #createWebsiteModal
+  (close)="onCreateWebsiteModalClose()"
+  (create)="onWebsiteCreate($event)">
+</app-create-website-modal>

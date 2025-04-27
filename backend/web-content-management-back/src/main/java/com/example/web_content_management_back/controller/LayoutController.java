@@ -44,4 +44,15 @@ public class LayoutController {
     public void deleteLayout(@PathVariable String id) {
         layoutService.deleteLayout(id);
     }
+
+
+    @PutMapping("/{id}/clear")
+    public ResponseEntity<Void> clearLayoutNodes(@PathVariable String id) {
+        try {
+            layoutService.clearLayoutNodes(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

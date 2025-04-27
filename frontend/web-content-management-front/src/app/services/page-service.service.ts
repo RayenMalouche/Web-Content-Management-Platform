@@ -7,9 +7,9 @@ import { Page } from '../models/Page.interface';
   providedIn: 'root'
 })
 export class PageService {
-  private apiUrl = 'http://localhost:8081/api/pages';
+  private readonly apiUrl = 'http://localhost:8081/pages';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getAllPages(): Observable<Page[]> {
     return this.http.get<Page[]>(this.apiUrl);
@@ -19,6 +19,9 @@ export class PageService {
     return this.http.post<Page>(this.apiUrl, page);
   }
 
+  assignLayoutToPage(pageId: string, layoutId: string | undefined): Observable<Page> {
+    return this.http.put<Page>(`${this.apiUrl}/${pageId}/assign-layout/${layoutId}`, {});
+  }
 }
 
 export class PageServiceService {

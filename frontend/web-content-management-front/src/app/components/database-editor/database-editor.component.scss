@@ -1,0 +1,288 @@
+
+/* Container */
+.container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #0056b3;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --dark-bg: #1a1a1a;
+  --light-bg: #f8f9fa;
+  --text-dark: #333;
+  --text-light: #f0f0f0;
+  --border-color: #ddd;
+  --hover-color: #e9ecef;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background: #3498db;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-size: 20px;
+}
+
+.user-name {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.user-role {
+  font-size: 14px;
+  color: #bdc3c7;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  margin-left: 250px;
+  padding: 30px;
+  background: #f5f6fa;
+
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.dashboard-title h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.dashboard-actions button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+}
+
+
+
+#backup-db-btn {
+  background: #7f8c8d;
+  color: #fff;
+}
+
+#create-table-btn {
+  background: #3498db;
+  color: #fff;
+}
+
+/* Database Info Card */
+.db-info-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+
+}
+
+
+
+.db-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.db-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.db-status {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #27ae60;
+}
+
+.status-indicator.online {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #27ae60;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.db-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-size: 14px;
+  color: #7f8c8d;
+  margin-bottom: 5px;
+}
+
+.detail-value {
+  font-size: 16px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+/* Responsive Design for database-editor */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .main-content {
+    margin-left: 200px;
+  }
+
+  .db-details {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+    padding: 15px;
+  }
+
+  .sidebar-header h2,
+  .sidebar-menu .menu-item span,
+  .user-info .user-name,
+  .user-info .user-role {
+    display: none;
+  }
+
+  .sidebar-menu .menu-item {
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .sidebar-menu .menu-item i {
+    margin-right: 0;
+    font-size: 20px;
+  }
+
+  .user-info {
+    justify-content: center;
+  }
+
+  .user-avatar {
+    margin-right: 0;
+  }
+
+  .main-content {
+    margin-left: 70px;
+    padding: 20px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .dashboard-actions {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .db-info-card {
+    padding: 15px;
+  }
+
+  .db-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1100;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  .dashboard-title h1 {
+    font-size: 24px;
+  }
+
+  .dashboard-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .db-details {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Toggle Button for Mobile Sidebar */
+@media (max-width: 480px) {
+  .main-content::before {
+    content: '\f0c9';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    font-size: 24px;
+    color: #2c3e50;
+    cursor: pointer;
+    z-index: 1200;
+  }
+}
+.dashboard-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}

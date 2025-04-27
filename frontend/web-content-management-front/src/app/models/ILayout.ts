@@ -1,7 +1,7 @@
 import {INode} from './INode';
 
 export interface ILayout {
-  id: string;
+  id?: string;
   borderColor: string;
   backgroundColor: string;
   height: string;

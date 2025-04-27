@@ -1,0 +1,33 @@
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <div class="dashboard-header">
+      <div class="dashboard-title">
+        <h1>Website Pages</h1>
+      </div>
+      <div class="dashboard-actions">
+        <button (click)="openAddPageModal()" class="action-button">
+          <fa-icon [icon]="faPlus"></fa-icon> Add Page
+        </button>
+      </div>
+    </div>
+
+    <div class="section-content">
+      <h2 class="section-title">Page List</h2>
+      <div class="card-container">
+        <app-page-card
+          *ngFor="let page of pages"
+          [page]="page"
+          (delete)="deletePage($event)"
+          (edit)="editPage($event)"
+        ></app-page-card>
+      </div>
+    </div>
+  </div>
+
+  <app-create-page-modal #createPageModal
+                         (close)="onCreatePageModalClose()"
+                         (create)="onPageCreate($event)">
+  </app-create-page-modal>
+</div>

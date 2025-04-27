@@ -10,6 +10,7 @@ import com.example.web_content_management_back.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,9 +36,14 @@ public class PageServiceImpl implements PageService {
     @Override
     public PageDTO createPage(PageDTO pageDTO) {
         Page page = pageMapper.toEntity(pageDTO);
-        Layout layout = layoutRepository.findById(pageDTO.getLayout().getId())
-                .orElseThrow(() -> new RuntimeException("Layout not found"));
-        page.setLayout(layout);
+
+        if (pageDTO.getLayout() != null && pageDTO.getLayout().getId() != null) {
+            Layout layout = layoutRepository.findById(pageDTO.getLayout().getId())
+                    .orElseThrow(() -> new RuntimeException("Layout not found"));
+            page.setLayout(layout);
+        } else {
+            page.setLayout(null);
+        }
 
         page = pageRepository.save(page);
         return pageMapper.toDTO(page);
@@ -68,5 +74,15 @@ public class PageServiceImpl implements PageService {
     @Override
     public void deletePage(String id) {
         pageRepository.deleteById(id);
+    }
+    @Override
+    public PageDTO assignLayoutToPage(String pageId, String layoutId) {
+        Page page = pageRepository.findById(pageId).orElseThrow(() -> new RuntimeException("Page not found"));
+        Layout layout = layoutRepository.findById(layoutId).orElseThrow(() -> new RuntimeException("Layout not found"));
+
+        page.setLayout(layout);
+        page = pageRepository.save(page);
+
+        return pageMapper.toDTO(page);
     }
 }

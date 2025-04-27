@@ -7,9 +7,13 @@ import com.example.web_content_management_back.repository.LayoutRepository;
 import com.example.web_content_management_back.service.LayoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.web_content_management_back.model.Node;
+import com.example.web_content_management_back.service.NodeService;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Collections;
 
 @Service
 public class LayoutServiceImpl implements LayoutService {
@@ -19,6 +23,9 @@ public class LayoutServiceImpl implements LayoutService {
 
     @Autowired
     private LayoutMapper layoutMapper;
+
+    @Autowired
+    private NodeService nodeService;
 
     @Override
     public List<LayoutDTO> getAllLayouts() {
@@ -56,4 +63,20 @@ public class LayoutServiceImpl implements LayoutService {
     public void deleteLayout(String id) {
         layoutRepository.deleteById(id);
     }
+
+   @Override
+       public void clearLayoutNodes(String layoutId) {
+           Layout layout = layoutRepository.findById(layoutId)
+                   .orElseThrow(() -> new RuntimeException("Layout non trouvé avec l'ID : " + layoutId));
+
+
+           if (layout.getNodes() != null) {
+               for (Node node : layout.getNodes()) {
+                   nodeService.deleteNode(node.getId());
+               }
+           }
+
+           layout.setNodes(Collections.emptyList());
+           layoutRepository.save(layout);
+       }
 }

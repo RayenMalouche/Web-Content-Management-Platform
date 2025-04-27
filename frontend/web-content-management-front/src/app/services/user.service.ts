@@ -1,0 +1,60 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import {User} from '../models/User.interface';
+
+
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserService {
+  private readonly baseUrl = 'http://localhost:8081/users';
+
+  constructor(private readonly http: HttpClient) {
+  }
+
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.baseUrl);
+  }
+
+  createUser(user: Partial<User>): Observable<User> {
+    return this.http.post<User>(this.baseUrl, user);
+  }
+
+
+  deleteUser(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  isResponsible(userId: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.baseUrl}/${userId}/is-responsible`);
+  }
+
+  getUsersByResponsibleId(responsibleId: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.baseUrl}/responsible/${responsibleId}`);
+  }
+
+  getProjectsByUser(userId: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.baseUrl}/${userId}/projects`, {
+      headers: {'Accept': 'application/json'},
+    });
+  }
+
+  addProjectToUser(userId: string, projectId: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${userId}/projects/${projectId}`, {});
+  }
+  addDatabaseToUser(userId: string, databaseId: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${userId}/databases/${databaseId}`, {});
+  }
+
+  getDatabasesByUser(userId: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.baseUrl}/${userId}/databases`, {
+      headers: {'Accept': 'application/json'},
+    });
+  }
+
+  getUserById(userId: string): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/${userId}`);
+  }
+}
