@@ -1,0 +1,52 @@
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <div class="dashboard-header">
+      <div class="dashboard-title">
+        <h1>Users</h1>
+      </div>
+      <div class="dashboard-actions">
+        <button (click)="openCreateUserModal()" class="action-button">
+          <fa-icon [icon]="faPlus"></fa-icon> Create New User
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="section-title">All Users</h2>
+      <div class="search-container">
+        <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+        <input
+          type="text"
+          class="search-bar"
+          placeholder="Search users..."
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="filterUsers()"
+        />
+      </div>
+      <div class="card-container">
+        <app-generic-list
+          title="All Users"
+          [items]="filteredUsers"
+          [cardTemplate]="userCardTemplate"
+          addNewText="Add New User"
+          (add)="openCreateUserModal()">
+        </app-generic-list>
+
+        <ng-template #userCardTemplate let-user>
+          <app-user-card
+            [user]="user"
+            (delete)="onUserDelete($event)">
+          </app-user-card>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-create-user-modal
+  #createUserModal
+  (close)="onCreateUserModalClose()"
+  (create)="onUserCreate($event)">
+</app-create-user-modal><p>users-view works!</p>

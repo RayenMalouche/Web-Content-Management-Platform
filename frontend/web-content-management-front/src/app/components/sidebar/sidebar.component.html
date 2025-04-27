@@ -1,3 +1,4 @@
+<!-- sidebar.component.html -->
 <div class="sidebar">
   <div class="sidebar-header">
     <h2>WebBuilder</h2>
@@ -21,11 +22,27 @@
     </button>
     <button
       class="menu-item"
+      [class.active]="activeMenuItem === 'projects'"
+      (click)="setActiveMenuItem('projects')"
+    >
+      <fa-icon [icon]="faFolder"></fa-icon>
+      <span>My Projects</span>
+    </button>
+    <button
+      class="menu-item"
       [class.active]="activeMenuItem === 'databases'"
       (click)="setActiveMenuItem('databases')"
     >
       <fa-icon [icon]="faDatabase"></fa-icon>
       <span>My Databases</span>
+    </button>
+    <button
+      class="menu-item"
+      [class.active]="activeMenuItem === 'users'"
+      (click)="setActiveMenuItem('users')"
+    >
+      <fa-icon [icon]="faUsers"></fa-icon>
+      <span>Users Management</span>
     </button>
     <button
       class="menu-item"
@@ -56,6 +73,5 @@
       <div class="user-name">{{ userName }}</div>
       <div class="user-role">{{ userRole }}</div>
     </div>
-
   </div>
 </div>

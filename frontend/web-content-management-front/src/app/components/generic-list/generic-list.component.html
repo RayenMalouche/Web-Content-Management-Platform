@@ -1,0 +1,9 @@
+<div class="section-container">
+  <h2 class="section-title">{{ title }}</h2>
+  <div class="card-container">
+    <ng-container *ngFor="let item of items">
+      <ng-container *ngTemplateOutlet="cardTemplate; context: { $implicit: item }"></ng-container>
+    </ng-container>
+    <app-add-new-card [text]="addNewText" (add)="onAdd()"></app-add-new-card>
+  </div>
+</div>

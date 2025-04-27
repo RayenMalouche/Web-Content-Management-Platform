@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
-  faHome, faGlobe, faDatabase, faFolder, faCog, faUser, faSignOutAlt
+  faHome, faGlobe, faDatabase, faFolder, faCog, faUser, faSignOutAlt,faUsers
 } from '@fortawesome/free-solid-svg-icons';
 import {Router} from '@angular/router';
 
@@ -21,11 +21,16 @@ export class SidebarComponent implements OnInit {
   faFolder = faFolder;
   faCog = faCog;
   faUser = faUser;
+  faUsers = faUsers;
 
   activeMenuItem = 'dashboard';
 
   setActiveMenuItem(item: string) {
     this.activeMenuItem = item;
+
+      this.activeMenuItem = item;
+      this.router.navigate([`/${item}`]);
+
   }
 
   userName: string = 'Guest';

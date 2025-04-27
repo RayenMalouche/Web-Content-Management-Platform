@@ -12,6 +12,7 @@ import {PageListComponent} from './app/components/page-list/page-list.component'
 import {DashboardComponent} from './app/components/dashboard/dashboard.component';
 import {ProjectDetailsComponent} from './app/components/project-details/project-details.component';
 import {RegisterComponent} from './app/components/register/register.component';
+import {WebsitesViewComponent} from './app/components/Views/website-view/website-view.component';
 
 
 const appRoutes: Routes = [
@@ -26,6 +27,10 @@ const appRoutes: Routes = [
   {path:'login', loadComponent: () => import('./app/components/login/login.component').then(m => m.LoginComponent)},
   {path: 'database-editor/:id', loadComponent: () => import('./app/components/database-editor/database-editor.component').then(m => m.DatabaseEditorComponent)},
   { path: 'project/:id', component: ProjectDetailsComponent },
+  { path: 'websites', component: WebsitesViewComponent},
+  {path: 'users', loadComponent: () => import('./app/components/Views/users-view/users-view.component').then(m => m.UsersViewComponent)},
+  {path: 'projects', loadComponent: () => import('./app/components/Views/project-view/project-view.component').then(m => m.ProjectsViewComponent)},
+
 ];
 
 bootstrapApplication(AppComponent, {

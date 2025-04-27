@@ -33,6 +33,7 @@ import {UserCardComponent} from '../cards/user-card/user-card.component';
 import {User} from '../../models/User.interface';
 import {CreateUserModalComponent} from '../modals/create-user-modal/create-user-modal.component';
 import {Project} from '../../models/Project.interface';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -88,7 +89,7 @@ export class DashboardComponent implements OnInit{
 
 
 
-  constructor(private readonly dialog: MatDialog,private readonly cdr: ChangeDetectorRef) {
+  constructor(private readonly dialog: MatDialog,private readonly cdr: ChangeDetectorRef,private router: Router) {
     this.users$ = new Observable<User[]>();
   }
 
@@ -503,6 +504,20 @@ export class DashboardComponent implements OnInit{
         },
       });
     });
+  }
+
+  viewAllWebsites() {
+    this.router.navigate(['/websites']);
+  }
+viewAllDatabases() {
+  this.router.navigate(['/databases']);
+}
+  viewAllProjects() {
+    this.router.navigate(['/projects']);
+  }
+
+  viewAllUsers() {
+    this.router.navigate(['/users']);
   }
 
 

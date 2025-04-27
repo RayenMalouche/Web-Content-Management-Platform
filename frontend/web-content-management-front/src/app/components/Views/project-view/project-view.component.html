@@ -1,0 +1,52 @@
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <div class="dashboard-header">
+      <div class="dashboard-title">
+        <h1>Projects</h1>
+      </div>
+      <div class="dashboard-actions">
+        <button (click)="openCreateProjectModal()" class="action-button">
+          <fa-icon [icon]="faPlus"></fa-icon> Create New Project
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="section-title">All Projects</h2>
+      <div class="search-container">
+        <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+        <input
+          type="text"
+          class="search-bar"
+          placeholder="Search projects..."
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="filterProjects()"
+        />
+      </div>
+      <div class="card-container">
+        <app-generic-list
+          title="All Projects"
+          [items]="filteredProjects"
+          [cardTemplate]="projectCardTemplate"
+          addNewText="Add New Project"
+          (add)="openCreateProjectModal()">
+        </app-generic-list>
+
+        <ng-template #projectCardTemplate let-project>
+          <app-project-card
+            [project]="project"
+            (delete)="onProjectDelete($event)">
+          </app-project-card>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-create-project-modal
+  #createProjectModal
+  (close)="onCreateProjectModalClose()"
+  (create)="onProjectCreate($event)">
+</app-create-project-modal>
