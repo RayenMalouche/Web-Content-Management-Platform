@@ -28,7 +28,8 @@ export class CreateDatabaseModalComponent {
     description: '',
     username: '',
     password: '',
-    port: 3306
+    port: 3306,
+    host: 'localhost'
   };
 
   constructor(private readonly databaseService: DatabaseService,private readonly snackBar: MatSnackBar) {}
@@ -102,7 +103,11 @@ export class CreateDatabaseModalComponent {
       description: '',
       username: '',
       password: '',
-      port: 3306
+      port: 3306,
+      host: 'localhost'
     };
+  }
+  testConnection() {
+    console.log('Testing connection with database:', this.database);
   }
 }

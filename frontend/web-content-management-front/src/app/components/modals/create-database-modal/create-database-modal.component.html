@@ -13,6 +13,10 @@
           <input type="text" id="database-name" [(ngModel)]="database.name" name="name" placeholder="Enter database name" required>
         </div>
         <div class="form-group">
+          <label for="host">Host</label>
+          <input id="host" [(ngModel)]="database.host" name="host" type="text" placeholder="e.g., localhost" />
+        </div>
+        <div class="form-group">
           <label for="database-type">Type</label>
           <select id="database-type" [(ngModel)]="database.type" name="type">
             <option value="SQL">mysql</option>
@@ -40,6 +44,7 @@
     </div>
     <div class="custom-modal-footer">
       <button class="btn btn-outline" (click)="onClose()">Cancel</button>
+      <button class="btn btn-primary" (click)="testConnection()">Test Connection</button>
       <button class="btn btn-primary" (click)="onCreate()">Create Database</button>
     </div>
   </div>

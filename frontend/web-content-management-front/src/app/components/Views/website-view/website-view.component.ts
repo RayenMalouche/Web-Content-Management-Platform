@@ -2,16 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { WebsiteService } from '../../../services/website-service.service';
 import { GenericListComponent } from '../../generic-list/generic-list.component';
-import { WebsiteCardComponent } from '../../cards/website-card/website-card.component';
 import { CreateWebsiteModalComponent } from '../../modals/create-website-modal/create-website-modal.component';
 import { CommonModule } from '@angular/common';
-import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons'; // Ajout de faSearch
-import { AddNewCardComponent } from '../../cards/add-new-card/add-new-card.component';
+import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { ProfileSectionComponent } from '../../profile-section/profile-section.component';
 import { SidebarComponent } from '../../sidebar/sidebar.component';
-import { UserCardComponent } from '../../cards/user-card/user-card.component';
 import { FormsModule } from '@angular/forms';
+import {WebsiteCardComponent} from '../../cards/website-card/website-card.component';
 
 @Component({
   selector: 'app-website-view',
@@ -20,15 +17,12 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [
     GenericListComponent,
-    WebsiteCardComponent,
     CreateWebsiteModalComponent,
     CommonModule,
-    AddNewCardComponent,
     FaIconComponent,
-    ProfileSectionComponent,
     SidebarComponent,
-    UserCardComponent,
-    FormsModule
+    FormsModule,
+    WebsiteCardComponent
   ]
 })
 export class WebsitesViewComponent implements OnInit {
@@ -39,7 +33,7 @@ export class WebsitesViewComponent implements OnInit {
 
   private allWebsites: any[] = [];
 
-  constructor(private websiteService: WebsiteService) {}
+  constructor(private readonly websiteService: WebsiteService) {}
 
   ngOnInit() {
     this.websites$ = this.websiteService.getWebsites();
@@ -89,9 +83,9 @@ export class WebsitesViewComponent implements OnInit {
   }
 
   openEditWebsiteModal(website: any) {
-    // À implémenter si nécessaire
+    this.createWebsiteModal.open(website);
   }
 
   protected readonly faPlus = faPlus;
-  protected readonly faSearch = faSearch; // Ajout de l'icône de recherche
+  protected readonly faSearch = faSearch;
 }

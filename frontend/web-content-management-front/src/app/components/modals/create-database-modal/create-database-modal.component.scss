@@ -13,13 +13,13 @@
 .custom-modal {
   background: white;
   border-radius: 8px;
-  width: 400px;
+  width: 500px; /* Increased from 400px to 500px for wider modal */
   max-width: 90%;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .custom-modal-header {
-  padding: 10px 15px;
+  padding: 8px 12px; /* Reduced from 10px 15px */
   border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
@@ -27,45 +27,75 @@
 }
 
 .custom-modal-title {
-  font-size: 1rem;
+  font-size: 0.95rem; /* Slightly reduced from 1rem */
   font-weight: 500;
 }
 
 .custom-close-modal {
   background: none;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.1rem; /* Reduced from 1.2rem */
   cursor: pointer;
   color: #777;
 }
 
 .custom-modal-body {
-  padding: 15px; /* Réduction du padding */
+  padding: 12px; /* Reduced from 15px */
 }
 
 .form-group {
-  margin-bottom: 15px; /* Réduction de l'espacement */
+  margin-bottom: 12px; /* Reduced from 15px */
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px; /* Réduction de l'espacement */
-  font-size: 0.9rem; /* Réduction de la taille de la police */
+  margin-bottom: 4px; /* Reduced from 5px */
+  font-size: 0.85rem; /* Reduced from 0.9rem */
   font-weight: 500;
 }
 
-.form-group input, .form-group select {
+.form-group input,
+.form-group select,
+.form-group textarea {
   width: 100%;
-  padding: 8px; /* Réduction du padding */
+  padding: 6px; /* Reduced from 8px */
   border: 1px solid var(--border-color);
-  border-radius: 4px; /* Réduction du rayon */
-  font-size: 0.9rem; /* Réduction de la taille de la police */
+  border-radius: 4px;
+  font-size: 0.85rem; /* Reduced from 0.9rem */
 }
 
 .custom-modal-footer {
-  padding: 10px 15px; /* Réduction du padding */
+  padding: 8px 12px; /* Reduced from 10px 15px */
   border-top: 1px solid var(--border-color);
   display: flex;
   justify-content: flex-end;
-  gap: 8px; /* Réduction de l'espacement entre les boutons */
+  gap: 12px; /* Increased from 8px to 12px for better button spacing */
+}
+
+.btn {
+  padding: 6px 14px; /* Reduced from 8px 16px for compact buttons */
+  border-radius: 4px;
+  font-size: 0.85rem; /* Reduced from 0.9rem */
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-outline {
+  background: none;
+  border: 1px solid #777;
+  color: #777;
+}
+
+.btn-outline:hover {
+  background: #f5f5f5;
+}
+
+.btn-primary {
+  background: #007bff;
+  border: none;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
 }
