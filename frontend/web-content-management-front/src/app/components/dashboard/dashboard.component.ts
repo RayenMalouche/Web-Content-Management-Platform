@@ -4,7 +4,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { ProfileSectionComponent } from '../profile-section/profile-section.component';
-import { WebsiteCardComponent } from '../cards/website-card/website-card.component';
 import { DatabaseCardComponent } from '../cards/database-card/database-card.component';
 import { AddNewCardComponent } from '../cards/add-new-card/add-new-card.component';
 import { CreateWebsiteModalComponent } from '../modals/create-website-modal/create-website-modal.component';
@@ -27,13 +26,13 @@ import {ProjectCardComponent} from '../cards/project-card/project-card.component
 import {ProjectService} from '../../services/project-service.service';
 import {CreateProjectModalComponent} from '../modals/create-project-modal/create-project-modal.component';
 
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute,Router} from '@angular/router';
 import {UserService} from '../../services/user.service';
 import {UserCardComponent} from '../cards/user-card/user-card.component';
 import {User} from '../../models/User.interface';
 import {CreateUserModalComponent} from '../modals/create-user-modal/create-user-modal.component';
 import {Project} from '../../models/Project.interface';
-import {Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -43,7 +42,6 @@ import {Router} from '@angular/router';
     FontAwesomeModule,
     SidebarComponent,
     ProfileSectionComponent,
-    WebsiteCardComponent,
     DatabaseCardComponent,
     AddNewCardComponent,
     CreateWebsiteModalComponent,
@@ -112,14 +110,14 @@ export class DashboardComponent implements OnInit{
           if (projectIds.length > 0) {
             const projectRequests = projectIds.map((id) => this.projectService.getProjectById(id));
             forkJoin(projectRequests).subscribe((projects) => {
-              (this.projects$ as BehaviorSubject<Project[]>).next(projects); // Mise à jour des projets
-              this.cdr.detectChanges(); // Forcer la détection des changements
+              (this.projects$ as BehaviorSubject<Project[]>).next(projects);
+              this.cdr.detectChanges();
               console.log('Projects:', projects);
             });
           } else {
             console.log('Aucun projet trouvé pour cet utilisateur.');
             (this.projects$ as BehaviorSubject<Project[]>).next([]);
-            this.cdr.detectChanges(); // Forcer la détection des changements
+            this.cdr.detectChanges();
           }
         });
 
@@ -128,7 +126,7 @@ export class DashboardComponent implements OnInit{
           if (databaseIds.length > 0) {
             const databaseRequests = databaseIds.map((id) => this.databaseService.getDatabaseById(id));
             forkJoin(databaseRequests).subscribe((databases) => {
-              (this.databases$ as BehaviorSubject<Database[]>).next(databases); // Mise à jour des bases de données
+              (this.databases$ as BehaviorSubject<Database[]>).next(databases);
               this.cdr.detectChanges();
               console.log('Databases:', databases);
             });

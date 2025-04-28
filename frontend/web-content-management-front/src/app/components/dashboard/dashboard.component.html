@@ -25,12 +25,7 @@
     </div>
 
     <div >
-      <h2 class="section-title">My Websites</h2>
-      <button class="view-all-button" (click)="viewAllWebsites()">View All</button>
-      <div class="card-container">
-        <app-website-card *ngFor="let website of (websites$ | async)?.slice(0, 2)" [website]="website" (delete)="onWebsiteDelete($event)" (edit)="openEditWebsiteModal($event)"></app-website-card>
-        <app-add-new-card text="Add New Website" (add)="openCreateWebsiteModal()"></app-add-new-card>
-      </div>
+
 
       <h2 class="section-title">My Projects</h2>
       <button class="view-all-button" (click)="viewAllProjects()">View All</button>

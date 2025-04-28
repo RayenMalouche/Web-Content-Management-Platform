@@ -34,6 +34,9 @@ export class DatabaseService {
   deleteTable(databaseId: string, tableName: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${databaseId}/tables/${tableName}`);
   }
+  testConnection(databaseId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${databaseId}/test-connection`);
+  }
 }
 
 export class DatabaseServiceService {

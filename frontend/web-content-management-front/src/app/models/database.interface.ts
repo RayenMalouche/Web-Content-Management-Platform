@@ -7,4 +7,5 @@ export interface Database {
   description?: string;
   username: string;
   password: string;
+
 }
