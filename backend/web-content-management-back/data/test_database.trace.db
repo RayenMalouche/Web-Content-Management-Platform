@@ -110,3 +110,7 @@ SELECT COLUMN_NAME, TYPE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME =
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
 	at java.base/java.lang.Thread.run(Thread.java:842)
+2025-04-29 15:00:24 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Erreur de syntaxe dans l'instruction SQL "CREATE TABLE IF NOT EXISTS [*]user (id INT PRIMARY KEY)"; attendu "identifier"
+Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS [*]user (id INT PRIMARY KEY)"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS user (id INT PRIMARY KEY) [42001-214]
