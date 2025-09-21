@@ -135,3 +135,14 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 ## License
 This project is released under the MIT License (or your chosen license). Update this section if a different license applies.
+
+## demo 
+Voici quelques captures d\'écran de l\'application :
+
+![Accueil](docs/images/1.jpeg)
+![Gestion du contenu](docs/images/2.jpeg)
+![Exemple d\'interface](docs/images/3.jpeg)
+![Exemple d\'interface](docs/images/4.jpeg)
+![Exemple d\'interface](docs/images/5.jpeg)
+![Exemple d\'interface](docs/images/6.jpeg)
+![Exemple d\'interface](docs/images/7.jpeg)
