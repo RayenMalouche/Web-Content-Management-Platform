@@ -50,8 +50,8 @@ This project is a comprehensive platform designed to help users effortlessly cre
 ## Quick Start
 1. Clone the repository:
    ```bash
-   git clone https://github.com/ines312692/web-content-management.git
-   cd web-content-management
+   git clone https://github.com/RayenMalouche/Web-Content-Management-Platform.git
+   cd Web-Content-Management-Platform
    ```
 2. Install frontend dependencies:
    ```bash
