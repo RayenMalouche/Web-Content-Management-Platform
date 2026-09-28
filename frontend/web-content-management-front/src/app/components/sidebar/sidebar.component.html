@@ -1,77 +1,34 @@
-<!-- sidebar.component.html -->
-<div class="sidebar">
-  <div class="sidebar-header">
-    <h2>WebBuilder</h2>
+<!-- The side of the kit box: the kit's name, and the parts inventory as navigation. -->
+<aside class="box">
+  <div class="box__art">
+    <span class="box__kit">Kit Nº 01 · 1:1 scale</span>
+    <span class="box__name">Web App<br>Builder</span>
   </div>
-  <div class="sidebar-menu">
+
+  <nav class="box__menu" aria-label="Main">
+    <p class="box__label">Contents</p>
     <button
-      class="menu-item"
-      [class.active]="activeMenuItem === 'dashboard'"
-      (click)="setActiveMenuItem('dashboard')"
+      *ngFor="let item of menu; let i = index"
+      type="button"
+      class="box__item"
+      [class.is-active]="activeMenuItem === item.id"
+      [attr.aria-current]="activeMenuItem === item.id ? 'page' : null"
+      (click)="setActiveMenuItem(item.id)"
     >
-      <fa-icon [icon]="faHome"></fa-icon>
-      <span>Dashboard</span>
+      <span class="box__no">{{ item.letter }}</span>
+      <fa-icon [icon]="item.icon"></fa-icon>
+      <span>{{ item.label }}</span>
     </button>
-    <button
-      class="menu-item"
-      [class.active]="activeMenuItem === 'websites'"
-      (click)="setActiveMenuItem('websites')"
-    >
-      <fa-icon [icon]="faGlobe"></fa-icon>
-      <span>My Websites</span>
-    </button>
-    <button
-      class="menu-item"
-      [class.active]="activeMenuItem === 'projects'"
-      (click)="setActiveMenuItem('projects')"
-    >
-      <fa-icon [icon]="faFolder"></fa-icon>
-      <span>My Projects</span>
-    </button>
-    <button
-      class="menu-item"
-      [class.active]="activeMenuItem === 'databases'"
-      (click)="setActiveMenuItem('databases')"
-    >
-      <fa-icon [icon]="faDatabase"></fa-icon>
-      <span>My Databases</span>
-    </button>
-    <button
-      class="menu-item"
-      [class.active]="activeMenuItem === 'users'"
-      (click)="setActiveMenuItem('users')"
-    >
-      <fa-icon [icon]="faUsers"></fa-icon>
-      <span>Users Management</span>
-    </button>
-    <button
-      class="menu-item"
-      [class.active]="activeMenuItem === 'components'"
-      (click)="setActiveMenuItem('components')"
-    >
-      <fa-icon [icon]="faFolder"></fa-icon>
-      <span>Components</span>
-    </button>
-    <button
-      class="menu-item"
-      [class.active]="activeMenuItem === 'settings'"
-      (click)="setActiveMenuItem('settings')"
-    >
-      <fa-icon [icon]="faCog"></fa-icon>
-      <span>Settings</span>
-    </button>
-    <button class="menu-item" (click)="onLogout()">
+  </nav>
+
+  <div class="box__user">
+    <div class="box__avatar"><fa-icon [icon]="faUser"></fa-icon></div>
+    <div class="box__who">
+      <div class="box__user-name">{{ userName }}</div>
+      <div class="box__user-role">{{ userRole }}</div>
+    </div>
+    <button type="button" class="box__logout" (click)="onLogout()" title="Log out" aria-label="Log out">
       <fa-icon [icon]="faSignOutAlt"></fa-icon>
-      <span>Logout</span>
     </button>
   </div>
-  <div class="user-info">
-    <div class="user-avatar">
-      <fa-icon [icon]="faUser"></fa-icon>
-    </div>
-    <div>
-      <div class="user-name">{{ userName }}</div>
-      <div class="user-role">{{ userRole }}</div>
-    </div>
-  </div>
-</div>
+</aside>

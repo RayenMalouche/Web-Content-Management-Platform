@@ -19,6 +19,8 @@ export class GenericListComponent {
   @Input() items: any[] = [];
   @Input() cardTemplate: any;
   @Input() addNewText: string = 'Add New';
+  /** Letter for this sprue's part numbers (A1, A2…). */
+  @Input() sprue: string = 'A';
   @Output() add = new EventEmitter<void>();
 
   onAdd() {

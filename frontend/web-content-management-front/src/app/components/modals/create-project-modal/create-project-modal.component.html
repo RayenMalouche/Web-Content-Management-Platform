@@ -1,26 +1,26 @@
-<div class="custom-modal-backdrop" [style.display]="isVisible ? 'flex' : 'none'">
-  <div class="custom-modal">
-    <div class="custom-modal-header">
-      <h3 class="custom-modal-title">Create New Project</h3>
-      <button class="custom-close-modal" (click)="onClose()">
+<div class="kit-modal-backdrop" [style.display]="isVisible ? 'flex' : 'none'">
+  <div class="kit-modal" role="dialog" aria-modal="true">
+    <div class="kit-modal__head">
+      <h3 class="kit-modal__title">Create New Project</h3>
+      <button type="button" class="kit-modal__close" aria-label="Close" (click)="onClose()">
         <fa-icon [icon]="faTimes"></fa-icon>
       </button>
     </div>
-    <div class="custom-modal-body">
+    <div class="kit-modal__body">
       <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
+        <div class="kit-field">
           <label for="name">Project Name</label>
           <input type="text" id="name" formControlName="name" placeholder="Enter project name">
         </div>
 
-        <div class="form-group">
+        <div class="kit-field">
           <label for="description">Description</label>
           <textarea id="description" formControlName="description" placeholder="Enter project description"></textarea>
         </div>
 
-        <div class="custom-modal-footer">
-          <button type="button" class="btn btn-outline" (click)="onClose()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Create Project</button>
+        <div class="kit-modal__foot">
+          <button type="button" class="kit-btn" (click)="onClose()">Cancel</button>
+          <button type="submit" class="kit-btn kit-btn--primary">Create Project</button>
         </div>
       </form>
     </div>

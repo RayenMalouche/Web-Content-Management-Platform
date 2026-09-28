@@ -1,42 +1,42 @@
-<div class="d-flex flex-column">
-  <div class="topbar">
-    <div class="logo">
-      <i class="fas fa-cubes"></i>
-      <span>WebBuilder</span>
-    </div>
-    <div class="topbar-actions">
-      <button class="btn btn-outline-light me-2" id="preview-btn" (click)="togglePreview()">
-      <i class="fas" [ngClass]="isPreviewMode ? 'fa-edit' : 'fa-eye'"></i>
-      {{ isPreviewMode ? 'Edit' : 'Preview' }}
+<!-- The workbench: parts tray, assembly area on the cutting mat, paint guide. -->
+<div class="bench" [class.is-preview]="isPreviewMode">
+  <header class="bench__bar">
+    <a routerLink="/dashboard" class="bench__brand" title="Back to the dashboard">
+      <span class="bench__mark" aria-hidden="true">01</span>
+      <span>Web App Builder</span>
+    </a>
+    <span class="bench__mode">{{ isPreviewMode ? 'Preview' : 'Assembly' }}</span>
+    <div class="bench__actions">
+      <button type="button" class="kit-btn kit-btn--sm bench__btn" (click)="togglePreview()" [attr.aria-pressed]="isPreviewMode">
+        <i class="fas" [ngClass]="isPreviewMode ? 'fa-pen' : 'fa-eye'" aria-hidden="true"></i>
+        {{ isPreviewMode ? 'Back to assembly' : 'Preview' }}
       </button>
-      <button class="btn btn-outline-light me-2" id="undo-btn" >
-        <i class="fas fa-undo"></i>
+      <button type="button" class="kit-btn kit-btn--sm kit-btn--danger bench__btn" (click)="clearAll()">
+        <i class="fas fa-trash-alt" aria-hidden="true"></i> Clear
       </button>
-      <button class="btn btn-outline-light me-2" id="redo-btn" >
-        <i class="fas fa-redo"></i>
-      </button>
-      <button class="btn btn-outline-danger me-2" id="clear-btn" (click)="clearAll()">
-        <i class="fas fa-trash-alt me-1"></i> Clear
-      </button>
-      <button class="btn btn-success" id="save-btn" (click)="save()">
-        <i class="fas fa-save me-1"></i> Save
+      <button type="button" class="kit-btn kit-btn--sm kit-btn--primary" (click)="save()">
+        <i class="fas fa-save" aria-hidden="true"></i> Save
       </button>
     </div>
-  </div>
+  </header>
 
-  <!-- Main Content -->
-  <div class="container-fluid d-flex flex-wrap">
-    <div class="column">
+  <div class="bench__body">
+    <aside class="bench__tray" aria-label="Parts tray" *ngIf="!isPreviewMode">
       <app-origin-list (dragStart)="onDragStart()" (dragMove)="onDragged($event)" (dragEnd)="onDragEnd()"></app-origin-list>
-    </div>
-    <div class="column">
-      <app-layout [root]="root" (drop)="onDrop($event)" (dragStart)="onDragStart()"
-                  (dragMove)="onDragged($event)" (dragEnd)="onDragEnd()"
-                  (remove)="onRemove($event)" (nodeSelected)="onNodeSelected($event)"></app-layout>
-    </div>
-    <div class="column">
+    </aside>
+
+    <main class="bench__mat">
+      <app-cutting-mat [size]="28" [numSquares]="14"></app-cutting-mat>
+      <div class="bench__canvas">
+        <app-layout [root]="root" (drop)="onDrop($event)" (dragStart)="onDragStart()"
+                    (dragMove)="onDragged($event)" (dragEnd)="onDragEnd()"
+                    (remove)="onRemove($event)" (nodeSelected)="onNodeSelected($event)"></app-layout>
+      </div>
+    </main>
+
+    <aside class="bench__guide" aria-label="Paint guide" *ngIf="!isPreviewMode">
       <app-options [root]="root" [selectedNode$]="selectedNode$" [selectedNodeIsRoot]="isLastSelectedNodeRoot"
                    [layout$]="layout$" (saveNode)="onNodeSave($event)" (saveLayout)="onSaveLayout($event)"></app-options>
-    </div>
+    </aside>
   </div>
 </div>

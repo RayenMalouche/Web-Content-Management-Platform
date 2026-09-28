@@ -1,54 +1,40 @@
-<div class="dashboard-container">
+<div class="kit-shell">
   <app-sidebar></app-sidebar>
 
-<div class="main-content">
-  <div class="dashboard-header">
-    <div class="dashboard-title">
-      <h1>Database Management</h1>
-    </div>
-    <div class="dashboard-actions">
-
-      <button id="create-table-btn">
-        <fa-icon [icon]="faPlus"></fa-icon> Create New Table
-      </button>
-    </div>
-  </div>
-
-  <!-- Database Info Card -->
-  <div class="db-info-card">
-    <div class="db-header">
-      <h2 class="db-title">Products Database</h2>
-      <div class="db-status">
-        <span class="status-indicator online"></span>
-        Connected
+  <main class="kit-main">
+    <header class="kit-page-head">
+      <div>
+        <span class="kit-eyebrow">Parts bin · database</span>
+        <h1>Database</h1>
       </div>
-    </div>
-    <div class="db-details">
-      <div class="detail-item">
-        <div class="detail-label">Type</div>
-        <div class="detail-value">MySQL</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">Size</div>
-        <div class="detail-value">245 MB</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">Tables</div>
-        <div class="detail-value">12</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">Host</div>
-        <div class="detail-value">db.example.com</div>
-      </div>
-    </div>
-  </div>
+    </header>
 
-<div>
+    <ng-container *ngIf="databaseId; else noDatabase">
+      <!-- Only what the page actually knows: the old card showed made-up type, size and host. -->
+      <section class="bin" aria-label="Database summary">
+        <div>
+          <span class="kit-eyebrow">Database ID</span>
+          <p class="bin__id">{{ databaseId }}</p>
+        </div>
+        <div>
+          <span class="kit-eyebrow">Tables</span>
+          <p class="bin__count">{{ tables.length }}</p>
+        </div>
+      </section>
 
+      <h2 class="kit-step"><span class="kit-step__no">1</span> Add a table</h2>
+      <app-add-table (onAdd)="addTable($event)"></app-add-table>
 
-  <app-add-table (onAdd)="addTable($event)"></app-add-table>
+      <h2 class="kit-step"><span class="kit-step__no">2</span> Tables</h2>
+      <app-table-list [tables]="tables" (onEdit)="editTable($event)" (onDelete)="deleteTable($event)"></app-table-list>
+    </ng-container>
 
-  <app-table-list  [tables]="tables" (onEdit)="editTable($event)" (onDelete)="deleteTable($event)"></app-table-list>
-</div>
-</div>
+    <ng-template #noDatabase>
+      <div class="kit-empty">
+        <p><strong>No database picked.</strong></p>
+        <p>Open one from the dashboard with <em>Configure</em> to manage its tables.</p>
+        <p style="margin-top: 1rem"><a routerLink="/dashboard" class="kit-btn kit-btn--sm">Back to the dashboard</a></p>
+      </div>
+    </ng-template>
+  </main>
 </div>

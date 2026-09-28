@@ -1,81 +1,45 @@
-<div class="background-overlay"></div>
-<div class="login-container">
-  <div class="login-form">
-    <h1>Welcome Back</h1>
-    <p>Please log in to your account</p>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
+<div class="entry">
+  <aside class="entry__lid">
+    <a routerLink="/" class="entry__brand">Web App Builder</a>
+    <app-exploded-view tone="dark" class="entry__art"></app-exploded-view>
+    <p class="entry__note">Kit Nº 01 · pick up where you left off.</p>
+  </aside>
+
+  <main class="entry__form">
+    <span class="kit-eyebrow">Step 0 · open the box</span>
+    <h1>Log in</h1>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="kit-field">
         <label for="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          formControlName="email"
-          placeholder="Enter your email"
-          required
-        >
-        <div
-          *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
-          class="error-message"
-        >
-          <span *ngIf="loginForm.get('email')?.errors?.['required']">
-            Email is required
-          </span>
-          <span *ngIf="loginForm.get('email')?.errors?.['email']">
-            Please enter a valid email
-          </span>
-        </div>
+        <input type="email" id="email" formControlName="email" placeholder="you@example.com" autocomplete="email" required>
+        <span class="kit-error" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          <ng-container *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</ng-container>
+          <ng-container *ngIf="loginForm.get('email')?.errors?.['email']">That isn't a valid email.</ng-container>
+        </span>
       </div>
 
-      <div class="form-group">
+      <div class="kit-field">
         <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          placeholder="Enter your password"
-          required
-        >
-        <div
-          *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-          class="error-message"
-        >
-          <span *ngIf="loginForm.get('password')?.errors?.['required']">
-            Password is required
-          </span>
-        </div>
+        <input type="password" id="password" formControlName="password" placeholder="••••••••" autocomplete="current-password" required>
+        <span class="kit-error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">Password is required.</span>
       </div>
 
-      <div *ngIf="loginError" class="error-alert">
-        {{ loginError }}
-      </div>
+      <p *ngIf="loginError" class="kit-alert" role="alert">{{ loginError }}</p>
 
-      <button
-        type="submit"
-        class="login-button"
-        [disabled]="loginForm.invalid || isLoading"
-      >
-        {{ isLoading ? 'Logging in...' : 'Log In' }}
+      <button type="submit" class="kit-btn kit-btn--primary kit-btn--block entry__submit" [disabled]="loginForm.invalid || isLoading">
+        {{ isLoading ? 'Logging in…' : 'Log in' }}
       </button>
 
-      <div class="divider">OR</div>
+      <div class="entry__or"><span>or</span></div>
 
-      <button
-        type="button"
-        class="google-btn"
-        (click)="handleGoogleSignIn()"
-        [disabled]="isLoading"
-      >
-        <img ngSrc="assets/images/google-logo.png" alt="Google" height="768" width="768">
-        Continue with Google
+      <button type="button" class="kit-btn kit-btn--block" (click)="handleGoogleSignIn()" [disabled]="isLoading">
+        <img src="assets/images/google-logo.png" alt="" width="18" height="18"> Continue with Google
       </button>
     </form>
 
-    <div class="forgot-password">
-      <a routerLink="/forgot-password">Forgot Password?</a>
-    </div>
-  </div>
-
-  <div class="login-image">
-    <img ngSrc="assets/images/logo-bg.png" alt="Company" height="540" width="410">
-  </div>
+    <p class="entry__alt">
+      New here? <a routerLink="/register">Create an account</a>
+    </p>
+  </main>
 </div>

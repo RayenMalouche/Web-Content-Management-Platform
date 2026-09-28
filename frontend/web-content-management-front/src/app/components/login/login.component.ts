@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { ExplodedViewComponent } from '../../shared/kit/exploded-view.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import {AuthService} from '../../services/auth.service.service';
@@ -8,7 +9,7 @@ import {AuthService} from '../../services/auth.service.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgOptimizedImage],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, ExplodedViewComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })

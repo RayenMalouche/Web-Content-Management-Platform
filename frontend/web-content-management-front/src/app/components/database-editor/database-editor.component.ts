@@ -8,8 +8,9 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../../shared/confirm-dialog/confirm-dialog.component';
 import {faHome, faPlus} from '@fortawesome/free-solid-svg-icons';
-import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {SidebarComponent} from '../sidebar/sidebar.component';
+import { NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
@@ -19,8 +20,9 @@ import {SidebarComponent} from '../sidebar/sidebar.component';
   imports: [
     AddTableComponent,
     TableListComponent,
-    FaIconComponent,
     SidebarComponent,
+    NgIf,
+    RouterLink,
 
   ],
   styleUrls: ['./database-editor.component.scss']

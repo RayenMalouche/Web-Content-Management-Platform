@@ -1,13 +1,3 @@
-.section-container {
-  margin-bottom: 2rem;
-}
-.section-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #333;
-}
-.card-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
+:host {
+  display: block;
 }

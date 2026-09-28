@@ -1,23 +1,23 @@
-<div class="dashboard-container">
+<div class="kit-shell">
   <app-sidebar></app-sidebar>
-  <div class="main-content" style="margin-left: 250px">
-    <h2 class="section-title">My Websites</h2>
-    <div class="card-container">
-      <app-website-card
-        *ngFor="let website of websites"
-        [website]="website"
-        (delete)="onWebsiteDelete($event)"
-        (edit)="openEditWebsiteModal($event)">
-      </app-website-card>
-      <app-add-new-card
-        text="Add New Website"
-        (add)="openCreateWebsiteModal()">
-      </app-add-new-card>
+
+  <main class="kit-main">
+    <header class="kit-page-head">
+      <div>
+        <span class="kit-eyebrow">Project</span>
+        <h1>Websites</h1>
+      </div>
+      <button type="button" (click)="openCreateWebsiteModal()" class="kit-btn kit-btn--primary">New website</button>
+    </header>
+
+    <div class="kit-grid" style="--sprue-letter: 'W'">
+      <app-website-card *ngFor="let website of websites" [website]="website" (delete)="onWebsiteDelete($event)" (edit)="openEditWebsiteModal($event)"></app-website-card>
+      <app-add-new-card text="Add a website" (add)="openCreateWebsiteModal()"></app-add-new-card>
     </div>
 
     <app-create-website-modal #createWebsiteModal
                               (close)="onCreateWebsiteModalClose()"
                               (create)="onWebsiteCreate($event)">
     </app-create-website-modal>
-  </div>
+  </main>
 </div>

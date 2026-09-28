@@ -1,22 +1,22 @@
-<div class="custom-modal-backdrop" [style.display]="isVisible ? 'flex' : 'none'">
-  <div class="custom-modal">
-    <div class="custom-modal-header">
-      <h3 class="custom-modal-title">Create New Database</h3>
-      <button class="custom-close-modal" (click)="onClose()">
+<div class="kit-modal-backdrop" [style.display]="isVisible ? 'flex' : 'none'">
+  <div class="kit-modal" role="dialog" aria-modal="true">
+    <div class="kit-modal__head">
+      <h3 class="kit-modal__title">Create New Database</h3>
+      <button type="button" class="kit-modal__close" aria-label="Close" (click)="onClose()">
         <fa-icon [icon]="faTimes"></fa-icon>
       </button>
     </div>
-    <div class="custom-modal-body">
+    <div class="kit-modal__body">
       <form id="create-database-form">
-        <div class="form-group">
+        <div class="kit-field">
           <label for="database-name">Database Name</label>
           <input type="text" id="database-name" [(ngModel)]="database.name" name="name" placeholder="Enter database name" required>
         </div>
-        <div class="form-group">
+        <div class="kit-field">
           <label for="host">Host</label>
           <input id="host" [(ngModel)]="database.host" name="host" type="text" placeholder="e.g., localhost" />
         </div>
-        <div class="form-group">
+        <div class="kit-field">
           <label for="database-type">Type</label>
           <select id="database-type" [(ngModel)]="database.type" name="type">
             <option value="SQL">mysql</option>
@@ -24,28 +24,28 @@
             <option value="H2">h2</option>
           </select>
         </div>
-        <div class="form-group">
+        <div class="kit-field">
           <label for="port">Port</label>
           <input type="number" id="port" [(ngModel)]="database.port" name="port" placeholder="Enter port number">
         </div>
-        <div class="form-group">
+        <div class="kit-field">
           <label for="description">Description</label>
           <textarea id="description" [(ngModel)]="database.description" name="description" placeholder="Enter description"></textarea>
         </div>
-        <div class="form-group">
+        <div class="kit-field">
           <label for="username">Username</label>
           <input type="text" id="username" [(ngModel)]="database.username" name="username" placeholder="Enter username">
         </div>
-        <div class="form-group">
+        <div class="kit-field">
           <label for="password">Password</label>
           <input type="password" id="password" [(ngModel)]="database.password" name="password" placeholder="Enter password">
         </div>
       </form>
     </div>
-    <div class="custom-modal-footer">
-      <button class="btn btn-outline" (click)="onClose()">Cancel</button>
-      <button class="btn btn-primary" (click)="testConnection()">Test Connection</button>
-      <button class="btn btn-primary" (click)="onCreate()">Create Database</button>
+    <div class="kit-modal__foot">
+      <button class="kit-btn" (click)="onClose()">Cancel</button>
+      <button class="kit-btn kit-btn--primary" (click)="testConnection()">Test Connection</button>
+      <button class="kit-btn kit-btn--primary" (click)="onCreate()">Create Database</button>
     </div>
   </div>
 </div>

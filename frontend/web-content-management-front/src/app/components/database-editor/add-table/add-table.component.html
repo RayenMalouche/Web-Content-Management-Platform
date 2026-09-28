@@ -1,13 +1,7 @@
-<form (ngSubmit)="addTable()" class="p-4 bg-light rounded shadow-sm">
-  <div class="mb-3">
-    <label for="tableName" class="form-label">Nom de la table :</label>
-    <input
-      id="tableName"
-      [(ngModel)]="newTable.name"
-      name="tableName"
-      class="form-control"
-      required
-      placeholder="Entrez le nom de la table">
+<form (ngSubmit)="addTable()" class="add-table">
+  <div class="kit-field add-table__field">
+    <label for="tableName">Table name</label>
+    <input id="tableName" [(ngModel)]="newTable.name" name="tableName" required placeholder="customers">
   </div>
-  <button type="submit" class="btn btn-primary">Ajouter une table</button>
+  <button type="submit" class="kit-btn kit-btn--primary">Add table</button>
 </form>
