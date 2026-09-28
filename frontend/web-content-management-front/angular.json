@@ -38,6 +38,14 @@
               }
             ],
             "styles": [
+              "node_modules/@fontsource/archivo/600.css",
+              "node_modules/@fontsource/archivo/800.css",
+              "node_modules/@fontsource/manrope/400.css",
+              "node_modules/@fontsource/manrope/600.css",
+              "node_modules/@fontsource/manrope/700.css",
+              "node_modules/@fontsource/space-mono/400.css",
+              "node_modules/@fontsource/space-mono/700.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -98,6 +106,14 @@
               }
             ],
             "styles": [
+              "node_modules/@fontsource/archivo/600.css",
+              "node_modules/@fontsource/archivo/800.css",
+              "node_modules/@fontsource/manrope/400.css",
+              "node_modules/@fontsource/manrope/600.css",
+              "node_modules/@fontsource/manrope/700.css",
+              "node_modules/@fontsource/space-mono/400.css",
+              "node_modules/@fontsource/space-mono/700.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "src/styles.scss"
             ],
             "scripts": []

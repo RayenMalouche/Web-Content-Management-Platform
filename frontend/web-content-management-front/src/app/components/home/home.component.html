@@ -1,113 +1,100 @@
-<div class="background-overlay"></div>
-<div class="home-container">
-  <header class="site-header">
-    <div class="logo">
-      <img ngSrc="assets/images/logo-bg-removebg.png" alt="Webs Builder" height="40" width="40">
-      <h1>Web App Builder</h1>
-    </div>
-    <nav class="main-nav">
-      <ul>
-        <li><a href="#features" class="active">Features</a></li>
-        <li><a href="#templates">Templates</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-    <div class="auth-buttons">
-      <a routerLink="/login" class="login-btn">Log In</a>
-      <a routerLink="/register" class="signup-btn">Sign Up</a>
-    </div>
-  </header>
+<!-- The box: the landing page is a model kit's box lid, contents list and steps. -->
+<header class="topbar">
+  <a routerLink="/" class="brand">
+    <span class="brand__mark" aria-hidden="true">01</span>
+    Web App Builder
+  </a>
+  <nav class="topbar__nav" aria-label="Page">
+    <a href="#contents">What's in the box</a>
+    <a href="#steps">How it goes together</a>
+  </nav>
+  <div class="topbar__auth">
+    <a routerLink="/login" class="kit-btn kit-btn--sm">Log in</a>
+    <a routerLink="/register" class="kit-btn kit-btn--sm kit-btn--primary">Sign up</a>
+  </div>
+</header>
 
-  <div class="hero-section">
-    <div class="hero-content">
-      <h1>Build Your Website With Ease</h1>
-      <p>Create stunning websites without coding. Drag, drop, and publish in minutes.</p>
-      <div class="cta-buttons">
-        <a routerLink="/register" class="primary-btn">Get Started Free</a>
-        <a href="#demo" class="secondary-btn">Watch Demo</a>
+<section class="lid">
+  <app-cutting-mat class="lid__mat" [size]="36" [numSquares]="16"></app-cutting-mat>
+  <div class="lid__inner">
+    <div class="lid__copy">
+      <span class="lid__kit">Kit Nº 01 · 1:1 scale · no glue required</span>
+      <h1 class="lid__title">
+        <app-text-effect text="Build your website from parts." per="word"></app-text-effect>
+      </h1>
+      <p class="lid__lead">
+        Snap pages together from rows, columns and widgets, paint them, and save. No code — just parts, a
+        sprue, and an instruction sheet.
+      </p>
+      <div class="lid__cta">
+        <a routerLink="/register" class="kit-btn lid__btn">Open the box</a>
+        <a routerLink="/login" class="lid__link">I already have a kit →</a>
       </div>
     </div>
-    <div class="hero-image">
-      <img ngSrc="assets/images/logo-bg.png" alt="Website Builder" height="400" width="400">
+    <div class="lid__art">
+      <app-exploded-view tone="dark"></app-exploded-view>
     </div>
   </div>
-
-  <div class="features-section" id="features">
-    <h2 class="section-title">Why Choose Web App Builder</h2>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="fas fa-paint-brush"></i>
-        </div>
-        <h3>Beautiful Templates</h3>
-        <p>Choose from hundreds of professionally designed templates to get started quickly.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="fas fa-laptop-code"></i>
-        </div>
-        <h3>Easy Drag & Drop</h3>
-        <p>No coding required. Simply drag and drop elements to build your site.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="fas fa-mobile-alt"></i>
-        </div>
-        <h3>Fully Responsive</h3>
-        <p>All websites look great on any device - desktop, tablet, or mobile.</p>
-      </div>
-    </div>
+  <div class="lid__band" aria-hidden="true">
+    <span>Websites</span><span>Pages</span><span>Layouts</span><span>Databases</span><span>Users</span>
   </div>
+</section>
 
-  <div class="cta-section">
-    <h2>Ready to create your website?</h2>
-    <p>Join thousands of satisfied users building their online presence today.</p>
-    <a routerLink="/register" class="primary-btn">Start Building Now</a>
+<section id="contents" class="contents">
+  <h2 class="kit-step"><span class="kit-step__no">i</span> What's in the box</h2>
+  <div class="kit-grid" style="--sprue-letter: 'K'">
+    <article class="kit-part">
+      <span class="kit-part__no" aria-hidden="true"></span>
+      <i class="fas fa-layer-group part-icon" aria-hidden="true"></i>
+      <h3 class="kit-part__title">Drag-and-drop builder</h3>
+      <p class="kit-part__meta">Rows, columns and widgets you drop onto a canvas and nest as deep as the page needs.</p>
+    </article>
+    <article class="kit-part">
+      <span class="kit-part__no" aria-hidden="true"></span>
+      <i class="fas fa-palette part-icon" aria-hidden="true"></i>
+      <h3 class="kit-part__title">Paint guide</h3>
+      <p class="kit-part__meta">Size, background and border for every part, plus the layout's own code, type and status.</p>
+    </article>
+    <article class="kit-part">
+      <span class="kit-part__no" aria-hidden="true"></span>
+      <i class="fas fa-database part-icon" aria-hidden="true"></i>
+      <h3 class="kit-part__title">Your own databases</h3>
+      <p class="kit-part__meta">Connect MySQL, H2 or NoSQL stores and manage their tables next to the sites that use them.</p>
+    </article>
+    <article class="kit-part">
+      <span class="kit-part__no" aria-hidden="true"></span>
+      <i class="fas fa-users part-icon" aria-hidden="true"></i>
+      <h3 class="kit-part__title">A workshop for teams</h3>
+      <p class="kit-part__meta">Managers add users and follow every project, website and page they build.</p>
+    </article>
   </div>
+</section>
 
-  <footer class="site-footer">
-    <div class="footer-content">
-      <div class="footer-logo">
-        <img ngSrc="assets/images/logo-bg-removebg.png" alt="Webs Builder" height="30" width="30">
-        <span>Web App Builder</span>
-      </div>
-      <div class="footer-links">
-        <div class="footer-column">
-          <h4>Product</h4>
-          <ul>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#templates">Templates</a></li>
-            <li><a href="#pricing">Pricing</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="#careers">Careers</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>Resources</h4>
-          <ul>
-            <li><a href="#blog">Blog</a></li>
-            <li><a href="#help">Help Center</a></li>
-            <li><a href="#tutorials">Tutorials</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2025 Web App Builder. All rights reserved.</p>
-      <div class="social-links">
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-linkedin"></i></a>
-      </div>
-    </div>
-  </footer>
-</div>
+<section id="steps" class="steps">
+  <h2 class="kit-step"><span class="kit-step__no">ii</span> How it goes together</h2>
+  <ol class="steps__list">
+    <li>
+      <span class="steps__no">1</span>
+      <h3>Start a project</h3>
+      <p>Group the websites that belong together.</p>
+    </li>
+    <li>
+      <span class="steps__no">2</span>
+      <h3>Add a website and its pages</h3>
+      <p>Each page opens in the builder with an empty assembly area.</p>
+    </li>
+    <li>
+      <span class="steps__no">3</span>
+      <h3>Assemble, paint, save</h3>
+      <p>Drop parts from the tray, set them in the paint guide, and save the layout.</p>
+    </li>
+  </ol>
+  <div class="steps__cta">
+    <a routerLink="/register" class="kit-btn kit-btn--primary">Start building</a>
+  </div>
+</section>
+
+<footer class="foot">
+  <span>Web App Builder · Angular, Spring Boot &amp; MongoDB</span>
+  <span>&copy; 2025</span>
+</footer>

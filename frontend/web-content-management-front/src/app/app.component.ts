@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 
 
@@ -8,7 +8,6 @@ import {RouterOutlet} from '@angular/router';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styles: [''],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterOutlet,
   ],

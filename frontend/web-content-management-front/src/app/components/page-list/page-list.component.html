@@ -1,30 +1,23 @@
-<div class="dashboard-container">
+<div class="kit-shell">
   <app-sidebar></app-sidebar>
 
-  <div class="main-content">
-    <div class="dashboard-header">
-      <div class="dashboard-title">
-        <h1>Website Pages</h1>
+  <main class="kit-main">
+    <header class="kit-page-head">
+      <div>
+        <span class="kit-eyebrow">Assembly · website pages</span>
+        <h1>Pages</h1>
       </div>
-      <div class="dashboard-actions">
-        <button (click)="openAddPageModal()" class="action-button">
-          <fa-icon [icon]="faPlus"></fa-icon> Add Page
-        </button>
-      </div>
-    </div>
+      <button type="button" (click)="openAddPageModal()" class="kit-btn kit-btn--primary">
+        <fa-icon [icon]="faPlus"></fa-icon> Add page
+      </button>
+    </header>
 
-    <div class="section-content">
-      <h2 class="section-title">Page List</h2>
-      <div class="card-container">
-        <app-page-card
-          *ngFor="let page of pages"
-          [page]="page"
-          (delete)="deletePage($event)"
-          (edit)="editPage($event)"
-        ></app-page-card>
-      </div>
+    <h2 class="kit-step"><span class="kit-step__no">1</span> Pick a page to build</h2>
+    <div class="kit-grid" style="--sprue-letter: 'G'">
+      <app-page-card *ngFor="let page of pages" [page]="page" (delete)="deletePage($event)" (edit)="editPage($event)"></app-page-card>
     </div>
-  </div>
+    <p class="kit-empty" *ngIf="pages.length === 0">No pages yet. Add the first one and it opens in the builder.</p>
+  </main>
 
   <app-create-page-modal #createPageModal
                          (close)="onCreatePageModalClose()"

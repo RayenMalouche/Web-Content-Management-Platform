@@ -1,19 +1,13 @@
-<h2 class="section-title">My Profile</h2>
-<div class="card">
-  <div class="card-content">
-    <div class="profile-info">
-      <div class="profile-avatar">
-        <fa-icon [icon]="faUser"></fa-icon>
-      </div>
-      <div class="profile-details">
-        <h3>{{ userName }}</h3>
-        <p>{{ userEmail }}</p>
-        <p>Member since: {{ memberSince }}</p>
-      </div>
-    </div>
-    <div class="profile-actions">
-      <button class="btn btn-primary" (click)="onEditProfile()">Edit Profile</button>
-      <button class="btn btn-outline">Change Password</button>
-    </div>
+<!-- The builder's name on the kit, like the modeller's label on the box. -->
+<section class="builder" aria-label="My profile">
+  <div class="builder__avatar"><fa-icon [icon]="faUser"></fa-icon></div>
+  <div class="builder__who">
+    <span class="kit-eyebrow">Assembled by</span>
+    <h2 class="builder__name">{{ userName }}</h2>
+    <p class="builder__meta">{{ userEmail }} · member since {{ memberSince }}</p>
   </div>
-</div>
+  <div class="builder__actions">
+    <button type="button" class="kit-btn kit-btn--sm" (click)="onEditProfile()">Edit profile</button>
+    <button type="button" class="kit-btn kit-btn--sm">Change password</button>
+  </div>
+</section>

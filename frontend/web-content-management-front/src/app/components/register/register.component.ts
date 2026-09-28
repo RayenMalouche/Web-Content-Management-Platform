@@ -4,19 +4,20 @@ import { FormBuilder, FormGroup, Validators,ReactiveFormsModule  } from '@angula
 import {Router, RouterLink} from '@angular/router';
 import { UserService } from '../../services/user.service';
 import {AuthService} from '../../services/auth.service.service';
-import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
+import { ExplodedViewComponent } from '../../shared/kit/exploded-view.component';
 
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  styleUrls: ['../login/login.component.scss', './register.component.scss'],
   viewProviders: [FormBuilder],
   imports: [
     ReactiveFormsModule,
     NgIf,
     NgForOf,
-    NgOptimizedImage,
+    ExplodedViewComponent,
     RouterLink
   ],
   standalone: true

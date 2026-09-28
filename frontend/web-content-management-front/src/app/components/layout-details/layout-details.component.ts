@@ -9,7 +9,7 @@ import {ILayout} from '../../models/ILayout';
 @Component({
   selector: 'app-layout-details',
   templateUrl: './layout-details.component.html',
-  styleUrls: ['./layout-details.component.scss'],
+  styleUrls: ['../node-details/node-details.component.scss', './layout-details.component.scss'],
   standalone: true,
   imports: [
     ReactiveFormsModule,

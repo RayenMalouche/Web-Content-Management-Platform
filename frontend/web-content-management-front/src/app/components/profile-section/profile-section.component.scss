@@ -1,38 +1,40 @@
-.profile-info {
+.builder {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  margin-bottom: 20px;
+  gap: 1rem 1.25rem;
+  padding: 1rem 1.25rem;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  background: #fff;
 }
 
-.profile-avatar {
-  width: 80px;
-  height: 80px;
+.builder__avatar {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
   border-radius: 50%;
-  background: #eee;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 20px;
-  font-size: 2rem;
-  color: #777;
+  background: var(--decal);
+  font-size: 1.25rem;
 }
 
-.profile-details h3 {
-  font-size: 1.2rem;
-  margin-bottom: 5px;
+.builder__who {
+  flex: 1;
+  min-width: 12rem;
 }
 
-.profile-details p {
-  color: #777;
+.builder__name {
+  font-size: 1.4rem;
+}
+
+.builder__meta {
+  color: var(--sprue-dark);
   font-size: 0.9rem;
 }
 
-.profile-actions {
+.builder__actions {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
-
-.card-content {
-  padding: 20px;
-}
-

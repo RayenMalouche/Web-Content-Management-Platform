@@ -1,92 +1,65 @@
-<form class="property-groups-container" [formGroup]="form" *ngIf="(selectedNodeFinal$ | async) as selNode; else noSelectedNode">
-  <div class="property-group">
-    <div class="property-group-title">
-      General Properties
-      <i class="fas fa-chevron-down"></i>
+<form class="spec" [formGroup]="form" *ngIf="(selectedNodeFinal$ | async) as selNode; else noSelectedNode">
+  <fieldset class="spec__group">
+    <legend><span class="spec__no">1</span> Part</legend>
+    <div class="kit-field">
+      <label for="nodeName">Name</label>
+      <input type="text" id="nodeName" placeholder="Hero banner" formControlName="name">
     </div>
-    <div class="property-content">
-      <div class="property-item">
-        <div class="property-label">Name</div>
-        <input type="text" name="nodeName" id="nodeName" placeholder="Enter Name" class="property-value" formControlName="name">
-      </div>
-
-      <div class="property-item">
-        <div class="property-label">Type</div>
-        <input type="text" name="nodeType" id="nodeType" placeholder="Node Type" class="property-value" formControlName="ntype" readonly>
-      </div>
-
-      <div class="property-item" *ngIf="selNode.type !== 'widget'">
-        <div class="property-label">Number of Children</div>
-        <input type="number" name="nodeChildrenCount" id="nodeChildrenCount" placeholder="Enter Name" class="property-value" formControlName="childrenCount" readonly>
-      </div>
-
-      <div class="property-item" *ngIf="selNode.type === 'widget'">
-        <div class="property-label">Widget ID</div>
-        <select class="dropdown-select" id="widgetId" formControlName="widgetId">
-          <option [value]="wId" *ngFor="let wId of WIDGET_ID_LIST">{{ wId }}</option>
-        </select>
-      </div>
-
-      <div class="property-item">
-        <div class="property-label">Description</div>
-        <input type="text" name="description" id="description" placeholder="Description" class="property-value" formControlName="description">
-      </div>
+    <div class="kit-field">
+      <label for="nodeType">Type</label>
+      <input type="text" id="nodeType" formControlName="type" readonly>
     </div>
-  </div>
-
-  <div class="property-group">
-    <div class="property-group-title">
-      Dimensions
-      <i class="fas fa-chevron-down"></i>
+    <div class="kit-field" *ngIf="selNode.type !== 'widget'">
+      <label for="nodeChildrenCount">Parts inside</label>
+      <input type="number" id="nodeChildrenCount" formControlName="childrenCount" readonly>
     </div>
-    <div class="property-content">
-      <div class="dimension-inputs">
-        <div class="property-item">
-          <div class="property-label">Width</div>
-          <input type="text" name="width" id="width" placeholder="Enter Width" class="property-value" formControlName="width">
-        </div>
+    <div class="kit-field" *ngIf="selNode.type === 'widget'">
+      <label for="widgetId">Widget</label>
+      <select id="widgetId" formControlName="widgetId">
+        <option [value]="wId" *ngFor="let wId of WIDGET_ID_LIST">{{ wId }}</option>
+      </select>
+    </div>
+    <div class="kit-field">
+      <label for="description">Description</label>
+      <input type="text" id="description" placeholder="What this part is for" formControlName="description">
+    </div>
+  </fieldset>
 
-        <div class="property-item">
-          <div class="property-label">Height</div>
-          <input type="text" name="height" id="height" placeholder="Enter Height" class="property-value" formControlName="height">
-        </div>
+  <fieldset class="spec__group">
+    <legend><span class="spec__no">2</span> Size</legend>
+    <div class="spec__pair">
+      <div class="kit-field">
+        <label for="width">Width (px)</label>
+        <input type="text" id="width" placeholder="auto" formControlName="width">
+      </div>
+      <div class="kit-field">
+        <label for="height">Height (px)</label>
+        <input type="text" id="height" placeholder="auto" formControlName="height">
       </div>
     </div>
-  </div>
+  </fieldset>
 
-  <div class="property-group">
-    <div class="property-group-title">
-      Appearance
-      <i class="fas fa-chevron-down"></i>
-    </div>
-    <div class="property-content">
-      <div class="property-item">
-        <div class="property-label">Background Color</div>
-        <div class="color-input-group">
-          <input type="color" name="backgroundColor" id="backgroundColor" formControlName="backgroundColor">
-          <input type="text" class="property-value" [value]="form.get('backgroundColor')?.value" readonly>
-        </div>
-      </div>
-
-      <div class="property-item">
-        <div class="property-label">Border Color</div>
-        <div class="color-input-group">
-          <input type="color" name="borderColor" id="borderColor" formControlName="borderColor">
-          <input type="text" class="property-value" [value]="form.get('borderColor')?.value" readonly>
-        </div>
+  <fieldset class="spec__group">
+    <legend><span class="spec__no">3</span> Paint</legend>
+    <div class="kit-field">
+      <label for="backgroundColor">Background</label>
+      <div class="spec__swatch">
+        <input type="color" id="backgroundColor" formControlName="backgroundColor">
+        <code>{{ form.get('backgroundColor')?.value }}</code>
       </div>
     </div>
-  </div>
+    <div class="kit-field">
+      <label for="borderColor">Border</label>
+      <div class="spec__swatch">
+        <input type="color" id="borderColor" formControlName="borderColor">
+        <code>{{ form.get('borderColor')?.value }}</code>
+      </div>
+    </div>
+  </fieldset>
 
-  <div class="property-item" style="margin-top: 20px;">
-    <button class="property-value" style="background-color: #0d6efd; color: white; cursor: pointer;" (click)="onSave(selNode)">Save</button>
-  </div>
+  <button type="button" class="kit-btn kit-btn--primary kit-btn--block" (click)="onSave(selNode)">Apply to part</button>
 </form>
 
 <ng-template #noSelectedNode>
-  <div class="property-groups-container">
-    <div class="property-item" style="text-align: center; color: #f8f9fa;">
-      No node selected
-    </div>
-  </div>
+  <p class="kit-empty">Click a part on the mat to paint it.</p>
 </ng-template>

@@ -1,19 +1,13 @@
-<div class="card user-card">
-  <div class="card-header">
-    <div class="card-title">{{ user.name }}</div>
+<article class="kit-part">
+  <span class="kit-part__no" aria-hidden="true"></span>
+  <span class="kit-eyebrow"><fa-icon [icon]="faUser"></fa-icon> User</span>
+  <h3 class="kit-part__title">{{ user.name }}</h3>
+  <div class="kit-part__actions">
+    <button type="button" class="kit-btn kit-btn--sm" (click)="onEdit()">
+      <fa-icon [icon]="faEdit"></fa-icon> Edit
+    </button>
+    <button type="button" class="kit-btn kit-btn--sm kit-btn--danger" (click)="onDelete()">
+      <fa-icon [icon]="faTrash"></fa-icon> Delete
+    </button>
   </div>
-  <div class="user-info">
-    <div class="user-status">
-      <fa-icon [icon]="faUser"></fa-icon>
-      <span class="status-text">Connected</span>
-    </div>
-    <div class="user-actions d-flex">
-      <button class="btn btn-danger" (click)="onDelete()">
-        <fa-icon [icon]="faTrash"></fa-icon> Delete
-      </button>
-      <button class="btn btn-primary me-2" (click)="onEdit()">
-        <fa-icon [icon]="faEdit"></fa-icon> Edit
-      </button>
-    </div>
-  </div>
-</div>
+</article>

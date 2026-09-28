@@ -1,0 +1,30 @@
+.guide {
+  padding: 1.1rem;
+}
+
+.guide__tabs {
+  display: flex;
+  margin-bottom: 1.1rem;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  overflow: hidden;
+
+  button {
+    flex: 1;
+    padding: 0.5rem;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: 700 0.82rem var(--font-body);
+    cursor: pointer;
+
+    & + button {
+      border-left: 2px solid var(--ink);
+    }
+
+    &.is-active {
+      background: var(--ink);
+      color: var(--sheet);
+    }
+  }
+}

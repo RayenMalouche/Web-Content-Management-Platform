@@ -8,7 +8,7 @@ import {FormsModule} from '@angular/forms';
   imports: [
     FormsModule
   ],
-  styleUrls: ['./add-table.component.css']
+  styleUrls: ['./add-table.component.scss']
 })
 export class AddTableComponent {
   newTable = { name: '' };

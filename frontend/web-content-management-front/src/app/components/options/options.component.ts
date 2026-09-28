@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { JsonPipe } from '@angular/common';
 import { NodeDetailsComponent } from '../node-details/node-details.component';
 import { LayoutDetailsComponent } from '../layout-details/layout-details.component';
 import {INode} from '../../models/INode';
@@ -12,7 +11,6 @@ import {LayoutService} from '../../services/layout-service.service';
 @Component({
   selector: 'app-options',
   imports: [
-    JsonPipe,
     NodeDetailsComponent,
     LayoutDetailsComponent
   ],
@@ -27,6 +25,9 @@ export class OptionsComponent implements OnInit {
   @Input() selectedNodeIsRoot = false;
   @Output() saveNode = new EventEmitter<{ oldNode: INode, newNode: INode, isRoot: boolean }>();
   @Output() saveLayout = new EventEmitter<ILayout>();
+
+  /** Which page of the paint guide is open. Tabs used Bootstrap's JS, which was never loaded. */
+  activeTab: 'node' | 'layout' = 'node';
 
   constructor(private readonly nodeService: NodeService, private readonly layoutService: LayoutService) {}
 

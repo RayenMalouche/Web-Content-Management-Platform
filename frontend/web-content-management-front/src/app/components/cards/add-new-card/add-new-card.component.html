@@ -1,6 +1,5 @@
-<div class="add-new-card" (click)="onAdd()">
-  <div class="add-icon">
-    <fa-icon [icon]="faPlusCircle"></fa-icon>
-  </div>
-  <div class="add-text">{{ text }}</div>
-</div>
+<!-- The empty slot on the sprue where the next part goes. -->
+<button type="button" class="kit-part kit-part--new" (click)="onAdd()">
+  <span class="kit-part__plus" aria-hidden="true">+</span>
+  <span>{{ text }}</span>
+</button>
